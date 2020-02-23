@@ -1,26 +1,32 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { APP_NAME } from "./resources/GlobalVariables";
 
+// import { APP_NAME } from "./resources/GlobalVariables";
+
+import SignInPage from "./pages/SignInPage";
+import LandingPage from "./pages/LandingPage";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { GlobalProvider } from "./contexts/GlobalState";
+
+// Component
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>{APP_NAME}</h1>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <GlobalProvider>
+        <Router>
+          <Switch>
+            {/* Login Page Route */}
+            <Route path="/login">
+              <SignInPage />
+            </Route>
+
+            {/* Landing Page Route */}
+            <Route path="/">
+              <LandingPage />
+            </Route>
+          </Switch>
+        </Router>
+      </GlobalProvider>
     </div>
   );
 }
