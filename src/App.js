@@ -7,6 +7,7 @@ import SignInPage from "./pages/SignInPage";
 import LandingPage from "./pages/LandingPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { GlobalProvider } from "./contexts/GlobalState";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 // Component
 function App() {
@@ -15,6 +16,11 @@ function App() {
       <GlobalProvider>
         <Router>
           <Switch>
+            {/* Dashboard Route */}
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+
             {/* Login Page Route */}
             <Route path="/login">
               <SignInPage />
