@@ -10,7 +10,8 @@ import {
   FormControlLabel,
   Radio,
   Button,
-  Typography
+  Typography,
+  Grid
 } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -66,9 +67,11 @@ export default function ReliefCenterActionCard({ list, name }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button color="primary" variant="contained">
-          Assign
-        </Button>
+        <Grid container justify="flex-end">
+          <Button color="primary" variant="contained">
+            Assign
+          </Button>
+        </Grid>
       </CardActions>
     </Card>
   );
