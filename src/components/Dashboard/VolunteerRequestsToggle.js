@@ -16,11 +16,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function VolunteerRequestsToggle() {
   const [alignment, setAlignment] = React.useState("left");
-  const [formats, setFormats] = React.useState(() => ["bold"]);
-
-  const handleFormat = (event, newFormats) => {
-    setFormats(newFormats);
-  };
 
   const handleAlignment = (event, newAlignment) => {
     setAlignment(newAlignment);

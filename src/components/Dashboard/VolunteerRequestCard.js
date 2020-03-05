@@ -30,7 +30,7 @@ export default function VolunteerRequestCard({ content, title }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Grid container justify="center">
+        <Grid container justify="space-between">
           <Button color="danger">Decline</Button>
           <Button color="primary" variant="contained">
             Accept
