@@ -1,20 +1,11 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useState } from "react";
 import AppReducer from "../reducers/AppReducer";
 
+let fakeData = require("../data/fakeData.json");
 // Initial state
 const initialState = {
-  notifications: [
-    {
-      id: 1,
-      title: "Volunteer Request",
-      content: "New request from Mr. John Doe"
-    },
-    {
-      id: 2,
-      title: "Reminder",
-      content: "Volunteering at Surrey, BC, Canada in 2 days"
-    }
-  ]
+  notifications: fakeData.notifications,
+  requests: fakeData.requests
 };
 
 // Create context
@@ -43,6 +34,7 @@ export const GlobalProvider = ({ children }) => {
     <GlobalContext.Provider
       value={{
         notifications: state.notifications,
+        requests: state.requests,
         deleteNotification,
         addNotification
       }}

@@ -1,36 +1,49 @@
 import React, { useContext } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Drawer from "@material-ui/core/Drawer";
-import Box from "@material-ui/core/Box";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
-import Container from "@material-ui/core/Container";
-import Link from "@material-ui/core/Link";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import { mainListItems } from "./listItems";
-import Avatar from "@material-ui/core/Avatar";
 
 // React Router
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Global State
 import { GlobalContext } from "../../contexts/GlobalState";
+
+// Material UI - Core - Imports
+import {
+  Drawer,
+  Box,
+  CssBaseline,
+  AppBar,
+  Toolbar,
+  List,
+  Typography,
+  Divider,
+  IconButton,
+  Badge,
+  Container,
+  Link,
+  Menu,
+  MenuItem,
+  Button,
+  Avatar
+} from "@material-ui/core";
+
+// Material UI - Icons - Imports
+import {
+  Menu as MenuIcon,
+  ChevronLeft as ChevronLeftIcon,
+  Notifications as NotificationsIcon
+} from "@material-ui/icons";
+
+import { mainListItems } from "./listItems";
+
+// Custom Outreach Dashboard Components
 import ReliefCenterForms from "./ReliefCenterForms";
 import Volunteers from "./Volunteers";
 import ReliefCenters from "./ReliefCenters";
 import Home from "./Home";
 
+// Copyright Component
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -131,27 +144,47 @@ export default function Dashboard() {
   // Getting notifications from the Global State!
   const { notifications } = useContext(GlobalContext);
 
-  const [open, setOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [open, setOpen] = React.useState(true);
+  const [anchorNotifications, setAnchorNotifications] = React.useState(null);
+  const [anchorUserMenu, setAnchorUserMenu] = React.useState(null);
+
   const [notificationsOpen, setNotificationsOpen] = React.useState(
-    Boolean(anchorEl)
+    Boolean(anchorNotifications)
   );
 
-  const handleClick = event => {
-    console.log("Handle Click Called!");
+  const [userMenuOpen, setUserMenuOpen] = React.useState(
+    Boolean(anchorNotifications)
+  );
 
+  // UserMenuToggle Handlers
+  const handleUserMenuClick = event => {
     // Get the Target to position and achor the menu!
-    setAnchorEl(event.currentTarget);
+    setAnchorUserMenu(event.currentTarget);
+    // Toggle UserMenu onClick
+    setUserMenuOpen(!notificationsOpen);
+  };
+
+  const handleUserMenuClose = () => {
+    setAnchorUserMenu(null);
+    setUserMenuOpen(false);
+  };
+  // UserMenuToggle Handlers END
+
+  // Notification Toggle Handlers
+  const handleNotificationsClick = event => {
+    // Get the Target to position and achor the menu!
+    setAnchorNotifications(event.currentTarget);
     // Toggle Notifications onClick
     setNotificationsOpen(!notificationsOpen);
   };
 
-  const handleClose = () => {
-    console.log("Handle Close Called!");
-    setAnchorEl(null);
+  const handleNotificationsClose = () => {
+    setAnchorNotifications(null);
     setNotificationsOpen(false);
   };
+  // Notification Toggle Handlers END
 
+  // Drawer Handlers
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -182,7 +215,6 @@ export default function Dashboard() {
             >
               <MenuIcon />
             </IconButton>
-
             {/* Text in the center */}
             <Typography
               component="h1"
@@ -193,19 +225,18 @@ export default function Dashboard() {
             >
               Outreach Admin Panel
             </Typography>
-
             {/* Notifications on the Right */}
-            <IconButton onClick={handleClick} color="inherit">
+            <IconButton onClick={handleNotificationsClick} color="inherit">
               <Badge badgeContent={notifications.length} color="secondary">
                 <NotificationsIcon />
               </Badge>
 
               <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
+                id="notifications-menu"
+                anchorEl={anchorNotifications}
                 keepMounted
                 open={notificationsOpen}
-                onClose={handleClose}
+                onClose={handleNotificationsClose}
                 PaperProps={{
                   style: {
                     // maxHeight: ITEM_HEIGHT * 4.5,
@@ -214,21 +245,44 @@ export default function Dashboard() {
                 }}
               >
                 {notifications.map(notification => (
-                  <MenuItem key={notification.id} onClick={handleClose}>
+                  <MenuItem
+                    key={notification.id}
+                    onClick={handleNotificationsClose}
+                  >
                     <div>{notification.title}</div>
                     {notification.content}
                   </MenuItem>
                 ))}
               </Menu>
             </IconButton>
-            {/* Avatar on the rightmost end */}
-            <Avatar
-              alt="Remy Sharp"
-              src="/broken-image.jpg"
-              className={classes.orange}
+
+            {/* Profile + Avatar Button */}
+            <Button
+              aria-controls="user-menu"
+              aria-haspopup="true"
+              onClick={handleUserMenuClick}
             >
-              B
-            </Avatar>
+              <Avatar
+                alt="Blandy Castro"
+                src="https://avatars1.githubusercontent.com/u/109951?s=400&v=4"
+                className={classes.orange}
+              >
+                {/* Fallback: Initials of the person who's logged in */}
+                BC
+              </Avatar>
+              &nbsp; Blandy Castro
+            </Button>
+
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorUserMenu}
+              keepMounted
+              open={Boolean(anchorUserMenu)}
+              onClose={handleUserMenuClose}
+            >
+              <MenuItem onClick={handleUserMenuClose}>Profile</MenuItem>
+              <MenuItem onClick={handleUserMenuClose}>Sign Out</MenuItem>
+            </Menu>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -264,36 +318,21 @@ export default function Dashboard() {
                 <Volunteers />
               </Route>
 
-              {/* Volunteers Route */}
+              {/* Relief Centers Route */}
               <Route path="/dashboard/relief-centers">
                 <ReliefCenters />
               </Route>
 
-              {/* Volunteers Route */}
+              {/* Relief Center Forms Route */}
               <Route path="/dashboard/relief-center-forms">
                 <ReliefCenterForms />
               </Route>
 
-              {/* Volunteers Route */}
+              {/* Settings Route */}
               <Route path="/dashboard/settings">
                 <div>Settings</div>
               </Route>
             </Switch>
-
-            {/* <Grid container spacing={3}>
-           
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid>
-          
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-          </Grid> */}
 
             {/* Bottom Copyright */}
             <Box pt={4}>
