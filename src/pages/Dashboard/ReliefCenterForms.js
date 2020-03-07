@@ -87,7 +87,7 @@ export default class ReliefCenterForms extends Component {
     return (
       <>
         <FormControl>
-          <InputLabel id="reliefCenterName">Relief Center Name</InputLabel>
+          <InputLabel id="reliefCenterName">Relief Center Name Here</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
