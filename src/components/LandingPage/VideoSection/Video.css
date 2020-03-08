@@ -1,0 +1,54 @@
+.bgVid-container {
+  height: 100%;
+  width: 100%;
+}
+
+.bgVid {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.mainContent {
+  position: relative;
+}
+
+.mainContent .contentOverlay {
+  position: absolute;
+  bottom: 0%;
+  text-align: left;
+  padding: 2rem;
+}
+
+.mainContent h2 {
+  color: white;
+  font-weight: 300;
+  font-family: Quicksand, sans-serif;
+  font-weight: 600;
+}
+
+.mainContent {
+  height: 70vh;
+  min-height: 500px;
+  /* REFERNCE (Image from Unsplash: https://images.unsplash.com/photo-1443706340763-4b60757a36ce?auto=format&fit=crop&ixlib=rb-1.2.1&q=80&w=675 */
+  /* background-image: url("https://images.unsplash.com/photo-1443706340763-4b60757a36ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=675&q=80"); */
+  background-size: cover;
+  background-image: url("./anna-earl-ZbuP5oXM_zA-unsplash (1).jpg");
+  background-position: center;
+}
+.bgVid-container {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .bgVid-container {
+    display: block;
+  }
+
+  .mainContent {
+    height: auto;
+    background-image: none;
+    background-size: cover;
+    background-position: center;
+  }
+}
