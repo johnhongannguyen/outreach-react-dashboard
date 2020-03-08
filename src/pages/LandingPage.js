@@ -5,6 +5,8 @@ import { Typography, Container } from "@material-ui/core";
 
 // Get Components
 import OutreachDefinition from "../components/LandingPage/OutreachDefinition/OutreachDefinition";
+import AllFeatures from "../components/LandingPage/Features-Section/AllFeatures";
+// import Logo from "../components/LandingPage/OutreachDefinition/outreach-definition-shape.svg";
 
 // Landing Page
 export default function LandingPage() {
@@ -12,11 +14,22 @@ export default function LandingPage() {
 
   return (
     <Container classes={classes} maxWidth="lg">
-      {/* Top Section */}
+      {/* Section - HEADER */}
 
-      <Typography variant="h3">What is Outreach?</Typography>
+      {/* Section - HERO */}
 
+      {/* Section - WHAT IS OUTREACH */}
       <OutreachDefinition />
+
+      {/* Section - HOW OUTREACH HELPS (features) */}
+      <AllFeatures />
+
+      {/* Section - DONATION */}
+      {/* <Logo /> */}
+
+      {/* Section - DOWNLOAD */}
+
+      {/* Section - FOOTER */}
     </Container>
   );
 }
