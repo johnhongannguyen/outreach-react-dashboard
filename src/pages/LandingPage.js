@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Container } from "@material-ui/core";
 import Features from "../components/LandingPage/Features";
 import { GlobalContext } from "../contexts/GlobalState";
+import Video from "../components/LandingPage/VideoSection/Video";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,6 +31,8 @@ export default function LandingPage() {
           <h5>{notification.title}</h5>
         ))}
       </Typography>
+
+      <Video />
 
       <Features />
     </Container>
