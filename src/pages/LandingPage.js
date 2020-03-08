@@ -1,8 +1,27 @@
-import React, { useContext } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+
 import { Typography, Container } from "@material-ui/core";
-import Features from "../components/LandingPage/Features";
-import { GlobalContext } from "../contexts/GlobalState";
+
+// Get Components
+import OutreachDefinition from "../components/LandingPage/OutreachDefinition/OutreachDefinition";
+
+// Landing Page
+export default function LandingPage() {
+  const classes = useStyles();
+
+  return (
+    <Container classes={classes} maxWidth="lg">
+      {/* Top Section */}
+
+      <Typography variant="h3">What is Outreach?</Typography>
+
+      <OutreachDefinition />
+    </Container>
+  );
+}
+
+// Styles
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -15,23 +34,3 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   }
 }));
-
-export default function LandingPage() {
-  const classes = useStyles();
-
-  // Getting notifications from the Global State!
-  const { notifications } = useContext(GlobalContext);
-
-  return (
-    <Container classes={classes} maxWidth="lg">
-      <Typography variant="h1">Context</Typography>
-      <Typography>
-        {notifications.map(notification => (
-          <h5>{notification.title}</h5>
-        ))}
-      </Typography>
-
-      <Features />
-    </Container>
-  );
-}
