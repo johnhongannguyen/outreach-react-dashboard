@@ -1,26 +1,43 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { APP_NAME } from "./resources/GlobalVariables";
 
+// import { APP_NAME } from "./resources/GlobalVariables";
+
+import SignInPage from "./pages/SignInPage";
+import LandingPage from "./pages/LandingPage";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { GlobalProvider } from "./contexts/GlobalState";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import ContactPage from "./pages/ContactPage/ContactPage.js";
+
+// Component
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>{APP_NAME}</h1>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <GlobalProvider>
+        <Router>
+          <Switch>
+            {/* Dashboard Route */}
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+
+            {/* Login Page Route */}
+            <Route path="/login">
+              <SignInPage />
+            </Route>
+
+            {/* Contact Page Route */}
+            <Route path="/contact">
+              <ContactPage />
+            </Route>
+            {/* Landing Page Route */}
+            <Route path="/">
+              <LandingPage />
+            </Route>
+          </Switch>
+        </Router>
+      </GlobalProvider>
     </div>
   );
 }
