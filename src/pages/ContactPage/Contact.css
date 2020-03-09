@@ -1,0 +1,78 @@
+.ContactPage {
+  font-family: Quicksand, sans-serif;
+}
+
+.ContactPage h1 {
+  font-weight: 100;
+  margin-bottom: 1.5rem;
+}
+
+.ContactPage p {
+  color: #404040;
+  font-family: Open sans, sans-serif;
+  font-size: 15px;
+  font-weight: 100;
+  margin-bottom: 2rem;
+}
+
+.ContactPage form p {
+  margin-bottom: 0.7rem;
+}
+
+.ContactPage form input {
+  border: none;
+  border-bottom: 0.1px solid #bebebe;
+  width: 65%;
+  margin-bottom: 1.5rem;
+}
+
+.ContactPage form textarea {
+  border: 0.1px solid #bebebe;
+  width: 65%;
+  /* margin-bottom: 1rem; */
+  min-height: 6rem;
+}
+
+.ContactPage .submitButton {
+  border: 1px solid #f27821;
+  width: 30%;
+  color: #f27821;
+}
+
+.Contactmain {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.contact-image-form {
+  margin-top: 10%;
+  margin-left: 2.5%;
+  margin-bottom: 10%;
+}
+
+.gradientDiv {
+  background-image: linear-gradient(#f27821, #ef3830);
+  border-radius: 3rem;
+  transform: rotate(10deg);
+}
+
+.contact-section {
+  background-color: black;
+  transform: rotate(-10deg);
+  margin: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.ContactPage {
+  background-color: white;
+  padding: 2rem;
+  text-align: left;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.contact-image {
+  background-size: cover;
+  background-image: url("./anna.jpg");
+  background-position: center;
+}

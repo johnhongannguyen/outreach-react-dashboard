@@ -8,6 +8,7 @@ import LandingPage from "./pages/LandingPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { GlobalProvider } from "./contexts/GlobalState";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import ContactPage from "./pages/ContactPage/ContactPage.js";
 
 // Component
 function App() {
@@ -26,6 +27,10 @@ function App() {
               <SignInPage />
             </Route>
 
+            {/* Contact Page Route */}
+            <Route path="/contact">
+              <ContactPage />
+            </Route>
             {/* Landing Page Route */}
             <Route path="/">
               <LandingPage />
