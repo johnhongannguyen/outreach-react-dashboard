@@ -6,6 +6,7 @@ import { Typography, Container } from "@material-ui/core";
 import OutreachDefinition from "../components/LandingPage/OutreachDefinition/OutreachDefinition";
 import AllFeatures from "../components/LandingPage/Features-Section/AllFeatures";
 import Video from "../components/LandingPage/VideoSection/Video.js";
+import Donation from "../components/LandingPage/Donation/Donation";
 
 // Landing Page
 export default function LandingPage() {
@@ -16,7 +17,7 @@ export default function LandingPage() {
       {/* Section - HEADER */}
 
       {/* Section - HERO */}
-     <Video />
+      <Video />
 
       {/* Section - WHAT IS OUTREACH */}
       <OutreachDefinition />
@@ -25,7 +26,7 @@ export default function LandingPage() {
       <AllFeatures />
 
       {/* Section - DONATION */}
-      
+      <Donation />
 
       {/* Section - DOWNLOAD */}
 
@@ -33,7 +34,6 @@ export default function LandingPage() {
     </Container>
   );
 }
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,4 +46,3 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   }
 }));
-
