@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { GlobalProvider } from "./contexts/GlobalState";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ContactPage from "./pages/ContactPage/ContactPage.js";
+import TeamPage from "./pages/TeamPage/TeamPicture.js";
 
 // Component
 function App() {
@@ -31,6 +32,12 @@ function App() {
             <Route path="/contact">
               <ContactPage />
             </Route>
+
+            {/* Team Page Route */}
+            <Route path="/team">
+              <TeamPage />
+            </Route>
+
             {/* Landing Page Route */}
             <Route path="/">
               <LandingPage />
