@@ -1,5 +1,5 @@
 .feature {
-  background-image: linear-gradient(to bottom, #f27821, #ef3830);
+  background-image: linear-gradient(to bottom, #f16908, #e7281f);
   padding-top: 100px;
   padding-bottom: 100px;
   margin-bottom: 20px;
@@ -25,13 +25,19 @@
   font-size: 20px;
 }
 
+.feature-list {
+  margin-top: 2rem;
+}
+
 @media screen and (min-width: 750px) {
   .feature-list {
     display: flex;
     flex-direction: row;
+    justify-content: center;
   }
 
   .feature {
-    margin-right: 10px;
+    margin-left: 2% !important;
+    margin-right: 2% !important;
   }
 }

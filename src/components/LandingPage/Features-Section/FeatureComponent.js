@@ -3,19 +3,15 @@ import React, { useState } from "react";
 // Importing styles from stylesheet
 import "./Features.css";
 
-// Importing Typography component from material-ui
-import Typography from "@material-ui/core/Typography";
-
+// Stateless Component
 const Features = ({ features }) => {
   // const { features } = this.props;
 
   // Mapping each feature
   const featureList = features.map(feature => {
     return (
-
       // Container for each feature
       <div className="feature" key={feature.id}>
-
         {/* FEATURE ICON */}
         <div>{feature.icon}</div>
 
@@ -32,4 +28,5 @@ const Features = ({ features }) => {
   return <div className="feature-list">{featureList}</div>;
 };
 
+// Exporting Features
 export default Features;
