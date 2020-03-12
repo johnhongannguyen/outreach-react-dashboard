@@ -16,17 +16,20 @@ const useStyles = makeStyles({
   }
 });
 
-export default function VolunteerRequestCard({ content, title }) {
+export default function VolunteerRequestCard({ content, email, contentExtra }) {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
+    <Card elevation={5} className={classes.root}>
       <CardContent>
         <Typography gutterBottom variant="h6" component="h2">
-          {title}
+          {email}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
           {content}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {contentExtra}
         </Typography>
       </CardContent>
       <CardActions>

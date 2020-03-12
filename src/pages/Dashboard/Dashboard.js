@@ -35,18 +35,18 @@ import {
 import { mainListItems } from "./listItems";
 
 // Custom Outreach Dashboard Components
-import ReliefCenterForms from "./ReliefCenterForms";
-import Volunteers from "./Volunteers";
-import ReliefCenters from "./ReliefCenters";
-import Home from "./Home";
+import ReliefCenterForms from "./ReliefCenterForms/ReliefCenterForms";
+import Volunteers from "./Volunteers/Volunteers";
+import ReliefCenters from "./ReliefCenters/ReliefCenters";
+import Home from "./Home/Home";
 
 // Copyright Component
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="https://outreach.nikhilwadekar.com/">
+        Outreach
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
