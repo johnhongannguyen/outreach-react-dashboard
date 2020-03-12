@@ -11,13 +11,13 @@
 .donation-heading {
   color: #f87606;
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1.4em;
   line-height: 1.6em;
 }
 .donation-change {
   color: #f87606;
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1.4em;
   padding-bottom: 1.2em;
 }
 .donation-big-change {
@@ -42,21 +42,32 @@
   border-radius: 10px;
   background: linear-gradient(#f27821, #ef3830);
 }
+/* Image Carousel CsS */
+.thumbs {
+  display: none;
+}
+.carousel-status {
+  display: none;
+}
+.donation-image-slider {
+  width: 80%;
+}
 
 @media screen and (min-width: 750px) {
   /* Rotated background */
   .donation-gradientDiv {
     background-image: linear-gradient(#f27821, #ef3830);
     border-radius: 3rem;
-    transform: rotate(-6deg);
+    transform: rotate(-5deg);
     z-index: 0;
-    padding: 0 0.5em;
+    max-width: 1100px;
   }
 
   .donation-section {
     background-color: white;
-    transform: rotate(6deg);
+    transform: rotate(5deg);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+    max-width: 1100px;
   }
 
   .donation-section {

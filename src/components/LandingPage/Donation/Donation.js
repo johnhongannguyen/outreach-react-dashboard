@@ -2,22 +2,23 @@ import React, { Component } from "react";
 
 // Importing styles from stylesheet
 import "./Donation.css";
-
-import img from "./image.jpg";
+// Importing Image Carousel
+import ImgCarousel from "./ImgCarousel.js";
 
 // Stateful component
 class Donation extends Component {
   state = {
     // An array of images
-    images: []
   };
   render() {
     return (
       // Section of Donation
       <div className="donation-gradientDiv">
         <div className="donation-section">
+          {/* Image Carousel Part of section */}
           <div class="donation-image-slider">
-            <img src={img} alt="golf" />
+            {/* Calling ImageCarousel Components */}
+            <ImgCarousel />
           </div>
           <div class="donation-info">
             {/* Heading of Donation Section */}
