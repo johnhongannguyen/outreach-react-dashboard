@@ -1,12 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 
 // React Router
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
-// Global State
-import { GlobalContext } from "../../contexts/GlobalState";
 
 // Material UI - Core - Imports
 import {
@@ -141,9 +138,6 @@ const useStyles = makeStyles(theme => ({
 export default function Dashboard() {
   const classes = useStyles();
 
-  // Getting notifications from the Global State!
-  const { notifications } = useContext(GlobalContext);
-
   const [open, setOpen] = React.useState(true);
   const [anchorNotifications, setAnchorNotifications] = React.useState(null);
   const [anchorUserMenu, setAnchorUserMenu] = React.useState(null);
@@ -227,7 +221,7 @@ export default function Dashboard() {
             </Typography>
             {/* Notifications on the Right */}
             <IconButton onClick={handleNotificationsClick} color="inherit">
-              <Badge badgeContent={notifications.length} color="secondary">
+              <Badge badgeContent={2} color="secondary">
                 <NotificationsIcon />
               </Badge>
 
@@ -244,7 +238,7 @@ export default function Dashboard() {
                   }
                 }}
               >
-                {notifications.map(notification => (
+                {[2, 2, 2, 2, 2, 2].map(notification => (
                   <MenuItem
                     key={notification.id}
                     onClick={handleNotificationsClose}

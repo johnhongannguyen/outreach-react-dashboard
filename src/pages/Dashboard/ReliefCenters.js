@@ -1,5 +1,15 @@
-import React from "react";
+import React, { Component } from "react";
 
-export default function ReliefCenters() {
-  return <div>ReliefCenters</div>;
+export default class ReliefCenters extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
+  componentDidMount() {}
+
+  render() {
+    return <div></div>;
+  }
 }
