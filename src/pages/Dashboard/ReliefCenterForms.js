@@ -65,6 +65,10 @@ export default class ReliefCenterForms extends Component {
     console.log("Something was changed");
   };
 
+  handleClick(event) {
+    console.log(event.target);
+  }
+
   StyledRadio = props => {
     const classes = useStyles();
     return (
@@ -115,7 +119,7 @@ export default class ReliefCenterForms extends Component {
             <MenuItem value={"Other"}> Other </MenuItem>
           </Select>
           <FormControl id="availability" component="fieldset">
-            <FormLabel component="legend">Gender</FormLabel>
+            <FormLabel component="legend"></FormLabel>
             <RadioGroup
               defaultValue="anyTime"
               aria-label="preference"
@@ -127,6 +131,8 @@ export default class ReliefCenterForms extends Component {
                 label="Any Time"
               />
               <FormControlLabel
+                id="showDate"
+                onClick={this.handleClick}
                 value="preference"
                 control={<this.StyledRadio />}
                 label="Choose your preference"

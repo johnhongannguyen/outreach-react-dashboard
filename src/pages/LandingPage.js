@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Container } from "@material-ui/core";
 import Features from "../components/LandingPage/Features";
 import { GlobalContext } from "../contexts/GlobalState";
+import Carousel from "../components/LandingPage/Carousel";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,6 +25,7 @@ export default function LandingPage() {
 
   return (
     <Container classes={classes} maxWidth="lg">
+      <Carousel />
       <Typography variant="h1">Context</Typography>
       <Typography>
         {notifications.map(notification => (
