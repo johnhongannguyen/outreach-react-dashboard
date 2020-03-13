@@ -3,7 +3,17 @@ import { withStyles } from "@material-ui/core/styles";
 
 // Axios
 import axios from "axios";
-import { Paper, Grid, Typography, Button, Badge } from "@material-ui/core";
+import {
+  Paper,
+  Grid,
+  Typography,
+  Button,
+  Badge,
+  TextField,
+  InputAdornment
+} from "@material-ui/core";
+
+import { Search as SearchIcon } from "@material-ui/icons";
 import ReliefCenterActionCard from "../../../components/Dashboard/ReliefCenterActionCard";
 
 // React Router
@@ -84,6 +94,24 @@ class ReliefCenters extends Component {
         <Typography align="left" variant="h5" component="h3">
           Relief Centers - Action Needed
         </Typography>
+        <Grid xs="12">
+          <TextField
+            block
+            id="outlined-search"
+            label="Search Relief Center"
+            type="search"
+            variant="standard"
+            fullWidth
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+        </Grid>
+
         <Paper className={classes.paper}>
           <Grid justify="center" container>
             {reliefCenters.map(reliefCenter => (

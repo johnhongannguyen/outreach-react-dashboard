@@ -6,17 +6,9 @@ import { withRouter, Link } from "react-router-dom";
 import axios from "axios";
 
 // Material UI - Core - Imports
-import {
-  Typography,
-  Grid,
-  Paper,
-  Button,
-  Badge,
-  ThemeProvider
-} from "@material-ui/core";
+import { Typography, Grid, Paper, Button, Badge } from "@material-ui/core";
 
 // Custom Outreach Components
-import VolunteerRequestsToggle from "../../../components/Dashboard/VolunteerRequestsToggle";
 import VolunteerRequestCard from "../../../components/Dashboard/VolunteerRequestCard";
 
 // ENV
@@ -118,6 +110,7 @@ class Volunteers extends Component {
             Volunteer Requests:
           </Badge>
         </Typography>
+
         <Paper className={classes.paper}>
           <Grid
             container
