@@ -16,7 +16,12 @@ const useStyles = makeStyles({
   }
 });
 
-export default function VolunteerRequestCard({ content, email, contentExtra }) {
+export default function VolunteerRequestCard({
+  content,
+  email,
+  contentExtra,
+  onAccept
+}) {
   const classes = useStyles();
 
   return (
@@ -35,7 +40,7 @@ export default function VolunteerRequestCard({ content, email, contentExtra }) {
       <CardActions>
         <Grid container justify="space-between">
           <Button color="danger">Decline</Button>
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained" onClick={onAccept}>
             Accept
           </Button>
         </Grid>

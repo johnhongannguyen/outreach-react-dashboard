@@ -10,8 +10,12 @@ import {
   FormControlLabel,
   Radio,
   Button,
+  ListItemIcon,
   Typography,
-  Grid
+  Grid,
+  List,
+  ListItem,
+  ListItemText
 } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -39,31 +43,14 @@ export default function ReliefCenterActionCard({ list, name }) {
           {name}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-          <FormControl component="fieldset" className={classes.formControl}>
-            {/* <FormLabel component="legend">Gender</FormLabel> */}
-            <RadioGroup
-              aria-label="gender"
-              name="gender1"
-              value={value}
-              onChange={handleChange}
-            >
-              <FormControlLabel
-                value="female"
-                control={<Radio />}
-                label="Cooking"
-              />
-              <FormControlLabel
-                value="male"
-                control={<Radio />}
-                label="Babysitting"
-              />
-              <FormControlLabel
-                value="other"
-                control={<Radio />}
-                label="Driving"
-              />
-            </RadioGroup>
-          </FormControl>
+          <List>
+            {list.map(listItem => (
+              <ListItem>
+                <ListItemText>{listItem.type}</ListItemText>
+                <ListItemText>{listItem.total}</ListItemText>
+              </ListItem>
+            ))}
+          </List>
         </Typography>
       </CardContent>
       <CardActions>

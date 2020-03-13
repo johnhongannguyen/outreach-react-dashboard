@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 // Axios
 import axios from "axios";
@@ -10,7 +10,6 @@ import {
   Typography,
   Grid,
   Paper,
-  Link,
   Button,
   Badge,
   ThemeProvider
@@ -59,12 +58,17 @@ class Volunteers extends Component {
   }
 
   // API Call
-  fetchDataFromAPI = async relativePath => {
-    await axios.get(`${API_URL}${relativePath}`).then(response => {
-      this.setState({
-        volunteerRequests: response.data
+  getDataFromAPI = async relativePath => {
+    await axios
+      .get(`${API_URL}${relativePath}`)
+      .then(response => {
+        this.setState({
+          volunteerRequests: response.data
+        });
+      })
+      .catch(err => {
+        console.log(`Error: ${err}`);
       });
-    });
   };
 
   // Function to check if its the homepage
@@ -72,12 +76,30 @@ class Volunteers extends Component {
 
   // When component
   componentDidMount() {
-    this.fetchDataFromAPI("/user/admin/requests/received");
+    this.getDataFromAPI("/user/admin/requests/received");
 
     // Set Limits based on where the user is
     if (this.isHomePage()) this.setState({ volunteerRequestsLimit: 4 });
     else this.setState({ volunteerRequestsLimit: 20 });
   }
+
+  approveVolunteerRequest = (taskID, emailID) => {
+    axios
+      .post(`${API_URL}/relief-center/id/${taskID}/${emailID}`)
+      .then(response => {
+        const updatedVolunteerRequests = this.state.volunteerRequests.filter(
+          volunteerRequest => volunteerRequest.volunteer_email != emailID
+        );
+
+        //   this.setState({people: this.state.people.filter(function(person) {
+        //     return person !== e.target.value
+        // })});
+
+        if (response.status == 200)
+          this.setState({ volunteerRequests: updatedVolunteerRequests });
+      });
+  };
+
   render() {
     const { classes, location } = this.props;
     const {
@@ -110,6 +132,7 @@ class Volunteers extends Component {
                     name,
                     location,
                     relief_center_id,
+                    task_id,
                     date,
                     type,
                     start_time,
@@ -122,12 +145,20 @@ class Volunteers extends Component {
                         email={volunteer_email}
                         content={`wants to help with ${type}`}
                         contentExtra={`at ${name} on ${date} from ${start_time} to ${end_time}`}
-                        onAccept={"test"}
+                        onAccept={() => {
+                          console.log("Accept was pressed!");
+                          this.approveVolunteerRequest(
+                            task_id,
+                            volunteer_email
+                          );
+                        }}
                         onDecline={"test"}
                       />
                     </Grid>
                   );
                 })}
+
+            {volunteerRequests.length < 1 && <div>No New notifications</div>}
 
             <Grid container justify="flex-end">
               <Link to="/dashboard/volunteers">

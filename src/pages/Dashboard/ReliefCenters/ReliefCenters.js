@@ -10,6 +10,9 @@ import ReliefCenterActionCard from "../../../components/Dashboard/ReliefCenterAc
 // React Router
 import { Link } from "react-router-dom";
 
+// ENV
+const API_URL = process.env.REACT_APP_API_URL;
+
 const styles = theme => ({
   root: {
     flexGrow: 1
@@ -39,15 +42,33 @@ class ReliefCenters extends Component {
     super(props);
 
     this.state = {
-      notifications: []
+      notifications: [],
+      reliefCenters: []
     };
   }
 
-  componentDidMount() {}
+  // API Call
+  getDataFromAPI = async relativePath => {
+    await axios
+      .get(`${API_URL}${relativePath}`)
+      .then(response => {
+        console.log(response.data);
+        this.setState({
+          reliefCenters: response.data
+        });
+      })
+      .catch(err => {
+        console.log(`Error: ${err}`);
+      });
+  };
+
+  componentDidMount() {
+    this.getDataFromAPI("/relief-center/all/requirement");
+  }
 
   render() {
     const { classes } = this.props;
-    const { notifications } = this.state;
+    const { notifications, reliefCenters } = this.state;
     return (
       <>
         <Typography align="left" variant="h5" component="h3">
@@ -55,16 +76,14 @@ class ReliefCenters extends Component {
         </Typography>
         <Paper className={classes.paper}>
           <Grid justify="center" container>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-              .filter(index => index < 2)
-              .map(value => (
-                <Grid item className={classes.hoverStyle}>
-                  <ReliefCenterActionCard
-                    name="Relief Center Name"
-                    list={<div>list</div>}
-                  />
-                </Grid>
-              ))}
+            {reliefCenters.map(reliefCenter => (
+              <Grid item className={classes.hoverStyle}>
+                <ReliefCenterActionCard
+                  name={reliefCenter.name}
+                  list={reliefCenter.required}
+                />
+              </Grid>
+            ))}
           </Grid>
 
           <Grid container justify="flex-end">
