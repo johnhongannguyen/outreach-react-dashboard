@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 
 export default function VolunteerRequestCard({
   content,
-  email,
+  title,
   contentExtra,
   onAccept
 }) {
@@ -28,7 +28,7 @@ export default function VolunteerRequestCard({
     <Card elevation={5} className={classes.root}>
       <CardContent>
         <Typography gutterBottom variant="h6" component="h2">
-          {email}
+          {title}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
           {content}

@@ -4,11 +4,11 @@ import { withStyles } from "@material-ui/core/styles";
 // Axios
 import axios from "axios";
 import { Paper, Grid, Typography, Button, Badge } from "@material-ui/core";
-import VolunteerRequestCard from "../../../components/Dashboard/VolunteerRequestCard";
 import ReliefCenterActionCard from "../../../components/Dashboard/ReliefCenterActionCard";
 
 // React Router
-import { Link } from "react-router-dom";
+import { Link, withRouter, Redirect } from "react-router-dom";
+import AssignVolunteers from "./AssignVolunteers";
 
 // ENV
 const API_URL = process.env.REACT_APP_API_URL;
@@ -62,12 +62,22 @@ class ReliefCenters extends Component {
       });
   };
 
+  assignVolunteers = reliefCenterID => {
+    console.log(reliefCenterID);
+    this.props.history.push(
+      `/dashboard/relief-center/id/${reliefCenterID}/assign`
+    );
+
+    // return <Redirect to="/dashboard/relief-centers/assign" />;
+  };
+
   componentDidMount() {
     this.getDataFromAPI("/relief-center/all/requirement");
   }
 
   render() {
     const { classes } = this.props;
+
     const { notifications, reliefCenters } = this.state;
     return (
       <>
@@ -81,6 +91,7 @@ class ReliefCenters extends Component {
                 <ReliefCenterActionCard
                   name={reliefCenter.name}
                   list={reliefCenter.required}
+                  onAssignClick={() => this.assignVolunteers(reliefCenter._id)}
                 />
               </Grid>
             ))}
@@ -97,4 +108,4 @@ class ReliefCenters extends Component {
   }
 }
 
-export default withStyles(styles)(ReliefCenters);
+export default withStyles(styles)(withRouter(ReliefCenters));

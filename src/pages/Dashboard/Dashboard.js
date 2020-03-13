@@ -39,6 +39,7 @@ import ReliefCenterForms from "./ReliefCenterForms/ReliefCenterForms";
 import Volunteers from "./Volunteers/Volunteers";
 import ReliefCenters from "./ReliefCenters/ReliefCenters";
 import Home from "./Home/Home";
+import AssignVolunteers from "./ReliefCenters/AssignVolunteers";
 
 // Copyright Component
 function Copyright() {
@@ -315,6 +316,11 @@ export default function Dashboard() {
               {/* Relief Centers Route */}
               <Route path="/dashboard/relief-centers">
                 <ReliefCenters />
+              </Route>
+
+              {/* Relief Centers Route */}
+              <Route path="/dashboard/relief-center/id/:reliefCenterID/assign">
+                <AssignVolunteers />
               </Route>
 
               {/* Relief Center Forms Route */}

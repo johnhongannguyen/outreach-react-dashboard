@@ -137,12 +137,13 @@ class Volunteers extends Component {
                     type,
                     start_time,
                     end_time,
-                    volunteer_email
+                    volunteer_email,
+                    volunteer_name
                   } = volunteerRequest;
                   return (
                     <Grid item className={classes.hoverStyle}>
                       <VolunteerRequestCard
-                        email={volunteer_email}
+                        title={volunteer_name}
                         content={`wants to help with ${type}`}
                         contentExtra={`at ${name} on ${date} from ${start_time} to ${end_time}`}
                         onAccept={() => {
@@ -157,14 +158,14 @@ class Volunteers extends Component {
                     </Grid>
                   );
                 })}
-
             {volunteerRequests.length < 1 && <div>No New notifications</div>}
-
-            <Grid container justify="flex-end">
-              <Link to="/dashboard/volunteers">
-                <Button>See All..</Button>
-              </Link>
-            </Grid>
+            {this.isHomePage() && (
+              <Grid container justify="flex-end">
+                <Link to="/dashboard/volunteers">
+                  <Button>See All..</Button>
+                </Link>
+              </Grid>
+            )}
           </Grid>
         </Paper>
       </>

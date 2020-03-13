@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function ReliefCenterActionCard({ list, name }) {
+export default function ReliefCenterActionCard({ list, name, onAssignClick }) {
   const [value, setValue] = useState(1);
   const classes = useStyles();
 
@@ -55,7 +55,7 @@ export default function ReliefCenterActionCard({ list, name }) {
       </CardContent>
       <CardActions>
         <Grid container justify="flex-end">
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained" onClick={onAssignClick}>
             Assign
           </Button>
         </Grid>
