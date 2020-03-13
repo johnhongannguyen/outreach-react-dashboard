@@ -12,7 +12,7 @@ class ImgCarousel extends Component {
   };
   render() {
     return (
-      <Carousel autoPlay="true" transitionTime="350">
+      <Carousel autoPlay="true" transitionTime="350" infiniteLoop="true">
         <div>
           <img src={img} />
         </div>

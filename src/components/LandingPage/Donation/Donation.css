@@ -1,3 +1,12 @@
+@font-face {
+  font-family: "Edo Sz";
+  src: local("Edo Sz"), url(../../../fonts/edosz.ttf) format("ttf");
+}
+.donation {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .donation-image-slider {
   padding: 2em;
   align-items: center;
@@ -13,6 +22,7 @@
   font-weight: bold;
   font-size: 1.4em;
   line-height: 1.6em;
+  font-family: "Quicksand";
 }
 .donation-change {
   color: #f87606;
@@ -23,6 +33,7 @@
 .donation-big-change {
   color: green;
   font-weight: bold;
+  font-family: "Edo Sz";
 }
 
 .donation-paragraph {
@@ -30,6 +41,7 @@
   line-height: 1.3em;
   text-align: left;
   color: gray;
+  font-family: "Quicksand";
 }
 .donation-button-container {
   padding-top: 1.5em;
@@ -52,7 +64,21 @@
 .donation-image-slider {
   width: 80%;
 }
-
+.donation-btn {
+  font-family: "Quicksand";
+  font-weight: 400;
+}
+.donation-section {
+  margin-left: auto;
+  margin-right: auto;
+}
+.donation-gradientDiv {
+  margin-left: auto;
+  margin-right: auto;
+}
+.donation {
+  margin-top: 4em;
+}
 @media screen and (min-width: 750px) {
   /* Rotated background */
   .donation-gradientDiv {
