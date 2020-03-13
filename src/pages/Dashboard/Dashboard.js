@@ -1,12 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 
 // React Router
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
-// Global State
-import { GlobalContext } from "../../contexts/GlobalState";
 
 // Material UI - Core - Imports
 import {
@@ -38,18 +35,19 @@ import {
 import { mainListItems } from "./listItems";
 
 // Custom Outreach Dashboard Components
-import ReliefCenterForms from "./ReliefCenterForms";
-import Volunteers from "./Volunteers";
-import ReliefCenters from "./ReliefCenters";
-import Home from "./Home";
+import ReliefCenterForms from "./ReliefCenterForms/ReliefCenterForms";
+import Volunteers from "./Volunteers/Volunteers";
+import ReliefCenters from "./ReliefCenters/ReliefCenters";
+import Home from "./Home/Home";
+import AssignVolunteers from "./ReliefCenters/AssignVolunteers";
 
 // Copyright Component
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="https://outreach.nikhilwadekar.com/">
+        Outreach
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -141,9 +139,6 @@ const useStyles = makeStyles(theme => ({
 export default function Dashboard() {
   const classes = useStyles();
 
-  // Getting notifications from the Global State!
-  const { notifications } = useContext(GlobalContext);
-
   const [open, setOpen] = React.useState(true);
   const [anchorNotifications, setAnchorNotifications] = React.useState(null);
   const [anchorUserMenu, setAnchorUserMenu] = React.useState(null);
@@ -227,7 +222,7 @@ export default function Dashboard() {
             </Typography>
             {/* Notifications on the Right */}
             <IconButton onClick={handleNotificationsClick} color="inherit">
-              <Badge badgeContent={notifications.length} color="secondary">
+              <Badge badgeContent={2} color="secondary">
                 <NotificationsIcon />
               </Badge>
 
@@ -244,7 +239,7 @@ export default function Dashboard() {
                   }
                 }}
               >
-                {notifications.map(notification => (
+                {[2, 2, 2, 2, 2, 2].map(notification => (
                   <MenuItem
                     key={notification.id}
                     onClick={handleNotificationsClose}
@@ -321,6 +316,11 @@ export default function Dashboard() {
               {/* Relief Centers Route */}
               <Route path="/dashboard/relief-centers">
                 <ReliefCenters />
+              </Route>
+
+              {/* Relief Centers Route */}
+              <Route path="/dashboard/relief-center/id/:reliefCenterID/assign">
+                <AssignVolunteers />
               </Route>
 
               {/* Relief Center Forms Route */}
