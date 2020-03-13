@@ -10,7 +10,7 @@
   font-size: 1.5rem;
 }
 
-.button-explore {
+.button-download{
   background-color: #F27821;
   color: #fff;
   border-radius: 20px;
@@ -22,7 +22,7 @@
 
 .header .navigation li a {
   color: black;
-  font-family: roboto !important;
+  font-family: quicksand !important;
   font-weight: 300;
 }
 
