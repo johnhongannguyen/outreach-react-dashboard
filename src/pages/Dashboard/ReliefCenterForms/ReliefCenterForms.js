@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Radio from "@material-ui/core/Radio";
@@ -73,11 +79,13 @@ export default class ReliefCenterForms extends Component {
 
     this.state = {
       nameOfCenter: "Flood",
-      nameOfJob: "Driving"
+      nameOfJob: "Driving",
+      numberOfPeople: 0,
+      typeOfJob: ""
     };
   }
-  handleChange = () => {
-    console.log("Something was changed");
+  handleChange = e => {
+    this.setState({ typeOfJob: e.target.value });
   };
 
   handleClick(event) {
@@ -112,8 +120,11 @@ export default class ReliefCenterForms extends Component {
     const { nameOfJob } = this.props;
     return (
       <>
-        <FormControl>
-          <InputLabel id="reliefCenterName">Relief Center Name Here</InputLabel>
+        <Typography align="left" variant="h3">
+          Relief Center Form
+        </Typography>
+        <FormControl fullWidth>
+          <InputLabel id="reliefCenterName">Relief Center Name</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -126,9 +137,15 @@ export default class ReliefCenterForms extends Component {
             <MenuItem value={"Other"}> Other </MenuItem>
           </Select>
         </FormControl>
-        <Card>
-          <FormControl id="volunteerTab">
-            <InputLabel id="volunteerDetail">Volunteer Details</InputLabel>
+        <Card style={{ padding: 50 }}>
+          {this.state.numberOfPeople > 0 && this.state.typeOfJob && (
+            <Typography align="left" variant="h4">
+              Requesting {this.state.numberOfPeople} volunteers for{" "}
+              {this.state.typeOfJob}
+            </Typography>
+          )}
+          <FormControl fullWidth id="volunteerTab">
+            <InputLabel id="volunteerDetail">Type of Job</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -159,24 +176,22 @@ export default class ReliefCenterForms extends Component {
                   control={<this.StyledRadio />}
                   label="Choose your preference"
                 />
-                {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid container justify="space-around">
-                    <KeyboardDatePicker
-                      disableToolbar
-                      variant="inline"
-                      format="MM/dd/yyyy"
-                      margin="normal"
-                      id="date-picker-inline"
-                      label="Date picker inline"
-                      value={this.selectedDate}
-                      onChange={this.handleDateChange}
-                      KeyboardButtonProps={{
-                        "aria-label": "change date"
-                      }}
-                    />
-                  </Grid>
-                </MuiPickersUtilsProvider> */}
               </RadioGroup>
+
+              <TextField
+                defaultValue={this.state.numberOfPeople}
+                onChange={e =>
+                  this.setState({ numberOfPeople: e.target.value })
+                }
+                type="number"
+                InputProps={{
+                  inputProps: {
+                    max: 100,
+                    min: 1
+                  }
+                }}
+                label="People Needed"
+              ></TextField>
             </FormControl>
           </FormControl>
         </Card>
