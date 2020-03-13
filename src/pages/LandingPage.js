@@ -1,9 +1,37 @@
-import React, { useContext } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Container } from "@material-ui/core";
-import Features from "../components/LandingPage/Features";
-import { GlobalContext } from "../contexts/GlobalState";
-import Carousel from "../components/LandingPage/Carousel";
+
+// Get Components
+import OutreachDefinition from "../components/LandingPage/OutreachDefinition/OutreachDefinition";
+import AllFeatures from "../components/LandingPage/Features-Section/AllFeatures";
+import Video from "../components/LandingPage/VideoSection/Video.js";
+
+// Landing Page
+export default function LandingPage() {
+  const classes = useStyles();
+
+  return (
+    <Container classes={classes} maxWidth="lg">
+      {/* Section - HEADER */}
+
+      {/* Section - HERO */}
+      <Video />
+
+      {/* Section - WHAT IS OUTREACH */}
+      <OutreachDefinition />
+
+      {/* Section - HOW OUTREACH HELPS (features) */}
+      <AllFeatures />
+
+      {/* Section - DONATION */}
+
+      {/* Section - DOWNLOAD */}
+
+      {/* Section - FOOTER */}
+    </Container>
+  );
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,24 +44,3 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   }
 }));
-
-export default function LandingPage() {
-  const classes = useStyles();
-
-  // Getting notifications from the Global State!
-  const { notifications } = useContext(GlobalContext);
-
-  return (
-    <Container classes={classes} maxWidth="lg">
-      <Carousel />
-      <Typography variant="h1">Context</Typography>
-      <Typography>
-        {notifications.map(notification => (
-          <h5>{notification.title}</h5>
-        ))}
-      </Typography>
-
-      <Features />
-    </Container>
-  );
-}

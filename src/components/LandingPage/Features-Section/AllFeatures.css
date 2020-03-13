@@ -1,0 +1,13 @@
+.features-heading {
+  font-family: quicksand !important;
+  color: #6e6e6e;
+  font-weight: bold !important;
+  text-align: center;
+}
+
+.features-section {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5rem;
+}
