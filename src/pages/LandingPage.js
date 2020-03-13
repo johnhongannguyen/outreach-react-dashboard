@@ -16,7 +16,7 @@ export default function LandingPage() {
       {/* Section - HEADER */}
 
       {/* Section - HERO */}
-     <Video />
+      <Video />
 
       {/* Section - WHAT IS OUTREACH */}
       <OutreachDefinition />
@@ -25,7 +25,6 @@ export default function LandingPage() {
       <AllFeatures />
 
       {/* Section - DONATION */}
-      
 
       {/* Section - DOWNLOAD */}
 
@@ -33,7 +32,6 @@ export default function LandingPage() {
     </Container>
   );
 }
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,4 +44,3 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   }
 }));
-
