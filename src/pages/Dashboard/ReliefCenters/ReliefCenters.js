@@ -57,6 +57,9 @@ class ReliefCenters extends Component {
     };
   }
 
+  // Function to check if its the homepage
+  isHomePage = () => this.props.location.pathname === "/dashboard/home";
+
   // API Call
   getDataFromAPI = async relativePath => {
     await axios
@@ -94,23 +97,25 @@ class ReliefCenters extends Component {
         <Typography align="left" variant="h5" component="h3">
           Relief Centers - Action Needed
         </Typography>
-        <Grid xs="12">
-          <TextField
-            block
-            id="outlined-search"
-            label="Search Relief Center"
-            type="search"
-            variant="standard"
-            fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              )
-            }}
-          />
-        </Grid>
+        {!this.isHomePage() && (
+          <Grid xs="12">
+            <TextField
+              block
+              id="outlined-search"
+              label="Search Relief Center"
+              type="search"
+              variant="standard"
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+        )}
 
         <Paper className={classes.paper}>
           <Grid justify="center" container>

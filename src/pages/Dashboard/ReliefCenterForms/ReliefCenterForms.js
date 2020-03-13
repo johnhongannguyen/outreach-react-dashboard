@@ -1,12 +1,30 @@
 import React, { Component } from "react";
-import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
 import clsx from "clsx";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+// import "date-fns";
+// import Grid from "@material-ui/core/Grid";
+// import DateFnsUtils from "@date-io/date-fns";
+// import {
+//   MuiPickersUtilsProvider,
+//   KeyboardTimePicker,
+//   KeyboardDatePicker
+// } from "@material-ui/pickers";
 
 // Styles
 const useStyles = makeStyles({
@@ -52,18 +70,34 @@ const useStyles = makeStyles({
     }
   }
 });
+// const [selectedDate, setSelectedDate] = React.useState(
+//   new Date("2014-08-18T21:11:54")
+// );
 export default class ReliefCenterForms extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       nameOfCenter: "Flood",
-      nameOfJob: "Driving"
+      nameOfJob: "Driving",
+      numberOfPeople: 0,
+      typeOfJob: ""
     };
   }
-  handleChange = () => {
-    console.log("Something was changed");
+  handleChange = e => {
+    this.setState({ typeOfJob: e.target.value });
   };
+
+  handleClick(event) {
+    console.log(event.target);
+  }
+  // handleDateChange = date => {
+  //   setSelectedDate(date);
+  // };
+
+  // selectedDate = ()=>{
+
+  // }
 
   StyledRadio = props => {
     const classes = useStyles();
@@ -86,8 +120,11 @@ export default class ReliefCenterForms extends Component {
     const { nameOfJob } = this.props;
     return (
       <>
-        <FormControl>
-          <InputLabel id="reliefCenterName">Relief Center Name Here</InputLabel>
+        <Typography align="left" variant="h3">
+          Relief Center Form
+        </Typography>
+        <FormControl fullWidth>
+          <InputLabel id="reliefCenterName">Relief Center Name</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -100,40 +137,64 @@ export default class ReliefCenterForms extends Component {
             <MenuItem value={"Other"}> Other </MenuItem>
           </Select>
         </FormControl>
-
-        <FormControl id="volunteerTab">
-          <InputLabel id="volunteerDetail">Volunteer Details</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={nameOfJob}
-            onChange={this.handleChange}
-          >
-            <MenuItem value={"Driving"}> Driving </MenuItem>
-            <MenuItem value={"Baby Sitting"}> Baby Sitting </MenuItem>
-            <MenuItem value={"Cooking"}> Cooking </MenuItem>
-            <MenuItem value={"Other"}> Other </MenuItem>
-          </Select>
-          <FormControl id="availability" component="fieldset">
-            <FormLabel component="legend">Gender</FormLabel>
-            <RadioGroup
-              defaultValue="anyTime"
-              aria-label="preference"
-              name="customized-radios"
+        <Card style={{ padding: 50 }}>
+          {this.state.numberOfPeople > 0 && this.state.typeOfJob && (
+            <Typography align="left" variant="h4">
+              Requesting {this.state.numberOfPeople} volunteers for{" "}
+              {this.state.typeOfJob}
+            </Typography>
+          )}
+          <FormControl fullWidth id="volunteerTab">
+            <InputLabel id="volunteerDetail">Type of Job</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={nameOfJob}
+              onChange={this.handleChange}
             >
-              <FormControlLabel
-                value="anyTime"
-                control={<this.StyledRadio />}
-                label="Any Time"
-              />
-              <FormControlLabel
-                value="preference"
-                control={<this.StyledRadio />}
-                label="Choose your preference"
-              />
-            </RadioGroup>
+              <MenuItem value={"Driving"}> Driving </MenuItem>
+              <MenuItem value={"Baby Sitting"}> Baby Sitting </MenuItem>
+              <MenuItem value={"Cooking"}> Cooking </MenuItem>
+              <MenuItem value={"Other"}> Other </MenuItem>
+            </Select>
+            <FormControl id="availability" component="fieldset">
+              <FormLabel component="legend"></FormLabel>
+              <RadioGroup
+                defaultValue="anyTime"
+                aria-label="preference"
+                name="customized-radios"
+              >
+                <FormControlLabel
+                  value="anyTime"
+                  control={<this.StyledRadio />}
+                  label="Any Time"
+                />
+                <FormControlLabel
+                  id="showDate"
+                  onClick={this.handleClick}
+                  value="preference"
+                  control={<this.StyledRadio />}
+                  label="Choose your preference"
+                />
+              </RadioGroup>
+
+              <TextField
+                defaultValue={this.state.numberOfPeople}
+                onChange={e =>
+                  this.setState({ numberOfPeople: e.target.value })
+                }
+                type="number"
+                InputProps={{
+                  inputProps: {
+                    max: 100,
+                    min: 1
+                  }
+                }}
+                label="People Needed"
+              ></TextField>
+            </FormControl>
           </FormControl>
-        </FormControl>
+        </Card>
       </>
     );
   }
