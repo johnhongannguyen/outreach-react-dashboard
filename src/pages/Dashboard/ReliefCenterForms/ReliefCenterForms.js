@@ -17,14 +17,14 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-// import "date-fns";
-// import Grid from "@material-ui/core/Grid";
-// import DateFnsUtils from "@date-io/date-fns";
-// import {
-//   MuiPickersUtilsProvider,
-//   KeyboardTimePicker,
-//   KeyboardDatePicker
-// } from "@material-ui/pickers";
+import "date-fns";
+import Grid from "@material-ui/core/Grid";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
 
 // Styles
 const useStyles = makeStyles({
@@ -70,9 +70,7 @@ const useStyles = makeStyles({
     }
   }
 });
-// const [selectedDate, setSelectedDate] = React.useState(
-//   new Date("2014-08-18T21:11:54")
-// );
+
 export default class ReliefCenterForms extends Component {
   constructor(props) {
     super(props);
@@ -81,24 +79,20 @@ export default class ReliefCenterForms extends Component {
       nameOfCenter: "Flood",
       nameOfJob: "Driving",
       numberOfPeople: 0,
-      typeOfJob: ""
+      typeOfJob: "",
+      selectedDate: new Date()
     };
   }
   handleChange = e => {
     this.setState({ typeOfJob: e.target.value });
   };
 
+  handleSelectedDate = date => {
+    this.setState({ selectedDate: date });
+  };
   handleClick(event) {
     console.log(event.target);
   }
-  // handleDateChange = date => {
-  //   setSelectedDate(date);
-  // };
-
-  // selectedDate = ()=>{
-
-  // }
-
   StyledRadio = props => {
     const classes = useStyles();
     return (
@@ -176,6 +170,43 @@ export default class ReliefCenterForms extends Component {
                   control={<this.StyledRadio />}
                   label="Choose your preference"
                 />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Grid container justify="space-around">
+                    <KeyboardDatePicker
+                      disableToolbar
+                      variant="inline"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="date-picker-inline"
+                      label="Date"
+                      value={this.selectedDate}
+                      onChange={this.handleSelectedDate}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date"
+                      }}
+                    />
+                    <KeyboardTimePicker
+                      margin="normal"
+                      id="time-picker-start"
+                      label="Start Time"
+                      value={this.selectedDate}
+                      onChange={this.handleSelectedDate}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date"
+                      }}
+                    />
+                    <KeyboardTimePicker
+                      margin="normal"
+                      id="time-picker"
+                      label="End Time"
+                      value={this.selectedDate}
+                      onChange={this.handleSelectedDate}
+                      KeyboardButtonProps={{
+                        "aria-label": "change time"
+                      }}
+                    />
+                  </Grid>
+                </MuiPickersUtilsProvider>
               </RadioGroup>
 
               <TextField
