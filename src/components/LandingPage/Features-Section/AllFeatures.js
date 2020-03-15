@@ -9,7 +9,6 @@ import "./AllFeatures.css";
 // Importing Typography component from material-ui
 import Typography from "@material-ui/core/Typography";
 
-
 // Stateful component
 class AllFeatures extends Component {
   state = {
@@ -41,7 +40,7 @@ class AllFeatures extends Component {
       <div className="features-section">
         {/* Heading of Features Section */}
         <Typography variant="h3" className="features-heading">
-          How Outreach helps?
+          Features
         </Typography>
 
         {/* Using FEATURES component */}
