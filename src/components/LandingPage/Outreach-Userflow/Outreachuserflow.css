@@ -1,0 +1,158 @@
+.first-path {
+  display: none;
+}
+
+.step-second-container-duplicate {
+  display: none;
+}
+
+.userflow-section {
+  margin-top: 6rem;
+}
+
+.second-path {
+  display: none;
+}
+
+.step-first-container .choose-preference-svg {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 1rem;
+}
+
+.step-first-container {
+  margin-bottom: 4rem;
+}
+
+.userflow-heading {
+  margin-bottom: 2rem;
+  font-family: quicksand;
+  font-weight: bold;
+  color: #6e6e6e;
+  font-size: 2.5rem;
+}
+
+.first-information-step {
+  text-align: center;
+}
+
+.step-second-container {
+  margin-bottom: 2.75rem;
+}
+
+.step-second-container .send-request-svg {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 1rem;
+}
+
+.step-three-container .start-volunteering-svg {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 1rem;
+}
+
+.box-last-bottom {
+  margin-bottom: 2.75rem;
+}
+
+.outreach-work-process .header {
+  font-family: quicksand;
+  font-weight: bold;
+  color: #f87606;
+}
+
+.outreach-work-process .userflow-description {
+  font-family: open sans;
+  font-weight: semibold;
+}
+
+@media screen and (min-width: 750px) {
+  .first-path {
+    display: block;
+    width: 800px;
+    height: 250px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .second-path {
+    display: block;
+    width: 800px;
+    height: 250px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .step-first-container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0;
+    margin-left: 10%;
+  }
+
+  .first-information-step {
+    align-self: center;
+    text-align: left !important;
+    width: 30%;
+    margin-left: 2%;
+  }
+
+  .step-first-container .choose-preference-svg {
+    width: 210px;
+    height: 210px;
+    align-self: center;
+    margin-bottom: 0;
+  }
+
+  .step-second-container {
+    display: none;
+  }
+
+  .step-second-container-duplicate {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0;
+    justify-content: flex-end;
+    margin-right: 10%;
+  }
+
+  .send-request-svg-duplicate {
+    width: 210px;
+    height: 210px;
+    align-self: center;
+    margin-bottom: 0;
+  }
+
+  .second-information-step-duplicate {
+    align-self: center;
+    text-align: left !important;
+    width: 30%;
+    margin-right: 2%;
+  }
+
+  .start-volunteering-svg {
+    width: 210px;
+    height: 210px;
+    align-self: center;
+    margin-bottom: 0;
+  }
+
+  .step-three-container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0;
+    margin-left: 10%;
+  }
+
+  .third-information-step {
+    align-self: center;
+    text-align: left !important;
+    width: 30%;
+    margin-left: 2%;
+  }
+
+  .userflow-heading {
+    margin-bottom: 4rem;
+  }
+}
