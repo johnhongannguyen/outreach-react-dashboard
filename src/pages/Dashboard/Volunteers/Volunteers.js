@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter, Link } from "react-router-dom";
+// Socket Client
+import socketIOClient from "socket.io-client";
 
 // Axios
 import axios from "axios";
@@ -39,13 +41,21 @@ const styles = theme => ({
   }
 });
 
+// Global Socket Variable
+var socket;
+
 class Volunteers extends Component {
   constructor(props) {
     super(props);
 
+    socket = socketIOClient("http://localhost:4000/", {
+      transports: ["websocket", "polling", "flashsocket"]
+    });
+
     this.state = {
       notifications: [],
-      volunteerRequests: []
+      volunteerRequests: [],
+      reliefCenters: []
     };
   }
 
@@ -66,6 +76,15 @@ class Volunteers extends Component {
   // Function to check if its the homepage
   isHomePage = () => this.props.location.pathname === "/dashboard/home";
 
+  // SOCKET_IO
+  getData = reliefCenters => {
+    console.log(reliefCenters);
+    this.setState({ reliefCenters: reliefCenters });
+  };
+
+  // SOCKET_IO
+  changeData = () => socket.emit("initialRequests");
+
   // When component
   componentDidMount() {
     this.getDataFromAPI("/user/admin/requests/received");
@@ -73,6 +92,18 @@ class Volunteers extends Component {
     // Set Limits based on where the user is
     if (this.isHomePage()) this.setState({ volunteerRequestsLimit: 4 });
     else this.setState({ volunteerRequestsLimit: 20 });
+
+    // SOCKET_IO: Set Sockets to get data!
+    var state_current = this;
+    socket.emit("initialRequests");
+    socket.on("getReliefCenters", this.getData);
+    // socket.on("change_data", this.changeData);
+  }
+
+  // SOCKET_IO : Remove Sockets
+  componentWillUnmount() {
+    // socket.off("get_data");
+    // socket.off("change_data");
   }
 
   approveVolunteerRequest = (taskID, emailID) => {
