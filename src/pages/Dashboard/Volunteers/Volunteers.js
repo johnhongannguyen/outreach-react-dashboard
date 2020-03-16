@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter, Link } from "react-router-dom";
 // Socket Client
-import socketIOClient from "socket.io-client";
+import io from "socket.io-client";
 
 // Axios
 import axios from "axios";
@@ -48,7 +48,7 @@ class Volunteers extends Component {
   constructor(props) {
     super(props);
 
-    socket = socketIOClient("http://localhost:4000/", {
+    socket = io("http://127.0.0.1:5000", {
       transports: ["websocket", "polling", "flashsocket"]
     });
 
