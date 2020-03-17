@@ -53,7 +53,8 @@ class ReliefCenters extends Component {
 
     this.state = {
       notifications: [],
-      reliefCenters: []
+      reliefCenters: [],
+      reliefCenterSearchValue: ""
     };
   }
 
@@ -80,8 +81,6 @@ class ReliefCenters extends Component {
     this.props.history.push(
       `/dashboard/relief-center/id/${reliefCenterID}/assign`
     );
-
-    // return <Redirect to="/dashboard/relief-centers/assign" />;
   };
 
   componentDidMount() {
@@ -100,6 +99,9 @@ class ReliefCenters extends Component {
         {!this.isHomePage() && (
           <Grid xs="12">
             <TextField
+              onChange={event =>
+                this.setState({ reliefCenterSearchValue: event.target.value })
+              }
               block
               id="outlined-search"
               label="Search Relief Center"
@@ -119,15 +121,23 @@ class ReliefCenters extends Component {
 
         <Paper className={classes.paper}>
           <Grid justify="center" container>
-            {reliefCenters.map(reliefCenter => (
-              <Grid item className={classes.hoverStyle}>
-                <ReliefCenterActionCard
-                  name={reliefCenter.name}
-                  list={reliefCenter.required}
-                  onAssignClick={() => this.assignVolunteers(reliefCenter._id)}
-                />
-              </Grid>
-            ))}
+            {reliefCenters
+              .filter(reliefCenter =>
+                reliefCenter.name
+                  .toLowerCase()
+                  .includes(this.state.reliefCenterSearchValue.toLowerCase())
+              )
+              .map(reliefCenter => (
+                <Grid item className={classes.hoverStyle}>
+                  <ReliefCenterActionCard
+                    name={reliefCenter.name}
+                    list={reliefCenter.required}
+                    onAssignClick={() =>
+                      this.assignVolunteers(reliefCenter._id)
+                    }
+                  />
+                </Grid>
+              ))}
           </Grid>
 
           <Grid container justify="flex-end">
