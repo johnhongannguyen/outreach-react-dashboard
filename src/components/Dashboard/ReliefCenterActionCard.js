@@ -39,13 +39,13 @@ export default function ReliefCenterActionCard({ list, name, onAssignClick }) {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Typography gutterBottom variant="h6" component="h2">
+        <Typography gutterBottom variant="h6" component="h6">
           {name}
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography variant="body2" color="textSecondary" component="div">
           <List>
-            {list.map(listItem => (
-              <ListItem>
+            {list.map((listItem, index) => (
+              <ListItem key={index}>
                 <ListItemText>{listItem.type}</ListItemText>
                 <ListItemText>{listItem.total}</ListItemText>
               </ListItem>

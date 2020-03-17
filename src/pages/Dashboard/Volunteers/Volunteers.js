@@ -1,20 +1,25 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter, Link } from "react-router-dom";
-// Socket Client
-import io from "socket.io-client";
-
-// Axios
-import axios from "axios";
+import axios from "axios"; // Axios
 
 // Material UI - Core - Imports
-import { Typography, Grid, Paper, Button, Badge } from "@material-ui/core";
+import {
+  Typography,
+  Grid,
+  Paper,
+  Button,
+  Badge,
+  Zoom
+} from "@material-ui/core";
 
 // Custom Outreach Components
 import VolunteerRequestCard from "../../../components/Dashboard/VolunteerRequestCard";
 
-// ENV
+var clientSocket = require("socket.io-client")("http://localhost:5000/");
+
 const API_URL = process.env.REACT_APP_API_URL;
+
 // Styles
 const styles = theme => ({
   root: {
@@ -41,16 +46,9 @@ const styles = theme => ({
   }
 });
 
-// Global Socket Variable
-var socket;
-
 class Volunteers extends Component {
   constructor(props) {
     super(props);
-
-    socket = io("http://127.0.0.1:5000", {
-      transports: ["websocket", "polling", "flashsocket"]
-    });
 
     this.state = {
       notifications: [],
@@ -76,47 +74,33 @@ class Volunteers extends Component {
   // Function to check if its the homepage
   isHomePage = () => this.props.location.pathname === "/dashboard/home";
 
-  // SOCKET_IO
-  getData = reliefCenters => {
-    console.log(reliefCenters);
-    this.setState({ reliefCenters: reliefCenters });
+  //  Get Volunteer Request! Received from Volunteers!
+  getVolunteerRequests = () => {
+    this.getDataFromAPI("/user/admin/requests/received");
   };
-
-  // SOCKET_IO
-  changeData = () => socket.emit("initialRequests");
 
   // When component
   componentDidMount() {
-    this.getDataFromAPI("/user/admin/requests/received");
+    // Get Data on Component Mount
+    this.getVolunteerRequests();
+
+    // Listen to Relief Center data changes, if anything does change.. get the latest volunteer requests!
+    clientSocket.on("reliefCenterDataChange", data => {
+      this.getVolunteerRequests();
+    });
 
     // Set Limits based on where the user is
     if (this.isHomePage()) this.setState({ volunteerRequestsLimit: 4 });
     else this.setState({ volunteerRequestsLimit: 20 });
-
-    // SOCKET_IO: Set Sockets to get data!
-    var state_current = this;
-    socket.emit("initialRequests");
-    socket.on("getReliefCenters", this.getData);
-    // socket.on("change_data", this.changeData);
   }
 
-  // SOCKET_IO : Remove Sockets
-  componentWillUnmount() {
-    // socket.off("get_data");
-    // socket.off("change_data");
-  }
-
-  approveVolunteerRequest = (taskID, emailID) => {
-    axios
+  approveVolunteerRequest = async (taskID, emailID) => {
+    await axios
       .post(`${API_URL}/relief-center/id/${taskID}/${emailID}`)
       .then(response => {
         const updatedVolunteerRequests = this.state.volunteerRequests.filter(
-          volunteerRequest => volunteerRequest.volunteer_email != emailID
+          volunteerRequest => volunteerRequest.task_id != taskID
         );
-
-        //   this.setState({people: this.state.people.filter(function(person) {
-        //     return person !== e.target.value
-        // })});
 
         if (response.status == 200)
           this.setState({ volunteerRequests: updatedVolunteerRequests });
@@ -128,7 +112,8 @@ class Volunteers extends Component {
     const {
       volunteerRequests,
       notifications,
-      volunteerRequestsLimit
+      volunteerRequestsLimit,
+      newData
     } = this.state;
 
     return (
@@ -148,10 +133,10 @@ class Volunteers extends Component {
             justify="center"
             className={classes.volunteerRequests}
           >
-            {volunteerRequests &&
+            {volunteerRequests.length > 0 &&
               volunteerRequests
                 .slice(0, volunteerRequestsLimit)
-                .map(volunteerRequest => {
+                .map((volunteerRequest, index) => {
                   const {
                     name,
                     location,
@@ -165,21 +150,22 @@ class Volunteers extends Component {
                     volunteer_name
                   } = volunteerRequest;
                   return (
-                    <Grid item className={classes.hoverStyle}>
-                      <VolunteerRequestCard
-                        title={volunteer_name}
-                        content={`wants to help with ${type}`}
-                        contentExtra={`at ${name} on ${date} from ${start_time} to ${end_time}`}
-                        onAccept={() => {
-                          console.log("Accept was pressed!");
-                          this.approveVolunteerRequest(
-                            task_id,
-                            volunteer_email
-                          );
-                        }}
-                        onDecline={"test"}
-                      />
-                    </Grid>
+                    <Zoom in>
+                      <Grid key={index} item className={classes.hoverStyle}>
+                        <VolunteerRequestCard
+                          title={volunteer_name}
+                          content={`wants to help with ${type}`}
+                          contentExtra={`at ${name} on ${date} from ${start_time} to ${end_time}`}
+                          onAccept={() => {
+                            this.approveVolunteerRequest(
+                              task_id,
+                              volunteer_email
+                            );
+                          }}
+                          onDecline={"test"}
+                        />
+                      </Grid>
+                    </Zoom>
                   );
                 })}
             {volunteerRequests.length < 1 && <div>No New notifications</div>}
@@ -188,8 +174,19 @@ class Volunteers extends Component {
                 <Link to="/dashboard/volunteers">
                   <Button>See All..</Button>
                 </Link>
+                <Button
+                  onClick={() =>
+                    this.getDataFromAPI("/user/admin/requests/received")
+                  }
+                >
+                  Refresh
+                </Button>
               </Grid>
             )}
+          </Grid>
+
+          <Grid container justify="flex-end">
+            <div>{JSON.stringify(newData)}</div>
           </Grid>
         </Paper>
       </>

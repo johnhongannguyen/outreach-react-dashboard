@@ -239,11 +239,8 @@ export default function Dashboard() {
                   }
                 }}
               >
-                {[2, 2, 2, 2, 2, 2].map(notification => (
-                  <MenuItem
-                    key={notification.id}
-                    onClick={handleNotificationsClose}
-                  >
+                {[2, 2, 2, 2, 2, 2].map((notification, index) => (
+                  <MenuItem key={index} onClick={handleNotificationsClose}>
                     <div>{notification.title}</div>
                     {notification.content}
                   </MenuItem>

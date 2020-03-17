@@ -7,11 +7,10 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { render } from "@testing-library/react";
 
 import { withRouter } from "react-router-dom";
 import Axios from "axios";
-import { Typography, Button, IconButton } from "@material-ui/core";
+import { Typography, IconButton } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 
 // API URL
@@ -26,13 +25,6 @@ const styles = theme => ({
 function createData(job, total, assignedVolunteers, pendingRequests, need) {
   return { job, total, assignedVolunteers, pendingRequests, need };
 }
-
-const rows = [
-  createData("Cooking", 6, 3, 1, 2),
-  createData("Driving", 237, 9, 37, 4),
-  createData("Medical Assistance", 262, 16, 24, 6),
-  createData("Cooking", 305, 3, 67, 4)
-];
 
 class AssignVolunteers extends Component {
   constructor(props) {

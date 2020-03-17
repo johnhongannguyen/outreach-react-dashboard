@@ -10,9 +10,6 @@ import TeamPage from "./pages/TeamPage/TeamPicture.js";
 
 // Component
 function App() {
-  const [volunteerRequests, setVolunteerRequests] = useState([]);
-  const value = { volunteerRequests, setVolunteerRequests };
-
   return (
     <div className="App">
       <Router>

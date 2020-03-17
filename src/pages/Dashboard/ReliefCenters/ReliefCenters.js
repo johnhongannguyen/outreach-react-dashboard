@@ -80,8 +80,6 @@ class ReliefCenters extends Component {
     this.props.history.push(
       `/dashboard/relief-center/id/${reliefCenterID}/assign`
     );
-
-    // return <Redirect to="/dashboard/relief-centers/assign" />;
   };
 
   componentDidMount() {
@@ -119,8 +117,8 @@ class ReliefCenters extends Component {
 
         <Paper className={classes.paper}>
           <Grid justify="center" container>
-            {reliefCenters.map(reliefCenter => (
-              <Grid item className={classes.hoverStyle}>
+            {reliefCenters.map((reliefCenter, index) => (
+              <Grid item key={index} className={classes.hoverStyle}>
                 <ReliefCenterActionCard
                   name={reliefCenter.name}
                   list={reliefCenter.required}
