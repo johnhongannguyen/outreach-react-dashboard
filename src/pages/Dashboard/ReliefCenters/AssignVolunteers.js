@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 import Axios from "axios";
+
+// Material UI
 import {
   Typography,
   Button,
@@ -16,9 +17,11 @@ import {
   Paper
 } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
+import { withStyles, ThemeProvider } from "@material-ui/core/styles";
 
-// Custom Components
+// Custom Components and Themes
 import Suggestion from "../../../components/Dashboard/Suggestion";
+import Theme from "../../../theme";
 
 // API URL
 const API_URL = process.env.REACT_APP_API_URL;
@@ -76,7 +79,7 @@ class AssignVolunteers extends Component {
     // Get Stuff from the state
     const { reliefCenter, suggestions } = this.state;
     return (
-      <>
+      <ThemeProvider theme={Theme}>
         {/* Back Arrow with Relief Center's Name */}
         <Typography variant="h5" align="left">
           <IconButton onClick={() => this.props.history.goBack()}>
@@ -116,8 +119,10 @@ class AssignVolunteers extends Component {
                   {/* User Suggestion Column */}
                   <TableCell align="center">
                     {/* Suggest a Random User! */}
-
-                    <Suggestion
+                    <Button color="primary" variant="contained">
+                      TEST
+                    </Button>
+                    {/* <Suggestion
                       user={
                         this.state.suggestions[
                           Math.floor(
@@ -125,7 +130,7 @@ class AssignVolunteers extends Component {
                           )
                         ]
                       }
-                    />
+                    /> */}
                   </TableCell>
                 </TableRow>
               ))}
@@ -135,7 +140,7 @@ class AssignVolunteers extends Component {
         </TableContainer>
 
         {/* Table Ends */}
-      </>
+      </ThemeProvider>
     );
   }
 }

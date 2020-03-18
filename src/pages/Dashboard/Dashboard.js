@@ -22,14 +22,15 @@ import {
   Menu,
   MenuItem,
   Button,
-  Avatar
+  Avatar,
+  CardMedia
 } from "@material-ui/core";
 
 // Material UI - Icons - Imports
 import {
   Menu as MenuIcon,
   ChevronLeft as ChevronLeftIcon,
-  Notifications as NotificationsIcon
+  NotificationsOutlined as NotificationsIcon
 } from "@material-ui/icons";
 
 import { mainListItems } from "./listItems";
@@ -40,6 +41,7 @@ import Volunteers from "./Volunteers/Volunteers";
 import ReliefCenters from "./ReliefCenters/ReliefCenters";
 import Home from "./Home/Home";
 import AssignVolunteers from "./ReliefCenters/AssignVolunteers";
+const outreachLogo = require("../../assets/outreach_logo.png");
 
 // Copyright Component
 function Copyright() {
@@ -62,12 +64,14 @@ const useStyles = makeStyles(theme => ({
     display: "flex"
   },
   toolbar: {
-    paddingRight: 24 // keep right padding when drawer closed
+    paddingRight: 24, // keep right padding when drawer closed
+    display: "flex",
+    justifyContent: "flex-end"
   },
   toolbarIcon: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     padding: "0 8px",
     ...theme.mixins.toolbar
   },
@@ -98,6 +102,7 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     position: "relative",
     whiteSpace: "nowrap",
+    background: "#374052",
     width: drawerWidth,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
@@ -192,6 +197,7 @@ export default function Dashboard() {
       <div className={classes.root}>
         <CssBaseline />
         <AppBar
+          style={{ background: "transparent", boxShadow: "none" }}
           position="absolute"
           className={clsx(classes.appBar, open && classes.appBarShift)}
         >
@@ -200,7 +206,7 @@ export default function Dashboard() {
             {/* Menu Icon on Left */}
             <IconButton
               edge="start"
-              color="inherit"
+              color="danger"
               aria-label="open drawer"
               onClick={handleDrawerOpen}
               className={clsx(
@@ -211,19 +217,19 @@ export default function Dashboard() {
               <MenuIcon />
             </IconButton>
             {/* Text in the center */}
-            <Typography
+            {/* <Typography
               component="h1"
               variant="h6"
-              color="inherit"
+              color="primary"
               noWrap
               className={classes.title}
             >
               Outreach Admin Panel
-            </Typography>
+            </Typography> */}
             {/* Notifications on the Right */}
             <IconButton onClick={handleNotificationsClick} color="inherit">
               <Badge badgeContent={2} color="secondary">
-                <NotificationsIcon />
+                <NotificationsIcon color="primary" />
               </Badge>
 
               <Menu
@@ -289,12 +295,12 @@ export default function Dashboard() {
         >
           <div className={classes.toolbarIcon}>
             {/* App Name */}
-            Outreach
-            <IconButton onClick={handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
+            <img src={outreachLogo} width={75} />
+            {/* <IconButton onClick={handleDrawerClose}>
+              <ChevronLeftIcon color="primary" />
+            </IconButton> */}
           </div>
-          <Divider />
+          {/* <Divider /> */}
           <List>{mainListItems}</List>
         </Drawer>
         <main className={classes.content}>

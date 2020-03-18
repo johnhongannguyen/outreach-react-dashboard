@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { Link, withRouter, Redirect } from "react-router-dom";
 
-// Axios
-import axios from "axios";
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
 import {
   Paper,
   Grid,
@@ -11,15 +11,17 @@ import {
   ButtonGroup,
   Badge,
   TextField,
-  InputAdornment
+  InputAdornment,
+  ThemeProvider
 } from "@material-ui/core";
-
 import { Search as SearchIcon } from "@material-ui/icons";
-import ReliefCenterActionCard from "../../../components/Dashboard/ReliefCenterActionCard";
 
-// React Router
-import { Link, withRouter, Redirect } from "react-router-dom";
-import AssignVolunteers from "./AssignVolunteers";
+// Axios
+import axios from "axios";
+
+// Custom Components and Themes
+import ReliefCenterActionCard from "../../../components/Dashboard/ReliefCenterActionCard";
+import Theme from "../../../theme";
 
 // ENV
 const API_URL = process.env.REACT_APP_API_URL;
@@ -109,7 +111,7 @@ class ReliefCenters extends Component {
 
     const { notifications, reliefCenters } = this.state;
     return (
-      <>
+      <ThemeProvider theme={Theme}>
         <Typography align="left" variant="h5" component="h3">
           Relief Centers - Action Needed
         </Typography>
@@ -177,7 +179,7 @@ class ReliefCenters extends Component {
             </Link>
           </Grid>
         </Paper>
-      </>
+      </ThemeProvider>
     );
   }
 }

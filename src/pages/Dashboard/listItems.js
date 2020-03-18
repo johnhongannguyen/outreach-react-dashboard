@@ -1,7 +1,12 @@
 import React from "react";
 
 // Core Material UI Imports
-import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ThemeProvider
+} from "@material-ui/core";
 
 // Icon Imports
 import {
@@ -15,17 +20,23 @@ import {
 // React Router
 import { Link } from "react-router-dom";
 
+// Custom Components and Themes
+import Theme from "../../theme";
+
 export const mainListItems = (
-  <div>
+  <ThemeProvider theme={Theme}>
     <ListItem
       button
       component={Link}
       to={{ pathname: "/dashboard/home", state: "flushDeal" }}
     >
       <ListItemIcon>
-        <HomeIcon />
+        <HomeIcon color="primary" />
       </ListItemIcon>
-      <ListItemText primary="Home" />
+      <ListItemText
+        primaryTypographyProps={{ style: { color: "white" } }}
+        primary="Home"
+      />
     </ListItem>
     <ListItem
       button
@@ -33,9 +44,12 @@ export const mainListItems = (
       to={{ pathname: "/dashboard/volunteers", state: "flushDeal" }}
     >
       <ListItemIcon>
-        <PeopleIcon />
+        <PeopleIcon color="primary" />
       </ListItemIcon>
-      <ListItemText primary="Volunteers" />
+      <ListItemText
+        primary="Volunteers"
+        primaryTypographyProps={{ style: { color: "white" } }}
+      />
     </ListItem>
     <ListItem
       button
@@ -43,9 +57,12 @@ export const mainListItems = (
       to={{ pathname: "/dashboard/relief-centers", state: "flushDeal" }}
     >
       <ListItemIcon>
-        <ReliefCenterIcon />
+        <ReliefCenterIcon color="primary" />
       </ListItemIcon>
-      <ListItemText primary="Relief Centers" />
+      <ListItemText
+        primaryTypographyProps={{ style: { color: "white" } }}
+        primary="Relief Centers"
+      />
     </ListItem>
     <ListItem
       button
@@ -53,9 +70,12 @@ export const mainListItems = (
       to={{ pathname: "/dashboard/relief-center-forms", state: "flushDeal" }}
     >
       <ListItemIcon>
-        <FormIcon />
+        <FormIcon color="primary" />
       </ListItemIcon>
-      <ListItemText primary="Relief Center Forms" />
+      <ListItemText
+        primaryTypographyProps={{ style: { color: "white" } }}
+        primary="Relief Center Forms"
+      />
     </ListItem>
     <ListItem
       button
@@ -63,9 +83,12 @@ export const mainListItems = (
       to={{ pathname: "/dashboard/settings", state: "flushDeal" }}
     >
       <ListItemIcon>
-        <SettingsIcon />
+        <SettingsIcon color="primary" />
       </ListItemIcon>
-      <ListItemText primary="Settings" />
+      <ListItemText
+        primaryTypographyProps={{ style: { color: "white" } }}
+        primary="Settings"
+      />
     </ListItem>
-  </div>
+  </ThemeProvider>
 );
