@@ -8,6 +8,7 @@ import {
   Grid,
   Typography,
   Button,
+  ButtonGroup,
   Badge,
   TextField,
   InputAdornment
@@ -83,6 +84,22 @@ class ReliefCenters extends Component {
     );
   };
 
+  handleButtonPress(type) {
+    switch (type) {
+      case "All":
+        // code block
+        break;
+      case "Oldest":
+        // code block
+        break;
+      case "Recent":
+        // code block
+        break;
+      default:
+      // code block
+    }
+  }
+
   componentDidMount() {
     this.getDataFromAPI("/relief-center/all/requirement");
   }
@@ -97,25 +114,39 @@ class ReliefCenters extends Component {
           Relief Centers - Action Needed
         </Typography>
         {!this.isHomePage() && (
-          <Grid xs="12">
-            <TextField
-              onChange={event =>
-                this.setState({ reliefCenterSearchValue: event.target.value })
-              }
-              block
-              id="outlined-search"
-              label="Search Relief Center"
-              type="search"
-              variant="standard"
-              fullWidth
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                )
-              }}
-            />
+          <Grid xs="8">
+            <Grid item xs="4">
+              <TextField
+                onChange={event =>
+                  this.setState({ reliefCenterSearchValue: event.target.value })
+                }
+                id="outlined-search"
+                label="Search Relief Center"
+                type="search"
+                variant="standard"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  )
+                }}
+              />
+
+              <ButtonGroup
+                size="large"
+                color="primary"
+                aria-label="large outlined primary button group"
+              >
+                <Button onClick={() => this.handleButtonPress("All")}>
+                  All
+                </Button>
+                <Button>Oldest</Button>
+                <Button>Recent</Button>
+              </ButtonGroup>
+            </Grid>
+
+            <Grid item xs="4"></Grid>
           </Grid>
         )}
 
