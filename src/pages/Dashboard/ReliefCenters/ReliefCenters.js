@@ -1,24 +1,27 @@
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { Link, withRouter, Redirect } from "react-router-dom";
 
-// Axios
-import axios from "axios";
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
 import {
   Paper,
   Grid,
   Typography,
   Button,
+  ButtonGroup,
   Badge,
   TextField,
-  InputAdornment
+  InputAdornment,
+  ThemeProvider
 } from "@material-ui/core";
-
 import { Search as SearchIcon } from "@material-ui/icons";
-import ReliefCenterActionCard from "../../../components/Dashboard/ReliefCenterActionCard";
 
-// React Router
-import { Link, withRouter, Redirect } from "react-router-dom";
-import AssignVolunteers from "./AssignVolunteers";
+// Axios
+import axios from "axios";
+
+// Custom Components and Themes
+import ReliefCenterActionCard from "../../../components/Dashboard/ReliefCenterActionCard";
+import Theme from "../../../theme";
 
 // ENV
 const API_URL = process.env.REACT_APP_API_URL;
@@ -53,7 +56,8 @@ class ReliefCenters extends Component {
 
     this.state = {
       notifications: [],
-      reliefCenters: []
+      reliefCenters: [],
+      reliefCenterSearchValue: ""
     };
   }
 
@@ -80,9 +84,23 @@ class ReliefCenters extends Component {
     this.props.history.push(
       `/dashboard/relief-center/id/${reliefCenterID}/assign`
     );
-
-    // return <Redirect to="/dashboard/relief-centers/assign" />;
   };
+
+  handleButtonPress(type) {
+    switch (type) {
+      case "All":
+        // code block
+        break;
+      case "Oldest":
+        // code block
+        break;
+      case "Recent":
+        // code block
+        break;
+      default:
+      // code block
+    }
+  }
 
   componentDidMount() {
     this.getDataFromAPI("/relief-center/all/requirement");
@@ -93,41 +111,66 @@ class ReliefCenters extends Component {
 
     const { notifications, reliefCenters } = this.state;
     return (
-      <>
+      <ThemeProvider theme={Theme}>
         <Typography align="left" variant="h5" component="h3">
           Relief Centers - Action Needed
         </Typography>
         {!this.isHomePage() && (
-          <Grid xs="12">
-            <TextField
-              block
-              id="outlined-search"
-              label="Search Relief Center"
-              type="search"
-              variant="standard"
-              fullWidth
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                )
-              }}
-            />
+          <Grid xs="8">
+            <Grid item xs="4">
+              <TextField
+                onChange={event =>
+                  this.setState({ reliefCenterSearchValue: event.target.value })
+                }
+                id="outlined-search"
+                label="Search Relief Center"
+                type="search"
+                variant="standard"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  )
+                }}
+              />
+
+              <ButtonGroup
+                size="large"
+                color="primary"
+                aria-label="large outlined primary button group"
+              >
+                <Button onClick={() => this.handleButtonPress("All")}>
+                  All
+                </Button>
+                <Button>Oldest</Button>
+                <Button>Recent</Button>
+              </ButtonGroup>
+            </Grid>
+
+            <Grid item xs="4"></Grid>
           </Grid>
         )}
 
         <Paper className={classes.paper}>
           <Grid justify="center" container>
-            {reliefCenters.map(reliefCenter => (
-              <Grid item className={classes.hoverStyle}>
-                <ReliefCenterActionCard
-                  name={reliefCenter.name}
-                  list={reliefCenter.required}
-                  onAssignClick={() => this.assignVolunteers(reliefCenter._id)}
-                />
-              </Grid>
-            ))}
+            {reliefCenters
+              .filter(reliefCenter =>
+                reliefCenter.name
+                  .toLowerCase()
+                  .includes(this.state.reliefCenterSearchValue.toLowerCase())
+              )
+              .map(reliefCenter => (
+                <Grid item className={classes.hoverStyle}>
+                  <ReliefCenterActionCard
+                    name={reliefCenter.name}
+                    list={reliefCenter.required}
+                    onAssignClick={() =>
+                      this.assignVolunteers(reliefCenter._id)
+                    }
+                  />
+                </Grid>
+              ))}
           </Grid>
 
           <Grid container justify="flex-end">
@@ -136,7 +179,7 @@ class ReliefCenters extends Component {
             </Link>
           </Grid>
         </Paper>
-      </>
+      </ThemeProvider>
     );
   }
 }
