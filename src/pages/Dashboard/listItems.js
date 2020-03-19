@@ -34,7 +34,9 @@ export const mainListItems = (
         <HomeIcon color="primary" />
       </ListItemIcon>
       <ListItemText
-        primaryTypographyProps={{ style: { color: "white" } }}
+        primaryTypographyProps={{
+          style: { color: "white", fontWeight: "bold" }
+        }}
         primary="Home"
       />
     </ListItem>
@@ -48,7 +50,9 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText
         primary="Volunteers"
-        primaryTypographyProps={{ style: { color: "white" } }}
+        primaryTypographyProps={{
+          style: { color: "white", fontWeight: "bold" }
+        }}
       />
     </ListItem>
     <ListItem
@@ -60,7 +64,9 @@ export const mainListItems = (
         <ReliefCenterIcon color="primary" />
       </ListItemIcon>
       <ListItemText
-        primaryTypographyProps={{ style: { color: "white" } }}
+        primaryTypographyProps={{
+          style: { color: "white", fontWeight: "bold" }
+        }}
         primary="Relief Centers"
       />
     </ListItem>
@@ -73,7 +79,9 @@ export const mainListItems = (
         <FormIcon color="primary" />
       </ListItemIcon>
       <ListItemText
-        primaryTypographyProps={{ style: { color: "white" } }}
+        primaryTypographyProps={{
+          style: { color: "white", fontWeight: "bold" }
+        }}
         primary="Relief Center Forms"
       />
     </ListItem>
@@ -82,11 +90,13 @@ export const mainListItems = (
       component={Link}
       to={{ pathname: "/dashboard/settings", state: "flushDeal" }}
     >
-      <ListItemIcon>
+      <ListItemIcon size="large">
         <SettingsIcon color="primary" />
       </ListItemIcon>
       <ListItemText
-        primaryTypographyProps={{ style: { color: "white" } }}
+        primaryTypographyProps={{
+          style: { color: "white", fontWeight: "bold" }
+        }}
         primary="Settings"
       />
     </ListItem>
