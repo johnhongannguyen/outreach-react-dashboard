@@ -146,6 +146,10 @@ class ReliefCenters extends Component {
                 <Button>Oldest</Button>
                 <Button>Recent</Button>
               </ButtonGroup>
+
+              <Button variant="contained">
+                <Link to="/dashboard/relief-center-forms">Request Form</Link>
+              </Button>
             </Grid>
 
             <Grid item xs="4"></Grid>

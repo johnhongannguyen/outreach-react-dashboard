@@ -119,7 +119,7 @@ class AssignVolunteers extends Component {
                   {/* User Suggestion Column */}
                   <TableCell align="center">
                     {/* Suggest a Random User! */}
-                    <Button color="primary" variant="contained">
+                    <Button color="primary" variant="outlined">
                       TEST
                     </Button>
                     {/* <Suggestion
