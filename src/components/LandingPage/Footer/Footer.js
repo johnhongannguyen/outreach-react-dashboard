@@ -1,5 +1,5 @@
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import "./Footer.css";
 import outreachlogo from "../images/outreach_logo.png";
 import { Button} from "react-bootstrap";
@@ -15,7 +15,7 @@ function Footer() {
                     size="lg"
                     style={{ backgroundColor: "#F27821", color: "#fff" }}
                     variant=""
-                    class="nl-btn"
+                    className="nl-btn"
                 >
                     SUBSCRIBE
                 </Button>
