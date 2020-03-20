@@ -40,7 +40,7 @@ export default function VolunteerRequestCard({
       <CardActions>
         <Grid container justify="space-between">
           <Button color="danger">Decline</Button>
-          <Button color="primary" variant="contained" onClick={onAccept}>
+          <Button color="primary" variant="outlined" onClick={onAccept}>
             Accept
           </Button>
         </Grid>

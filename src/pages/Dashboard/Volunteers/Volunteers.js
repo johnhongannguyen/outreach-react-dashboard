@@ -18,7 +18,6 @@ const styles = theme => ({
   root: {
     flexGrow: 1
   },
-  // homeGrid: { backgroundColor: "#111C24" },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
@@ -29,12 +28,11 @@ const styles = theme => ({
     // backgroundColor: "white"
   },
   hoverStyle: {
-    transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
+    transition: "1s cubic-bezier(.47,1.64,.41,.8)",
     marginTop: "1rem",
     marginRight: "1rem",
     "&:hover": {
-      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)",
-      transform: "scale(1.04)"
+      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)"
     }
   }
 });
@@ -107,7 +105,7 @@ class Volunteers extends Component {
             badgeContent={volunteerRequests && volunteerRequests.length}
             color="secondary"
           >
-            Volunteer Requests:
+            Volunteer Requests
           </Badge>
         </Typography>
 

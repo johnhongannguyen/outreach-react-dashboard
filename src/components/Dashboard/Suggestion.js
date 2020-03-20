@@ -9,7 +9,7 @@ import Axios from "axios";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275
+    minWidth: 150
   },
   bullet: {
     display: "inline-block",
@@ -17,16 +17,20 @@ const useStyles = makeStyles({
     transform: "scale(0.8)"
   },
   title: {
-    fontSize: 14
+    fontSize: 12
   },
   pos: {
     marginBottom: 12
+  },
+  action: {
+    display: "flex",
+    justifyContent: "space-around"
   }
 });
 
 // Send Request to Volunteer
 const sendRequestToVolunteer = volunteerID => {
-  Axios.post()
+  Axios.post();
 };
 
 export default function Suggestion({ user }) {
@@ -35,12 +39,13 @@ export default function Suggestion({ user }) {
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
-        <Typography variant="h5" component="h2">
+        <Typography variant="body1" component="h4">
           {user.name}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions className={classes.action}>
         <Button
+          color="primary"
           variant="outlined"
           size="medium"
           onClick={() => sendRequestToVolunteer(user._id)}
