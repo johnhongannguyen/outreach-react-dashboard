@@ -112,13 +112,18 @@ class ReliefCenters extends Component {
     const { notifications, reliefCenters } = this.state;
     return (
       <ThemeProvider theme={Theme}>
+        {/* Title */}
         <Typography align="left" variant="h5" component="h3">
           Relief Centers - Action Needed
         </Typography>
+
+        {/* Internal Page: Search, Sort, and Request Form Button */}
         {!this.isHomePage() && (
-          <Grid xs="8">
-            <Grid item xs="4">
+          <Grid justify="flex-start" container xs="12">
+            {/* Search Input */}
+            <Grid item xs="6">
               <TextField
+                fullWidth
                 onChange={event =>
                   this.setState({ reliefCenterSearchValue: event.target.value })
                 }
@@ -134,8 +139,12 @@ class ReliefCenters extends Component {
                   )
                 }}
               />
+            </Grid>
 
-              <ButtonGroup
+            {/* Sorting Button Group */}
+            <Grid item xs="4">
+              {/* <ButtonGroup
+                variant="contained"
                 size="large"
                 color="primary"
                 aria-label="large outlined primary button group"
@@ -145,20 +154,35 @@ class ReliefCenters extends Component {
                 </Button>
                 <Button>Oldest</Button>
                 <Button>Recent</Button>
-              </ButtonGroup>
+              </ButtonGroup> */}
 
+              <Button variant="outlined" color="primary">
+                All
+              </Button>
+              <Button variant="outlined" color="primary">
+                Oldest
+              </Button>
+              <Button variant="outlined" color="primary">
+                Recent
+              </Button>
+            </Grid>
+
+            {/* Request Form Button */}
+            <Grid item xs="2">
               <Button variant="contained">
                 <Link to="/dashboard/relief-center-forms">Request Form</Link>
               </Button>
             </Grid>
-
-            <Grid item xs="4"></Grid>
           </Grid>
         )}
 
+        {/* Relief Center Container */}
         <Paper className={classes.paper}>
           <Grid justify="center" container>
             {reliefCenters
+              .sort((a, b) => {
+                return a.updatedAt > b.updatedAt ? 1 : -1;
+              })
               .filter(reliefCenter =>
                 reliefCenter.name
                   .toLowerCase()
@@ -173,15 +197,19 @@ class ReliefCenters extends Component {
                       this.assignVolunteers(reliefCenter._id)
                     }
                   />
+                  {reliefCenter.updatedAt}
                 </Grid>
               ))}
           </Grid>
 
-          <Grid container justify="flex-end">
-            <Link to="/dashboard/relief-centers">
-              <Button>See All..</Button>
-            </Link>
-          </Grid>
+          {/* See All Button (On Home Page) */}
+          {this.isHomePage() && (
+            <Grid container justify="flex-end">
+              <Link to="/dashboard/relief-centers">
+                <Button>See All</Button>
+              </Link>
+            </Grid>
+          )}
         </Paper>
       </ThemeProvider>
     );

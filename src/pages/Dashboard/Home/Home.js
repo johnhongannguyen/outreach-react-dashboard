@@ -17,7 +17,8 @@ const API_URL = process.env.REACT_APP_API_URL;
 //     await fetchDataFromAPI("/relief-center");
 const styles = theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    fontFamily: "Open Sans"
   },
   // homeGrid: { backgroundColor: "#111C24" },
   paper: {
@@ -44,13 +45,23 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      notifications: []
+      notifications: [],
+      updates: []
     };
+  }
+
+  async componentDidMount() {
+    // http://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d
+
+    const news = await axios.get(
+      "http://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d"
+    );
+    this.setState({ updates: news.data });
   }
 
   render() {
     const { classes } = this.props;
-    const { notifications } = this.state;
+    const { updates } = this.state;
     return (
       <>
         <Grid container className={classes.root} spacing={2}>
@@ -71,16 +82,15 @@ class Home extends Component {
             </Typography>
             <Paper className={classes.paper}>
               <Grid justify="center" container>
-                {notifications.length < 0 ? (
+                {updates ? (
                   <Grid item>No New Notifications</Grid>
                 ) : (
-                  notifications
-                    .filter(index => index < 3)
-                    .map(value => (
-                      <Grid item className={classes.hoverStyle}>
-                        <NotificationCard content="Really long test with the notication card" />
-                      </Grid>
-                    ))
+                  updates.articles.map(update => (
+                    <Grid item className={classes.hoverStyle}>
+                      {update.title}
+                      <NotificationCard content={update.title} />
+                    </Grid>
+                  ))
                 )}
               </Grid>
 

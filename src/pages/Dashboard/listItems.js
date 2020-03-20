@@ -35,7 +35,7 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText
         primaryTypographyProps={{
-          style: { color: "white", fontWeight: "bold" }
+          style: { color: "white" }
         }}
         primary="Home"
       />
@@ -51,7 +51,7 @@ export const mainListItems = (
       <ListItemText
         primary="Volunteers"
         primaryTypographyProps={{
-          style: { color: "white", fontWeight: "bold" }
+          style: { color: "white" }
         }}
       />
     </ListItem>
@@ -65,7 +65,7 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText
         primaryTypographyProps={{
-          style: { color: "white", fontWeight: "bold" }
+          style: { color: "white" }
         }}
         primary="Relief Centers"
       />
@@ -80,7 +80,7 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText
         primaryTypographyProps={{
-          style: { color: "white", fontWeight: "bold" }
+          style: { color: "white" }
         }}
         primary="Relief Center Forms"
       />
@@ -95,7 +95,7 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText
         primaryTypographyProps={{
-          style: { color: "white", fontWeight: "bold" }
+          style: { color: "white" }
         }}
         primary="Settings"
       />

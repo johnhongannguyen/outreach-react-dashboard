@@ -4,27 +4,18 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  TextField
+  TextField,
+  Card,
+  Typography,
+  FormControlLabel,
+  FormLabel,
+  RadioGroup,
+  Radio
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormLabel from "@material-ui/core/FormLabel";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-// import "date-fns";
-// import Grid from "@material-ui/core/Grid";
-// import DateFnsUtils from "@date-io/date-fns";
-// import {
-//   MuiPickersUtilsProvider,
-//   KeyboardTimePicker,
-//   KeyboardDatePicker
-// } from "@material-ui/pickers";
+
+import Theme from "../../../theme";
 
 // Styles
 const useStyles = makeStyles({
@@ -70,9 +61,7 @@ const useStyles = makeStyles({
     }
   }
 });
-// const [selectedDate, setSelectedDate] = React.useState(
-//   new Date("2014-08-18T21:11:54")
-// );
+
 export default class ReliefCenterForms extends Component {
   constructor(props) {
     super(props);
@@ -119,7 +108,7 @@ export default class ReliefCenterForms extends Component {
     const { nameOfCenter } = this.props;
     const { nameOfJob } = this.props;
     return (
-      <>
+      <ThemeProvider theme={Theme}>
         <Typography align="left" variant="h3">
           Relief Center Form
         </Typography>
@@ -195,7 +184,7 @@ export default class ReliefCenterForms extends Component {
             </FormControl>
           </FormControl>
         </Card>
-      </>
+      </ThemeProvider>
     );
   }
 }

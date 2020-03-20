@@ -106,34 +106,37 @@ class AssignVolunteers extends Component {
 
             {/* Table Body Starts */}
             <TableBody>
-              {reliefCenter.required.map((job, index) => (
-                <TableRow key={index}>
-                  <TableCell align="center" component="th" scope="row">
-                    {job.type}
-                  </TableCell>
-                  <TableCell align="center">{job.total}</TableCell>
-                  <TableCell align="center">{job.assignedVolunteers}</TableCell>
-                  <TableCell align="center">{job.pendingRequests}</TableCell>
-                  <TableCell align="center">{job.need}</TableCell>
-
-                  {/* User Suggestion Column */}
-                  <TableCell align="center">
-                    {/* Suggest a Random User! */}
-                    <Button color="primary" variant="outlined">
-                      TEST
-                    </Button>
-                    {/* <Suggestion
-                      user={
-                        this.state.suggestions[
-                          Math.floor(
-                            Math.random() * this.state.suggestions.length
-                          )
-                        ]
-                      }
-                    /> */}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {reliefCenter.required.map((job, index) => {
+                const { name } = this.state.suggestions;
+                return (
+                  <TableRow key={index}>
+                    <TableCell align="center" component="th" scope="row">
+                      {job.type}
+                    </TableCell>
+                    <TableCell align="center">{job.total}</TableCell>
+                    <TableCell align="center">
+                      {job.assignedVolunteers}
+                    </TableCell>
+                    <TableCell align="center">{job.pendingRequests}</TableCell>
+                    <TableCell align="center">{job.need}</TableCell>
+                    {/* User Suggestion Column */}
+                    <TableCell align="center">
+                      {/* Suggest a Random User! */}
+                      {suggestions.length > 0 && (
+                        <Suggestion
+                          user={
+                            suggestions[
+                              Math.floor(
+                                Math.random() * this.state.suggestions.length
+                              )
+                            ]
+                          }
+                        />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
             {/* Table Body Ends */}
           </Table>
