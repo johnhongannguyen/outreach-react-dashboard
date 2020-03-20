@@ -114,7 +114,10 @@ class ReliefCenters extends Component {
       <ThemeProvider theme={Theme}>
         {/* Title */}
         <Typography align="left" variant="h5" component="h3">
-          Relief Centers - Action Needed
+          Relief Centers{" "}
+          <Typography variant="body2" component="span">
+            - Action Needed
+          </Typography>
         </Typography>
 
         {/* Internal Page: Search, Sort, and Request Form Button */}
@@ -169,7 +172,7 @@ class ReliefCenters extends Component {
 
             {/* Request Form Button */}
             <Grid item xs="2">
-              <Button variant="contained">
+              <Button variant="contained" color="primary">
                 <Link to="/dashboard/relief-center-forms">Request Form</Link>
               </Button>
             </Grid>
