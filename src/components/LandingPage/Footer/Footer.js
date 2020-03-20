@@ -1,8 +1,7 @@
 import React from "react";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import "./Footer.css";
 import outreachlogo from "../images/outreach_logo.png";
-import { Button} from "react-bootstrap";
+import { Button } from '@material-ui/core';
 
 function Footer() {
   return (

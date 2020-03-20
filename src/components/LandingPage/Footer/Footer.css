@@ -40,15 +40,17 @@
     /* position: absolute; */
   }
   
+  .footer .nl-btn{
+    background-image: linear-gradient(to right, #F27821, #F16908, #E7281F);
+        border-radius: 10px!important;
+  }
+
   .footer .navigation {
-    /* grid-column: 3/4; */
     display: flex;
     flex: 30%;
-    /* align-self: center; */
     margin: 0;
     padding: 0;
-    list-style-type: none;
-    text-decoration: none;
+    list-style-type: none; 
     display: flex;
     justify-content: flex-end;
     font-size: 1.5rem;
@@ -61,6 +63,7 @@
   }
   
   .footer .navigation li a {
+    text-decoration: none;
     color: black;
     color: white;
     font-family: quicksand;
@@ -75,7 +78,7 @@
   /* Style for NewsLetter Section --------------------------------------------------- */
   .news-letter-container{
     position: relative;
-    top: -60px;
+    top: -50px;
   }
   .NewsLTitle{
     font-family: quicksand;
@@ -85,9 +88,11 @@
 
 .nl-subcontainer .btn, input{
     font-size: 0.60rem;
-    border-radius: .3rem;
 }
 
+/* .MuiButton-root{
+   border-radius: 10rem;
+} */
 
 .nl-subcontainer input{
     padding-top: 6px;
