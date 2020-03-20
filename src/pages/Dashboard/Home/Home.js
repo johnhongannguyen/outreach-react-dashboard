@@ -78,7 +78,7 @@ class Home extends Component {
           {/* Notifications (Alerts) */}
           <Grid item xs={12} lg={6}>
             <Typography variant="h5" align="left" component="h3">
-              Notifications
+              Updates
             </Typography>
             <Paper className={classes.paper}>
               <Grid justify="center" container>
