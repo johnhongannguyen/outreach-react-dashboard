@@ -46,7 +46,7 @@ class Home extends Component {
 
     this.state = {
       notifications: [],
-      updates: []
+      updates: null
     };
   }
 
@@ -54,7 +54,7 @@ class Home extends Component {
     // http://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d
 
     const news = await axios.get(
-      "http://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d"
+      "https://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d"
     );
     this.setState({ updates: news.data });
   }
@@ -78,19 +78,19 @@ class Home extends Component {
           {/* Notifications (Alerts) */}
           <Grid item xs={12} lg={6}>
             <Typography variant="h5" align="left" component="h3">
-              Notifications
+              Updates
             </Typography>
             <Paper className={classes.paper}>
               <Grid justify="center" container>
                 {updates ? (
-                  <Grid item>No New Notifications</Grid>
-                ) : (
-                  updates.articles.map(update => (
+                  updates &&
+                  updates.articles.slice(0, 3).map(update => (
                     <Grid item className={classes.hoverStyle}>
-                      {update.title}
                       <NotificationCard content={update.title} />
                     </Grid>
                   ))
+                ) : (
+                  <Grid item>No New Notifications</Grid>
                 )}
               </Grid>
 
