@@ -13,8 +13,6 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import "date-fns";
@@ -25,6 +23,8 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker
 } from "@material-ui/pickers";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 
 // Styles
 const useStyles = makeStyles({
@@ -112,6 +112,7 @@ export default class ReliefCenterForms extends Component {
   render() {
     const { nameOfCenter } = this.props;
     const { nameOfJob } = this.props;
+
     return (
       <>
         <Typography align="left" variant="h3">
@@ -226,6 +227,24 @@ export default class ReliefCenterForms extends Component {
             </FormControl>
           </FormControl>
         </Card>
+        <div align="left" style={{ display: "flex" }}>
+          <Typography style={{ marginTop: "25px", marginRight: " 10px" }}>
+            Add
+          </Typography>
+          <Fab color="primary" aria-label="add" style={{ marginTop: "10px" }}>
+            <AddIcon></AddIcon>
+          </Fab>
+        </div>
+
+        <div
+          className="submit_button"
+          align="left"
+          style={{ marginTop: "20px" }}
+        >
+          <Button variant="contained" color="secondary">
+            Submit
+          </Button>
+        </div>
       </>
     );
   }
