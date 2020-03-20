@@ -146,19 +146,6 @@ class ReliefCenters extends Component {
 
             {/* Sorting Button Group */}
             <Grid item xs="4">
-              {/* <ButtonGroup
-                variant="contained"
-                size="large"
-                color="primary"
-                aria-label="large outlined primary button group"
-              >
-                <Button onClick={() => this.handleButtonPress("All")}>
-                  All
-                </Button>
-                <Button>Oldest</Button>
-                <Button>Recent</Button>
-              </ButtonGroup> */}
-
               <Button variant="outlined" color="primary">
                 All
               </Button>
@@ -182,27 +169,28 @@ class ReliefCenters extends Component {
         {/* Relief Center Container */}
         <Paper className={classes.paper}>
           <Grid justify="center" container>
-            {reliefCenters
-              .sort((a, b) => {
-                return a.updatedAt > b.updatedAt ? 1 : -1;
-              })
-              .filter(reliefCenter =>
-                reliefCenter.name
-                  .toLowerCase()
-                  .includes(this.state.reliefCenterSearchValue.toLowerCase())
-              )
-              .map(reliefCenter => (
-                <Grid item className={classes.hoverStyle}>
-                  <ReliefCenterActionCard
-                    name={reliefCenter.name}
-                    list={reliefCenter.required}
-                    onAssignClick={() =>
-                      this.assignVolunteers(reliefCenter._id)
-                    }
-                  />
-                  {reliefCenter.updatedAt}
-                </Grid>
-              ))}
+            {reliefCenters.length > 0 &&
+              reliefCenters
+                .sort((a, b) => {
+                  return a.updatedAt > b.updatedAt ? 1 : -1;
+                })
+                .filter(reliefCenter =>
+                  reliefCenter.name
+                    .toLowerCase()
+                    .includes(this.state.reliefCenterSearchValue.toLowerCase())
+                )
+                .map(reliefCenter => (
+                  <Grid item className={classes.hoverStyle}>
+                    <ReliefCenterActionCard
+                      name={reliefCenter.name}
+                      list={reliefCenter.required}
+                      onAssignClick={() =>
+                        this.assignVolunteers(reliefCenter._id)
+                      }
+                    />
+                    {reliefCenter.updatedAt}
+                  </Grid>
+                ))}
           </Grid>
 
           {/* See All Button (On Home Page) */}
