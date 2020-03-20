@@ -11,6 +11,9 @@ import NotificationCard from "../../../components/Dashboard/NotificationCard";
 import Volunteers from "../Volunteers/Volunteers";
 import ReliefCenters from "../ReliefCenters/ReliefCenters";
 
+// Web Sockets - Socket.io
+import { clientSocket, adminSocket } from "../../../web-sockets";
+
 // ENV
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -50,9 +53,15 @@ class Home extends Component {
     };
   }
 
-  async componentDidMount() {
-    // http://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d
+  // Handle Notify Click
+  handleNotifyClick = broadcastMessage => {
+    console.log("Trying to broadcast:", broadcastMessage);
 
+    clientSocket.emit("broadcastMessage", broadcastMessage);
+  };
+  async componentDidMount() {
+    clientSocket.connect();
+    // http://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d
     const news = await axios.get(
       "https://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d"
     );
@@ -86,7 +95,12 @@ class Home extends Component {
                   updates &&
                   updates.articles.slice(0, 3).map(update => (
                     <Grid item className={classes.hoverStyle}>
-                      <NotificationCard content={update.title} />
+                      <NotificationCard
+                        content={update.title}
+                        onNotifyClick={() =>
+                          this.handleNotifyClick(update.title)
+                        }
+                      />
                     </Grid>
                   ))
                 ) : (
