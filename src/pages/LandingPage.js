@@ -9,6 +9,8 @@ import AllFeatures from "../components/LandingPage/Features-Section/AllFeatures"
 import Video from "../components/LandingPage/VideoSection/Video.js";
 import Header from "../components/LandingPage/Header/Header.js";
 import Footer from "../components/LandingPage/Footer/Footer.js";
+import Mockup from "../components/LandingPage/MobileMockups/Mockup.js";
+
 // Landing Page
 export default function LandingPage() {
   const classes = useStyles();
@@ -16,7 +18,7 @@ export default function LandingPage() {
   return (
     <Container classes={classes} maxWidth="lg">
       {/* Section - HEADER */}
-     <Header />
+      <Header />
       {/* Section - HERO */}
       <Video />
 
@@ -32,6 +34,7 @@ export default function LandingPage() {
       {/* Section - DONATION */}
 
       {/* Section - DOWNLOAD */}
+      <Mockup />
 
       {/* Section - FOOTER */}
       <Footer />

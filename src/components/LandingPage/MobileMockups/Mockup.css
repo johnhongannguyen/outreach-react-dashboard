@@ -1,0 +1,46 @@
+.mockupContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 4rem;
+  margin-bottom: 3rem;
+}
+.imgMockup {
+  display: none;
+}
+.googlePlay {
+  background-size: cover;
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.googlePlay img {
+  margin-bottom: 1rem;
+  width: inherit;
+}
+.phoneMockups {
+  width: inherit;
+}
+.downloadAppBtn p {
+  font-family: quicksand;
+  font-weight: bold;
+  color: #6e6e6e;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+@media only screen and (min-width: 530px) {
+  .imgMockup {
+    width: 70%;
+    display: inline;
+  }
+  .downloadAppBtn {
+    width: 30%;
+    text-align: left;
+  }
+  .googlePlay {
+    margin-left: 0;
+    justify-content: end;
+  }
+}
