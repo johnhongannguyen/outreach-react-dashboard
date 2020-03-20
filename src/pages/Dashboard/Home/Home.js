@@ -54,7 +54,7 @@ class Home extends Component {
     // http://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d
 
     const news = await axios.get(
-      "http://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d"
+      "https://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d"
     );
     this.setState({ updates: news.data });
   }
