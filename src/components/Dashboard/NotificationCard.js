@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function NotificationCard({ content }) {
+export default function NotificationCard({ content, onNotifyClick }) {
   const classes = useStyles();
 
   return (
@@ -32,7 +32,7 @@ export default function NotificationCard({ content }) {
       </CardContent>
       <CardActions>
         <Grid container justify="flex-end">
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained" onClick={onNotifyClick}>
             Notify
           </Button>
         </Grid>
