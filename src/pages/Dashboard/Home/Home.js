@@ -46,7 +46,7 @@ class Home extends Component {
 
     this.state = {
       notifications: [],
-      updates: []
+      updates: null
     };
   }
 
@@ -83,14 +83,14 @@ class Home extends Component {
             <Paper className={classes.paper}>
               <Grid justify="center" container>
                 {updates ? (
-                  <Grid item>No New Notifications</Grid>
-                ) : (
-                  updates.articles.map(update => (
+                  updates &&
+                  updates.articles.slice(0, 3).map(update => (
                     <Grid item className={classes.hoverStyle}>
-                      {update.title}
                       <NotificationCard content={update.title} />
                     </Grid>
                   ))
+                ) : (
+                  <Grid item>No New Notifications</Grid>
                 )}
               </Grid>
 
