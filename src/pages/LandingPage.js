@@ -7,7 +7,8 @@ import OutreachDefinition from "../components/LandingPage/OutreachDefinition/Out
 import Outreachuserflow from "../components/LandingPage/Outreach-Userflow/Outreachuserflow";
 import AllFeatures from "../components/LandingPage/Features-Section/AllFeatures";
 import Video from "../components/LandingPage/VideoSection/Video.js";
-
+import Header from "../components/LandingPage/Header/Header.js";
+import Footer from "../components/LandingPage/Footer/Footer.js";
 // Landing Page
 export default function LandingPage() {
   const classes = useStyles();
@@ -15,7 +16,7 @@ export default function LandingPage() {
   return (
     <Container classes={classes} maxWidth="lg">
       {/* Section - HEADER */}
-
+     <Header />
       {/* Section - HERO */}
       <Video />
 
@@ -33,6 +34,7 @@ export default function LandingPage() {
       {/* Section - DOWNLOAD */}
 
       {/* Section - FOOTER */}
+      <Footer />
     </Container>
   );
 }
