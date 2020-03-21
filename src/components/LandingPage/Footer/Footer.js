@@ -1,6 +1,6 @@
 import React from "react";
 import "./Footer.css";
-import outreachlogo from "../images/outreach_logo.png";
+import outreachlogo from "../images/logo_white.png";
 import { Button } from '@material-ui/core';
 
 function Footer() {
