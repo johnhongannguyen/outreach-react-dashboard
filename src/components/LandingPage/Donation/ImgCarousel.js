@@ -17,6 +17,7 @@ class ImgCarousel extends Component {
       <Carousel
         autoPlay
         // transitionTime="150"
+        showArrows={false}
         infiniteLoop
         // axis="vertical"
         selectedItem={1}
@@ -25,19 +26,19 @@ class ImgCarousel extends Component {
         emulateTouch
       >
         <div>
-          <img src={img} />
+          <img src={img2} />
         </div>
         <div>
           <img src={img2} />
         </div>
         <div>
-          <img src={img} />
+          <img src={img2} />
         </div>
         <div>
           <img src={img2} />
         </div>
         <div>
-          <img src={img} />
+          <img src={img2} />
         </div>
         <div>
           <img src={img2} />
