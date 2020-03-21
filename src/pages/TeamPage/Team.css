@@ -1,0 +1,84 @@
+.teamPage {
+  max-width: 1100px;
+  margin: auto;
+}
+.tp-header {
+  margin-bottom: 1.5rem;
+  max-width: 700px;
+  margin: auto;
+}
+img[src=""] {
+  display: none;
+}
+.tp-header h1 {
+  font-family: Quicksand, sans-serif;
+  font-weight: 400;
+  margin: 1rem 0;
+  color: #404040;
+}
+.tp-header p {
+  font-family: Open sans, sans-serif;
+  font-weight: 500;
+  margin: 1rem 0.4rem;
+  color: #404040;
+}
+.team-members {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.memberInfo {
+  margin-bottom: 2rem;
+  width: 50%;
+}
+.img-holder {
+  width: 80%;
+  padding: 1%;
+  margin: auto auto 5%;
+  background-image: linear-gradient(#f27821, #ef3830);
+  border-radius: 3rem;
+  transform: rotate(15deg);
+}
+.img-holder img {
+  transform: rotate(-15deg);
+}
+.img_teamPage {
+  width: 100%;
+  height: auto;
+}
+.txt-holder {
+  margin: auto;
+  width: 80%;
+  text-align: right;
+}
+.img_link {
+  width: 15%;
+  margin-right: 0;
+  margin-bottom: 5%;
+}
+.img_git {
+  width: 15%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+}
+.txt-holder h5 {
+  margin-bottom: 0;
+  color: #404040;
+  font-size: 1rem;
+}
+.txt-holder p {
+  margin: 5px 0 7px 0;
+  color: #f27821;
+}
+@media only screen and (min-width: 600px) {
+  .memberInfo {
+    width: 33.33%;
+  }
+}
+@media only screen and (min-width: 850px) {
+  .memberInfo {
+    width: 25%;
+    margin-bottom: 3rem;
+  }
+}

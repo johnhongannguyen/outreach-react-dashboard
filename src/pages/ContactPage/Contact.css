@@ -5,6 +5,7 @@
 .ContactPage h1 {
   font-weight: 100;
   margin-bottom: 1.5rem;
+  margin-top: 0;
 }
 
 .ContactPage p {
@@ -35,8 +36,12 @@
 
 .ContactPage .submitButton {
   border: 1px solid #f27821;
+  border-radius: 7px;
   width: 30%;
   color: #f27821;
+  padding: 1%;
+  font-size: 1rem;
+  font-family: Quicksand, sans-serif;
 }
 
 .Contactmain {
@@ -48,20 +53,16 @@
   margin-top: 10%;
   margin-left: 2.5%;
   margin-bottom: 10%;
+  margin-right: 2.5%;
 }
 
 .gradientDiv {
   background-image: linear-gradient(#f27821, #ef3830);
   border-radius: 3rem;
-  transform: rotate(10deg);
 }
 
 .contact-section {
   background-color: black;
-  transform: rotate(-10deg);
-  margin: 1.5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
 }
 
 .ContactPage {
@@ -72,7 +73,80 @@
 }
 
 .contact-image {
+  display: none;
   background-size: cover;
   background-image: url("./anna.jpg");
   background-position: center;
+}
+
+@media only screen and (min-width: 530px) {
+  .gradientDiv {
+    background-image: linear-gradient(#f27821, #ef3830);
+    border-radius: 3rem;
+    animation: animation1 4s ease-in forwards;
+  }
+  .contact-image-form {
+    margin-top: 10%;
+    margin-left: 2.5%;
+    margin-bottom: 10%;
+  }
+  .contact-section {
+    animation: animation2 4s;
+    animation-fill-mode: forwards;
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .gradientDiv {
+    background-image: linear-gradient(#f27821, #ef3830);
+    border-radius: 3rem;
+    transform: rotate(10deg);
+    animation: none;
+  }
+  .contact-image-form {
+    margin-right: 0;
+  }
+  .contact-image {
+    display: block;
+    background-size: cover;
+    background-image: url("./anna.jpg");
+    background-position: center;
+  }
+  .contact-section {
+    background-color: black;
+    transform: rotate(-10deg);
+    margin: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    animation: none;
+  }
+}
+
+@keyframes animation1 {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(4deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+  100% {
+    transform: rotate(10deg);
+  }
+}
+@keyframes animation2 {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(-7deg);
+  }
+  100% {
+    transform: rotate(-10deg);
+  }
 }

@@ -6,11 +6,12 @@ import Features from "./FeatureComponent";
 // Importing styles from stylesheet
 import "./AllFeatures.css";
 
+// Importing Typography component from material-ui
+import Typography from "@material-ui/core/Typography";
 
 // Stateful component
 class AllFeatures extends Component {
   state = {
-
     // An array of features
     features: [
       {
@@ -35,12 +36,12 @@ class AllFeatures extends Component {
   };
   render() {
     return (
-
-        // Section of Features
+      // Section of Features
       <div className="features-section">
-
-          {/* Heading of Features Section */}
-        <div className="features-heading">How Outreach Helps</div>
+        {/* Heading of Features Section */}
+        <Typography variant="h3" className="features-heading">
+          Features
+        </Typography>
 
         {/* Using FEATURES component */}
         <Features features={this.state.features} />
@@ -49,4 +50,5 @@ class AllFeatures extends Component {
   }
 }
 
+// Exporting AllFeatures
 export default AllFeatures;
