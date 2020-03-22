@@ -7,8 +7,10 @@ import OutreachDefinition from "../components/LandingPage/OutreachDefinition/Out
 import Outreachuserflow from "../components/LandingPage/Outreach-Userflow/Outreachuserflow";
 import AllFeatures from "../components/LandingPage/Features-Section/AllFeatures";
 import Video from "../components/LandingPage/VideoSection/Video.js";
+import Donation from "../components/LandingPage/Donation/Donation";
 import Header from "../components/LandingPage/Header/Header.js";
 import Footer from "../components/LandingPage/Footer/Footer.js";
+
 // Landing Page
 export default function LandingPage() {
   const classes = useStyles();
@@ -30,7 +32,7 @@ export default function LandingPage() {
       <Outreachuserflow />
 
       {/* Section - DONATION */}
-
+      <Donation />
       {/* Section - DOWNLOAD */}
 
       {/* Section - FOOTER */}
