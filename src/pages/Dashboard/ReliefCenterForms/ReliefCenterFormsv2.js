@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import Axios from "axios";
+
+// Material UI
 import {
   FormControl,
   InputLabel,
@@ -6,23 +9,29 @@ import {
   MenuItem,
   TextField,
   Button,
-  Grid
+  Grid,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormLabel,
+  Card,
+  Typography
 } from "@material-ui/core";
+
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormLabel from "@material-ui/core/FormLabel";
-import Card from "@material-ui/core/Card";
-import Typography from "@material-ui/core/Typography";
+
+// Icons
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+
+// Labs
 import Autocomplete, {
   createFilterOptions
 } from "@material-ui/lab/Autocomplete";
-import Axios from "axios";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
+// Custom Components
 import DateTimePicker from "../../../components/Dashboard/DateTimePicker";
+
 // Styles
 const useStyles = makeStyles({
   root: {
@@ -75,28 +84,17 @@ export default class ReliefCenterForms extends Component {
     this.state = {
       reliefCenterName: null,
       reliefCenters: [],
-      preference: "anytime",
-      nameOfJob: "cooking",
+
       tasks: [
         {
           key: 1,
-          numberOfPeople: 2,
-          nameOfJob: "cooking",
-          typeOfJob: "",
+          numberOfPeople: 10,
+          // nameOfJob: "cooking",
+          typeOfJob: "Cooking",
           preference: "anytime"
         }
       ]
     };
-  }
-
-  // Handle Change?
-  handleChange = e => {
-    this.setState({ preference: e.target.value });
-  };
-
-  // Handle Click?
-  handleClick(event) {
-    console.log(event.target);
   }
 
   // Handle AutoComplete Change
@@ -161,6 +159,43 @@ export default class ReliefCenterForms extends Component {
     );
   };
 
+  // Handle Number of People Change
+  handleNumberOfPeopleChange = (e, key) => {
+    // Get the Number of people
+    const numberOfPeople = e.target.value;
+    // Find the object.. in tasks.. and update the concerned value.
+    const { tasks } = this.state;
+    const foundIndex = tasks.findIndex(task => task.key == key);
+
+    tasks[foundIndex]["numberOfPeople"] = numberOfPeople;
+  };
+
+  // Handle Preference Change
+  handlePreferenceChange = (e, key) => {
+    // Get the Preference
+    const preference = e.target.value;
+
+    // Find the object.. in tasks.. and update the concerned value.
+    const { tasks } = this.state;
+    const foundIndex = tasks.findIndex(task => task.key == key);
+
+    tasks[foundIndex]["preference"] = preference;
+    this.setState({ tasks });
+  };
+
+  // Handle Type of Job Change
+  handleTypeOfJobChange = (e, key) => {
+    // Get the Preference
+    const typeOfJob = e.target.value;
+
+    // Find the object.. in tasks.. and update the concerned value.
+    const { tasks } = this.state;
+    const foundIndex = tasks.findIndex(task => task.key == key);
+
+    tasks[foundIndex]["typeOfJob"] = typeOfJob;
+    this.setState({ tasks });
+  };
+
   // Add Form Button Handler
   addForm = () => {
     const { tasks } = this.state;
@@ -168,8 +203,8 @@ export default class ReliefCenterForms extends Component {
       // Problematic if someone decides to delete one of the items!
       key: tasks.length + 1,
       numberOfPeople: 2,
-      nameOfJob: "cooking",
-      typeOfJob: "",
+      nameOfJob: "Cooking",
+      typeOfJob: "Cooking",
       preference: "anytime"
     });
 
@@ -177,35 +212,46 @@ export default class ReliefCenterForms extends Component {
   };
 
   // Task Card Component
-  TaskCard = ({ key, numberOfPeople, nameOfJob, typeOfJob, preference }) => (
-    <Card key={key} style={{ padding: 50 }}>
+  TaskCard = ({
+    taskKey,
+    numberOfPeople,
+    typeOfJob,
+    preference,
+    onNumberOfPeopleChange,
+    onPreferenceChange,
+    onTypeOfJobChange
+  }) => (
+    <Card key={taskKey} style={{ padding: 50, marginBottom: 25 }}>
       {numberOfPeople > 0 && typeOfJob && (
-        <Typography align="left" variant="body1">
+        <Typography align="left" variant="h4">
           Requesting {numberOfPeople} volunteers for {typeOfJob}
         </Typography>
       )}
 
-      <Grid container justify="flex-start">
+      <Grid container justify="center" spacing={2}>
         <Grid xs={4} item>
           <InputLabel id="volunteerDetail">Type of Job</InputLabel>
+
+          {/* Type of Task (Job)! */}
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={nameOfJob}
+            value={typeOfJob}
             fullWidth
-            onChange={this.handleChange}
+            onChange={e => onTypeOfJobChange(e, taskKey)}
           >
-            <MenuItem value={"driving"}> Driving </MenuItem>
-            <MenuItem value={"baby_sitting"}> Baby Sitting </MenuItem>
-            <MenuItem value={"cooking"}> Cooking </MenuItem>
-            <MenuItem value={"other"}> Other </MenuItem>
+            <MenuItem value={"Driving"}>Driving</MenuItem>
+            <MenuItem value={"Baby Sitting"}>Baby Sitting</MenuItem>
+            <MenuItem value={"Cooking"}>Cooking</MenuItem>
+            <MenuItem value={"Other"}>Other</MenuItem>
           </Select>
         </Grid>
 
-        <Grid xs={2} item>
+        <Grid xs={3} item>
+          {/* Number of people needed */}
           <TextField
             defaultValue={numberOfPeople || 1}
-            onChange={e => this.setState({ numberOfPeople: e.target.value })}
+            onChange={e => onNumberOfPeopleChange(e, taskKey)}
             type="number"
             fullWidth
             InputProps={{
@@ -219,12 +265,12 @@ export default class ReliefCenterForms extends Component {
         </Grid>
       </Grid>
 
-      {/* <FormLabel component="legend"></FormLabel> */}
+      {/* Preference */}
       <RadioGroup
         aria-label="preference"
         name="preference"
         value={preference}
-        onChange={this.handleChange}
+        onChange={e => onPreferenceChange(e, taskKey)}
       >
         <FormControlLabel
           value="anytime"
@@ -241,6 +287,7 @@ export default class ReliefCenterForms extends Component {
       {preference == "preference" && <DateTimePicker />}
     </Card>
   );
+
   // Lifecycle Methods
   async componentDidMount() {
     const reliefCenters = await Axios.get(
@@ -256,12 +303,14 @@ export default class ReliefCenterForms extends Component {
     const { reliefCenterName } = this.state;
     return (
       <>
+        {/* Panel Title - Relief Center Form */}
         <Typography align="left" variant="h3">
           {reliefCenterName == null || reliefCenterName == ""
             ? "Relief Center Form"
             : `${reliefCenterName.title} Form`}
         </Typography>
 
+        {/* Relief Center Name Input */}
         <Card style={{ padding: 25, marginBottom: 25 }}>
           <Autocomplete
             value={reliefCenterName}
@@ -290,6 +339,7 @@ export default class ReliefCenterForms extends Component {
           />
         </Card>
 
+        {/* Task Cards */}
         {this.state.tasks.map((task, index) => {
           const {
             key,
@@ -300,19 +350,25 @@ export default class ReliefCenterForms extends Component {
           } = task;
           return (
             <this.TaskCard
-              key={key}
+              key={index}
+              taskKey={key}
               numberOfPeople={numberOfPeople}
               nameOfJob={nameOfJob}
               typeOfJob={typeOfJob}
               preference={preference}
+              onNumberOfPeopleChange={this.handleNumberOfPeopleChange}
+              onPreferenceChange={this.handlePreferenceChange}
+              onTypeOfJobChange={this.handleTypeOfJobChange}
             />
           );
         })}
 
+        {/* Button to Add More Task Cards */}
         <Button onClick={this.addForm}>
           ADD <AddCircleOutlineIcon />
         </Button>
 
+        {/* Submit Button */}
         <Button variant="contained">Submit</Button>
       </>
     );
