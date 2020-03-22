@@ -73,12 +73,19 @@ export default class ReliefCenterForms extends Component {
     super(props);
 
     this.state = {
-      // newReliefCenters: [] NO!
       reliefCenterName: null,
       reliefCenters: [],
       preference: "anytime",
       nameOfJob: "cooking",
-      formCount: 1
+      tasks: [
+        {
+          key: 1,
+          numberOfPeople: 2,
+          nameOfJob: "cooking",
+          typeOfJob: "",
+          preference: "anytime"
+        }
+      ]
     };
   }
 
@@ -137,7 +144,7 @@ export default class ReliefCenterForms extends Component {
     return option.title;
   };
 
-  // Custom Component
+  // Custom Radio Component -- Don't Use it
   StyledRadio = props => {
     const classes = useStyles();
     return (
@@ -156,9 +163,84 @@ export default class ReliefCenterForms extends Component {
 
   // Add Form Button Handler
   addForm = () => {
-    this.setState({ formCount: this.state.formCount + 1 });
+    const { tasks } = this.state;
+    tasks.push({
+      // Problematic if someone decides to delete one of the items!
+      key: tasks.length + 1,
+      numberOfPeople: 2,
+      nameOfJob: "cooking",
+      typeOfJob: "",
+      preference: "anytime"
+    });
+
+    this.setState({ tasks });
   };
 
+  // Task Card Component
+  TaskCard = ({ key, numberOfPeople, nameOfJob, typeOfJob, preference }) => (
+    <Card key={key} style={{ padding: 50 }}>
+      {numberOfPeople > 0 && typeOfJob && (
+        <Typography align="left" variant="body1">
+          Requesting {numberOfPeople} volunteers for {typeOfJob}
+        </Typography>
+      )}
+
+      <Grid container justify="flex-start">
+        <Grid xs={4} item>
+          <InputLabel id="volunteerDetail">Type of Job</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={nameOfJob}
+            fullWidth
+            onChange={this.handleChange}
+          >
+            <MenuItem value={"driving"}> Driving </MenuItem>
+            <MenuItem value={"baby_sitting"}> Baby Sitting </MenuItem>
+            <MenuItem value={"cooking"}> Cooking </MenuItem>
+            <MenuItem value={"other"}> Other </MenuItem>
+          </Select>
+        </Grid>
+
+        <Grid xs={2} item>
+          <TextField
+            defaultValue={numberOfPeople || 1}
+            onChange={e => this.setState({ numberOfPeople: e.target.value })}
+            type="number"
+            fullWidth
+            InputProps={{
+              inputProps: {
+                max: 10,
+                min: 1
+              }
+            }}
+            label="People Needed"
+          ></TextField>
+        </Grid>
+      </Grid>
+
+      {/* <FormLabel component="legend"></FormLabel> */}
+      <RadioGroup
+        aria-label="preference"
+        name="preference"
+        value={preference}
+        onChange={this.handleChange}
+      >
+        <FormControlLabel
+          value="anytime"
+          control={<Radio />}
+          label="Any time"
+        />
+        <FormControlLabel
+          value="preference"
+          control={<Radio />}
+          label="Choose your preference"
+        />
+      </RadioGroup>
+
+      {preference == "preference" && <DateTimePicker />}
+    </Card>
+  );
   // Lifecycle Methods
   async componentDidMount() {
     const reliefCenters = await Axios.get(
@@ -171,11 +253,13 @@ export default class ReliefCenterForms extends Component {
   }
 
   render() {
-    const { reliefCenterName, preference, nameOfJob, formCount } = this.state;
+    const { reliefCenterName } = this.state;
     return (
       <>
         <Typography align="left" variant="h3">
-          Relief Center Form
+          {reliefCenterName == null || reliefCenterName == ""
+            ? "Relief Center Form"
+            : `${reliefCenterName.title} Form`}
         </Typography>
 
         <Card style={{ padding: 25, marginBottom: 25 }}>
@@ -206,73 +290,24 @@ export default class ReliefCenterForms extends Component {
           />
         </Card>
 
-        {[...Array(formCount)].map((e, i) => (
-          <Card key={i} style={{ padding: 50 }}>
-            {this.state.numberOfPeople > 0 && this.state.typeOfJob && (
-              <Typography align="left" variant="body1">
-                Requesting {this.state.numberOfPeople} volunteers for{" "}
-                {this.state.typeOfJob}
-              </Typography>
-            )}
-
-            <Grid container justify="flex-start">
-              <Grid xs={4} item>
-                <InputLabel id="volunteerDetail">Type of Job</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={nameOfJob}
-                  fullWidth
-                  onChange={this.handleChange}
-                >
-                  <MenuItem value={"driving"}> Driving </MenuItem>
-                  <MenuItem value={"baby_sitting"}> Baby Sitting </MenuItem>
-                  <MenuItem value={"cooking"}> Cooking </MenuItem>
-                  <MenuItem value={"other"}> Other </MenuItem>
-                </Select>
-              </Grid>
-
-              <Grid xs={2} item>
-                <TextField
-                  defaultValue={this.state.numberOfPeople || 1}
-                  onChange={e =>
-                    this.setState({ numberOfPeople: e.target.value })
-                  }
-                  type="number"
-                  fullWidth
-                  InputProps={{
-                    inputProps: {
-                      max: 10,
-                      min: 1
-                    }
-                  }}
-                  label="People Needed"
-                ></TextField>
-              </Grid>
-            </Grid>
-
-            {/* <FormLabel component="legend"></FormLabel> */}
-            <RadioGroup
-              aria-label="preference"
-              name="preference"
-              value={preference}
-              onChange={this.handleChange}
-            >
-              <FormControlLabel
-                value="anytime"
-                control={<Radio />}
-                label="Any time"
-              />
-              <FormControlLabel
-                value="preference"
-                control={<Radio />}
-                label="Choose your preference"
-              />
-            </RadioGroup>
-
-            {this.state.preference == "preference" && <DateTimePicker />}
-          </Card>
-        ))}
+        {this.state.tasks.map((task, index) => {
+          const {
+            key,
+            numberOfPeople,
+            nameOfJob,
+            typeOfJob,
+            preference
+          } = task;
+          return (
+            <this.TaskCard
+              key={key}
+              numberOfPeople={numberOfPeople}
+              nameOfJob={nameOfJob}
+              typeOfJob={typeOfJob}
+              preference={preference}
+            />
+          );
+        })}
 
         <Button onClick={this.addForm}>
           ADD <AddCircleOutlineIcon />

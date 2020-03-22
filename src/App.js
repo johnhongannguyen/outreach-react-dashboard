@@ -18,7 +18,7 @@ function App() {
       <Router>
         <Switch>
           {/* Dashboard Route */}
-          <Route exact path="/dashboard">
+          <Route path="/dashboard">
             <Dashboard />
           </Route>
 
