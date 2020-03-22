@@ -18,7 +18,7 @@ import {
 } from "@material-ui/icons";
 
 // React Router
-import { Link } from "react-router-dom";
+import { Link, BrowserRouter } from "react-router-dom";
 
 // Custom Components and Themes
 import Theme from "../../theme";
@@ -26,6 +26,7 @@ import Theme from "../../theme";
 export const mainListItems = (
   <ThemeProvider theme={Theme}>
     <ListItem
+      autoFocus
       button
       component={Link}
       to={{ pathname: "/dashboard/", state: "flushDeal" }}
@@ -41,6 +42,7 @@ export const mainListItems = (
       />
     </ListItem>
     <ListItem
+      // selected={.pathname === "/dashboard/"}
       button
       component={Link}
       to={{ pathname: "/dashboard/volunteers", state: "flushDeal" }}
