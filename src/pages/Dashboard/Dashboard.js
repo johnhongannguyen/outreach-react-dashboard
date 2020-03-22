@@ -36,7 +36,7 @@ import {
 import { mainListItems } from "./listItems";
 
 // Custom Outreach Dashboard Components
-import ReliefCenterForms from "./ReliefCenterForms/ReliefCenterForms";
+import ReliefCenterForms from "./ReliefCenterForms/ReliefCenterFormsv2";
 import Volunteers from "./Volunteers/Volunteers";
 import ReliefCenters from "./ReliefCenters/ReliefCenters";
 import Home from "./Home/Home";
@@ -57,7 +57,7 @@ function Copyright() {
   );
 }
 
-const drawerWidth = 240;
+const drawerWidth = 320;
 
 const useStyles = makeStyles(theme => ({
   root: {
