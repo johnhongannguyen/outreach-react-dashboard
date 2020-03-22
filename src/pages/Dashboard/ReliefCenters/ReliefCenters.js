@@ -62,7 +62,7 @@ class ReliefCenters extends Component {
   }
 
   // Function to check if its the homepage
-  isHomePage = () => this.props.location.pathname === "/dashboard/home";
+  isHomePage = () => this.props.location.pathname === "/dashboard/";
 
   // API Call
   getDataFromAPI = async relativePath => {

@@ -62,7 +62,7 @@ class Volunteers extends Component {
   };
 
   // Function to check if its the homepage
-  isHomePage = () => this.props.location.pathname === "/dashboard/home";
+  isHomePage = () => this.props.location.pathname === "/dashboard/";
 
   // When component
   componentDidMount() {

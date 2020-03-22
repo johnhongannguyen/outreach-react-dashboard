@@ -310,7 +310,7 @@ export default function Dashboard() {
 
             <Switch>
               {/* Dashboard Route */}
-              <Route path="/dashboard/home">
+              <Route path="/dashboard/">
                 <Home />
               </Route>
 

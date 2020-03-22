@@ -28,7 +28,7 @@ export const mainListItems = (
     <ListItem
       button
       component={Link}
-      to={{ pathname: "/dashboard/home", state: "flushDeal" }}
+      to={{ pathname: "/dashboard/", state: "flushDeal" }}
     >
       <ListItemIcon>
         <HomeIcon color="primary" />
