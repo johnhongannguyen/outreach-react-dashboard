@@ -182,27 +182,28 @@ class ReliefCenters extends Component {
         {/* Relief Center Container */}
         <Paper className={classes.paper}>
           <Grid justify="center" container>
-            {reliefCenters
-              .sort((a, b) => {
-                return a.updatedAt > b.updatedAt ? 1 : -1;
-              })
-              .filter(reliefCenter =>
-                reliefCenter.name
-                  .toLowerCase()
-                  .includes(this.state.reliefCenterSearchValue.toLowerCase())
-              )
-              .map(reliefCenter => (
-                <Grid item className={classes.hoverStyle}>
-                  <ReliefCenterActionCard
-                    name={reliefCenter.name}
-                    list={reliefCenter.required}
-                    onAssignClick={() =>
-                      this.assignVolunteers(reliefCenter._id)
-                    }
-                  />
-                  {reliefCenter.updatedAt}
-                </Grid>
-              ))}
+            {reliefCenters.length > 0 &&
+              reliefCenters
+                .sort((a, b) => {
+                  return a.updatedAt > b.updatedAt ? 1 : -1;
+                })
+                .filter(reliefCenter =>
+                  reliefCenter.name
+                    .toLowerCase()
+                    .includes(this.state.reliefCenterSearchValue.toLowerCase())
+                )
+                .map(reliefCenter => (
+                  <Grid item className={classes.hoverStyle}>
+                    <ReliefCenterActionCard
+                      name={reliefCenter.name}
+                      list={reliefCenter.required}
+                      onAssignClick={() =>
+                        this.assignVolunteers(reliefCenter._id)
+                      }
+                    />
+                    {reliefCenter.updatedAt}
+                  </Grid>
+                ))}
           </Grid>
 
           {/* See All Button (On Home Page) */}
