@@ -15,7 +15,12 @@ const Video = () => {
       </div>
       <div className="contentOverlay">
         <h2>
-          Service to others is the rent you pay for your room here on Earth
+          Service to others is the rent you pay for your room here on Earth.
+          <a>
+            <span className="signup">
+              <a>Sign Up Today</a>
+            </span>
+          </a>
         </h2>
       </div>
     </div>

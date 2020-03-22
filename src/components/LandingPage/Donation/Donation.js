@@ -33,6 +33,7 @@ class Donation extends Component {
               <div class="donation-paragraph">
                 Donations are used for providing essentials like food, water and
                 medical acre and will be assisting in rebuilding efforts. Help
+                today!
               </div>
               <div class="donation-button-container">
                 <input type="button" value="DONATE" class="donation-btn" />

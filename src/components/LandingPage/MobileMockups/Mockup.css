@@ -2,8 +2,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 4rem;
-  margin-bottom: 3rem;
+  margin-top: 0;
+  margin-bottom: 5rem;
 }
 .imgMockup {
   display: none;
@@ -31,6 +31,9 @@
   margin-bottom: 1.5rem;
 }
 @media only screen and (min-width: 530px) {
+  .downloadAppBtn p {
+    font-size: 1.5rem;
+  }
   .imgMockup {
     width: 70%;
     display: inline;
@@ -42,5 +45,14 @@
   .googlePlay {
     margin-left: 0;
     justify-content: end;
+  }
+}
+@media only screen and (min-width: 750px) {
+  .mockupContainer {
+    margin-top: 8rem;
+    margin-bottom: 7rem;
+  }
+  .downloadAppBtn p {
+    font-size: 2.5rem;
   }
 }

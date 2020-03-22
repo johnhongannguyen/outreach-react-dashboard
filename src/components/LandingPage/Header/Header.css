@@ -1,60 +1,62 @@
-
-
-.logo{
+.logo {
   margin-left: 2rem;
 }
 
-
-.MuiAppBar-colorPrimary{
-  background-color:  white !important;
-  color: #F27821 !important;
+.MuiAppBar-colorPrimary {
+  background-color: white !important;
+  color: #f27821 !important;
 }
 /* Menu's links */
 .MuiTypography-body1 {
-  color: #F27821;
+  color: #f27821;
   font-family: quicksand !important;
   font-weight: 300;
 }
 
-.MuiAppBar-positionFixed{
+.MuiAppBar-positionFixed {
   position: absolute !important;
 }
 
-.button-download{
-  background-image: linear-gradient(  #F27821, #F16908, #E7281F);
-  border-radius: 10px!important;
+.button-download {
+  background-image: linear-gradient(#f27821, #f16908, #e7281f);
+  border-radius: 10px !important;
+  width: 9rem;
+  height: 2rem;
+  margin: auto;
 }
-.button-download .MuiTypography-body1{
-  color: #fff!important;
+.button-download .MuiTypography-body1 {
+  color: #fff !important;
+  vertical-align: text-top;
+  font-size: 1.1rem;
 }
 /* Menu full-view hidden */
-.header-menu{
+.header-menu {
   display: none;
   flex: 30% 1;
   justify-content: flex-end;
   margin-right: 2rem;
 }
-.MuiPaper-root .nl-btn{
-  background-image: linear-gradient(  #F27821, #F16908, #E7281F);
-  border-radius: 10px!important;
+.MuiPaper-root .nl-btn {
+  background-image: linear-gradient(#f27821, #f16908, #e7281f);
+  border-radius: 10px !important;
 }
-.header-menu a{
-  color: #F27821;
+.header-menu a {
+  color: #f27821;
   font-family: quicksand !important;
   font-weight: 300;
   margin-right: 2rem;
   text-decoration: none;
 }
-.header-menu a:hover{
+.header-menu a:hover {
   text-decoration: none;
 }
 
 /* =================== Media Queries ================================= */
 @media screen and (min-width: 700px) {
-  .MuiToolbar-regular{
-    display: none!important;
+  .MuiToolbar-regular {
+    display: none !important;
   }
-  .header-menu{
-    display: flex!important;
+  .header-menu {
+    display: flex !important;
   }
 }
