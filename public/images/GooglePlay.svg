@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="120" viewBox="0 0 400 120">
+  <g id="Group_19" data-name="Group 19" transform="translate(-1078 -3699)">
+    <g id="Rectangle_11" data-name="Rectangle 11" transform="translate(1078 3699)" stroke="#707070" stroke-width="1">
+      <rect width="400" height="120" rx="23" stroke="none"/>
+      <rect x="0.5" y="0.5" width="399" height="119" rx="22.5" fill="none"/>
+    </g>
+    <g id="Group_18" data-name="Group 18" transform="translate(-6)">
+      <text id="Get_it_on_Google_Play" data-name="Get it on
+Google Play" transform="translate(1184.717 3738)" fill="#fff" font-size="23" font-family="Quicksand-Regular, Quicksand"><tspan x="0" y="0">GET IT ON</tspan><tspan font-size="47" font-family="Quicksand-Bold, Quicksand" font-weight="700"><tspan x="0" y="53">Google Play</tspan></tspan></text>
+      <path id="Icon_awesome-google-play" data-name="Icon awesome-google-play" d="M40.6,30.321,12.041,1.682,48.38,22.543,40.6,30.321ZM4.587,0A5.03,5.03,0,0,0,1.779,4.568V61.677a5.03,5.03,0,0,0,2.808,4.568L37.794,33.116ZM59.613,29.2,51.99,24.782l-8.5,8.347,8.5,8.347,7.778-4.413a5.191,5.191,0,0,0-.155-7.868ZM12.041,64.576,48.38,43.715,40.6,35.937Z" transform="translate(1112.221 3724)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

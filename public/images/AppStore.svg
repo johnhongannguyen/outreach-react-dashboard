@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="121" viewBox="0 0 400 121">
+  <g id="Group_19" data-name="Group 19" transform="translate(-1078 -3861)">
+    <g id="Rectangle_12" data-name="Rectangle 12" transform="translate(1078 3861)" stroke="#707070" stroke-width="1">
+      <rect width="400" height="121" rx="23" stroke="none"/>
+      <rect x="0.5" y="0.5" width="399" height="120" rx="22.5" fill="none"/>
+    </g>
+    <g id="Group_18" data-name="Group 18" transform="translate(2.78 5)">
+      <text id="DOWNLOAD_FROM_THE_App_Store" data-name="DOWNLOAD FROM THE 
+App Store" transform="translate(1184 3897)" fill="#fff" font-size="23" font-family="Quicksand-Regular, Quicksand"><tspan x="0" y="0">DOWNLOAD FROM THE</tspan><tspan y="0" font-size="26" font-family="Quicksand-Light, Quicksand" font-weight="300"> </tspan><tspan font-size="47" font-family="Quicksand-Bold, Quicksand" font-weight="700"><tspan x="0" y="54">App Store</tspan></tspan></text>
+      <path id="Icon_awesome-apple" data-name="Icon awesome-apple" d="M52.68,41.662c-.033-6.111,2.731-10.723,8.325-14.12-3.13-4.479-7.859-6.943-14.1-7.426-5.911-.466-12.371,3.447-14.736,3.447-2.5,0-8.225-3.28-12.721-3.28C10.155,20.432.281,27.692.281,42.461a41.5,41.5,0,0,0,2.4,13.52c2.131,6.111,9.824,21.1,17.849,20.846,4.2-.1,7.16-2.98,12.621-2.98,5.295,0,8.042,2.98,12.721,2.98,8.092-.117,15.052-13.737,17.083-19.864C52.1,51.852,52.68,41.978,52.68,41.662Zm-9.424-27.34a15.682,15.682,0,0,0,4-12.072A17.655,17.655,0,0,0,35.947,8.061a15.928,15.928,0,0,0-4.263,11.972c4.346.333,8.309-1.9,11.572-5.711Z" transform="translate(1104.938 3877.75)" fill="#fff"/>
+    </g>
+  </g>
+</svg>
