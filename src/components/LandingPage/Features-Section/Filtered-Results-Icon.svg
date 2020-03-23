@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="210" height="159.922" viewBox="0 0 210 159.922">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#f27821"/>
+      <stop offset="1" stop-color="#ff512f"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_12" data-name="Group 12" transform="translate(-356.992 -198.972)">
+    <path id="Path_8" data-name="Path 8" d="M513.933,110.544c-.051-.014-.059-.019-.023-.012Z" transform="translate(-9.622 163.592)" fill="url(#linear-gradient)"/>
+    <path id="Path_9" data-name="Path 9" d="M513.933,110.544c-.051-.014-.059-.019-.023-.012Z" transform="translate(-9.622 163.592)" fill="url(#linear-gradient)"/>
+    <path id="Path_10" data-name="Path 10" d="M550.992,114.894a100,100,0,1,1-200,0" transform="translate(11 139)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="10"/>
+    <path id="Path_11" data-name="Path 11" d="M384.575,80.009h96.051L442.738,117.9v34.34l-19.388-9.884-.253-23.316Z" transform="translate(29.942 159.522)" fill="#fff" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    <line id="Line_1" data-name="Line 1" x1="7.577" transform="translate(505.81 225.687)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="7"/>
+    <line id="Line_2" data-name="Line 2" x1="79.913" transform="translate(411 225.949)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="7"/>
+    <line id="Line_3" data-name="Line 3" x1="79.018" transform="translate(434.369 209.594)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="7"/>
+    <line id="Line_4" data-name="Line 4" x1="8.905" transform="translate(411 209.594)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="7"/>
+    <path id="Path_12" data-name="Path 12" d="M406.582,39.573a7.234,7.234,0,1,1-14.468,0c0-.038,0-.074,0-.111a7.232,7.232,0,0,1,14.463,0C406.582,39.5,406.582,39.536,406.582,39.573Z" transform="translate(27.789 170.132)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="7"/>
+    <path id="Path_13" data-name="Path 13" d="M505.959,58.576a7.234,7.234,0,1,1-14.468,0c0-.111,0-.222.006-.334a7.235,7.235,0,0,1,14.455,0C505.956,58.354,505.959,58.466,505.959,58.576Z" transform="translate(-0.585 167.706)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="7"/>
+  </g>
+</svg>

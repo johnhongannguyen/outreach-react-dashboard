@@ -3,7 +3,7 @@
 }
 
 .outreach-description {
-  width: 250px;
+  width: 350px;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
@@ -43,10 +43,11 @@
 @media screen and (max-width: 470px) {
   .outreach-description {
     font-size: 0.9rem;
+    width: 245px;
   }
 }
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 750px) {
   .heading-container {
     display: flex;
     flex-direction: row;
@@ -56,5 +57,11 @@
 
   .sub-heading {
     text-align: left;
+  }
+}
+
+@media screen and (min-width: 550px) {
+  .outreach-description {
+    font-size: 1.3rem;
   }
 }
