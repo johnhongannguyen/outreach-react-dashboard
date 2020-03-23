@@ -137,7 +137,7 @@ function Header() {
               variant=""
               className="nl-btn"
             >
-              Download
+              DOWNLOAD
             </Button>
           </Typography>
         </div>
@@ -167,7 +167,7 @@ function Header() {
             </ListItem>
           ))}
           <ListItem button key={"Download"} class="button-download">
-            <ListItemText primary={"Download"} />
+            <ListItemText primary={"DOWNLOAD"} />
           </ListItem>
         </List>
       </Drawer>
