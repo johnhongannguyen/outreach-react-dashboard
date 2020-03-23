@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Axios from "axios";
-
+import _ from "moment";
 // Material UI
 import {
   FormControl,
@@ -87,11 +87,19 @@ export default class ReliefCenterForms extends Component {
 
       tasks: [
         {
-          key: 1,
+          taskID: 1,
           numberOfPeople: 10,
-          // nameOfJob: "cooking",
           typeOfJob: "Cooking",
           preference: "anytime"
+        },
+        {
+          taskID: 2,
+          numberOfPeople: 5,
+          typeOfJob: "Driving",
+          preference: "preference",
+          date: new Date(),
+          start_time: new Date(),
+          end_time: new Date()
         }
       ]
     };
@@ -160,37 +168,37 @@ export default class ReliefCenterForms extends Component {
   };
 
   // Handle Number of People Change
-  handleNumberOfPeopleChange = (e, key) => {
+  handleNumberOfPeopleChange = (e, taskID) => {
     // Get the Number of people
     const numberOfPeople = e.target.value;
     // Find the object.. in tasks.. and update the concerned value.
     const { tasks } = this.state;
-    const foundIndex = tasks.findIndex(task => task.key == key);
+    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
 
     tasks[foundIndex]["numberOfPeople"] = numberOfPeople;
   };
 
   // Handle Preference Change
-  handlePreferenceChange = (e, key) => {
+  handlePreferenceChange = (e, taskID) => {
     // Get the Preference
     const preference = e.target.value;
 
     // Find the object.. in tasks.. and update the concerned value.
     const { tasks } = this.state;
-    const foundIndex = tasks.findIndex(task => task.key == key);
+    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
 
     tasks[foundIndex]["preference"] = preference;
     this.setState({ tasks });
   };
 
   // Handle Type of Job Change
-  handleTypeOfJobChange = (e, key) => {
+  handleTypeOfJobChange = (e, taskID) => {
     // Get the Preference
     const typeOfJob = e.target.value;
 
     // Find the object.. in tasks.. and update the concerned value.
     const { tasks } = this.state;
-    const foundIndex = tasks.findIndex(task => task.key == key);
+    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
 
     tasks[foundIndex]["typeOfJob"] = typeOfJob;
     this.setState({ tasks });
@@ -201,7 +209,7 @@ export default class ReliefCenterForms extends Component {
     const { tasks } = this.state;
     tasks.push({
       // Problematic if someone decides to delete one of the items!
-      key: tasks.length + 1,
+      taskID: tasks.length + 1,
       numberOfPeople: 2,
       nameOfJob: "Cooking",
       typeOfJob: "Cooking",
@@ -211,17 +219,33 @@ export default class ReliefCenterForms extends Component {
     this.setState({ tasks });
   };
 
+  // Handle Date and Time change for Preference
+  handleDateTimeChange = (momentObject, taskID, ID) => {
+    // Get the Preference
+    const date = momentObject._d;
+
+    // Find the object.. in tasks.. and update the concerned value.
+    const { tasks } = this.state;
+    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
+
+    tasks[foundIndex][ID] = date;
+    this.setState({ tasks });
+  };
+
   // Task Card Component
   TaskCard = ({
-    taskKey,
+    taskID,
     numberOfPeople,
     typeOfJob,
     preference,
+    date,
+    start_time,
+    end_time,
     onNumberOfPeopleChange,
     onPreferenceChange,
     onTypeOfJobChange
   }) => (
-    <Card key={taskKey} style={{ padding: 50, marginBottom: 25 }}>
+    <Card taskID={taskID} style={{ padding: 50, marginBottom: 25 }}>
       {numberOfPeople > 0 && typeOfJob && (
         <Typography align="left" variant="h4">
           Requesting {numberOfPeople} volunteers for {typeOfJob}
@@ -238,7 +262,7 @@ export default class ReliefCenterForms extends Component {
             id="demo-simple-select"
             value={typeOfJob}
             fullWidth
-            onChange={e => onTypeOfJobChange(e, taskKey)}
+            onChange={e => onTypeOfJobChange(e, taskID)}
           >
             <MenuItem value={"Driving"}>Driving</MenuItem>
             <MenuItem value={"Baby Sitting"}>Baby Sitting</MenuItem>
@@ -251,7 +275,7 @@ export default class ReliefCenterForms extends Component {
           {/* Number of people needed */}
           <TextField
             defaultValue={numberOfPeople || 1}
-            onChange={e => onNumberOfPeopleChange(e, taskKey)}
+            onChange={e => onNumberOfPeopleChange(e, taskID)}
             type="number"
             fullWidth
             InputProps={{
@@ -270,7 +294,7 @@ export default class ReliefCenterForms extends Component {
         aria-label="preference"
         name="preference"
         value={preference}
-        onChange={e => onPreferenceChange(e, taskKey)}
+        onChange={e => onPreferenceChange(e, taskID)}
       >
         <FormControlLabel
           value="anytime"
@@ -284,7 +308,21 @@ export default class ReliefCenterForms extends Component {
         />
       </RadioGroup>
 
-      {preference == "preference" && <DateTimePicker />}
+      {preference == "preference" && (
+        <DateTimePicker
+          taskID={taskID}
+          selectedDate={date}
+          selectedStartTime={start_time}
+          selectedEndTime={end_time}
+          onDateChange={e => this.handleDateTimeChange(e, taskID, "date")}
+          onStartTimeChange={e =>
+            this.handleDateTimeChange(e, taskID, "start_time")
+          }
+          onEndTimeChange={e =>
+            this.handleDateTimeChange(e, taskID, "end_time")
+          }
+        />
+      )}
     </Card>
   );
 
@@ -342,20 +380,26 @@ export default class ReliefCenterForms extends Component {
         {/* Task Cards */}
         {this.state.tasks.map((task, index) => {
           const {
-            key,
+            taskID,
             numberOfPeople,
             nameOfJob,
             typeOfJob,
+            date,
+            start_time,
+            end_time,
             preference
           } = task;
           return (
             <this.TaskCard
               key={index}
-              taskKey={key}
+              taskID={taskID}
               numberOfPeople={numberOfPeople}
               nameOfJob={nameOfJob}
               typeOfJob={typeOfJob}
               preference={preference}
+              date={date}
+              start_time={start_time}
+              end_time={end_time}
               onNumberOfPeopleChange={this.handleNumberOfPeopleChange}
               onPreferenceChange={this.handlePreferenceChange}
               onTypeOfJobChange={this.handleTypeOfJobChange}

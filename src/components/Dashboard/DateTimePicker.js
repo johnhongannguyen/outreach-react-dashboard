@@ -3,21 +3,20 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import MomentUtils from "@date-io/moment";
 
-// import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker
 } from "@material-ui/pickers";
 
-export default function DateTimePicker() {
-  // The first commit of Material-UI
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-
-  const handleDateChange = date => {
-    setSelectedDate(date);
-  };
-
+export default function DateTimePicker({
+  selectedDate,
+  selectedStartTime,
+  selectedEndTime,
+  onDateChange,
+  onStartTimeChange,
+  onEndTimeChange
+}) {
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <Grid container justify="space-around">
@@ -25,12 +24,11 @@ export default function DateTimePicker() {
           <KeyboardDatePicker
             disableToolbar
             variant="inline"
-            format="MM/DD/YY"
+            format="MM/DD/YYYY"
             margin="normal"
-            id="date-picker-inline"
             label="Date"
             value={selectedDate}
-            onChange={handleDateChange}
+            onChange={onDateChange}
             KeyboardButtonProps={{
               "aria-label": "change date"
             }}
@@ -39,10 +37,9 @@ export default function DateTimePicker() {
         <Grid xs={12} sm={4} item>
           <KeyboardTimePicker
             margin="normal"
-            id="time-picker"
             label="Start Time"
-            value={selectedDate}
-            onChange={handleDateChange}
+            value={selectedStartTime}
+            onChange={onStartTimeChange}
             KeyboardButtonProps={{
               "aria-label": "start time"
             }}
@@ -51,10 +48,9 @@ export default function DateTimePicker() {
         <Grid xs={12} sm={4} item>
           <KeyboardTimePicker
             margin="normal"
-            id="time-picker"
             label="End Time"
-            value={selectedDate}
-            onChange={handleDateChange}
+            value={selectedEndTime}
+            onChange={onEndTimeChange}
             KeyboardButtonProps={{
               "aria-label": "end time"
             }}
