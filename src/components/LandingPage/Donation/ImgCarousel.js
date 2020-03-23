@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import img from "./image.jpg";
-import img2 from "./two.jpg";
+import img1 from "./DonationImages/img1.jpg";
+import img2 from "./DonationImages/img2.jpg";
+import img3 from "./DonationImages/img3.jpg";
+import img4 from "./DonationImages/img4.jpg";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
@@ -26,23 +28,23 @@ class ImgCarousel extends Component {
         emulateTouch
       >
         <div>
-          <img src={img2} />
+          <img src={img1} />
         </div>
         <div>
           <img src={img2} />
         </div>
         <div>
+          <img src={img3} />
+        </div>
+        <div>
+          <img src={img4} />
+        </div>
+        {/* <div>
           <img src={img2} />
         </div>
         <div>
           <img src={img2} />
-        </div>
-        <div>
-          <img src={img2} />
-        </div>
-        <div>
-          <img src={img2} />
-        </div>
+        </div> */}
       </Carousel>
     );
   }
