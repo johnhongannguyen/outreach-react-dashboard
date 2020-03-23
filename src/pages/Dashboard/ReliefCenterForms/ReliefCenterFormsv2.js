@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import Axios from "axios";
+import _ from "moment";
+// Material UI
 import {
   FormControl,
   InputLabel,
@@ -6,23 +9,30 @@ import {
   MenuItem,
   TextField,
   Button,
-  Grid
+  Grid,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormLabel,
+  Card,
+  Typography
 } from "@material-ui/core";
+
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormLabel from "@material-ui/core/FormLabel";
-import Card from "@material-ui/core/Card";
-import Typography from "@material-ui/core/Typography";
+
+// Icons
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+
+// Labs
 import Autocomplete, {
   createFilterOptions
 } from "@material-ui/lab/Autocomplete";
-import Axios from "axios";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import Alert from "@material-ui/lab/Alert";
 
+// Custom Components
 import DateTimePicker from "../../../components/Dashboard/DateTimePicker";
+import SubmittedTasksTableComponent from "./SubmittedTasksTableComponent";
 // Styles
 const useStyles = makeStyles({
   root: {
@@ -73,23 +83,28 @@ export default class ReliefCenterForms extends Component {
     super(props);
 
     this.state = {
-      // newReliefCenters: [] NO!
       reliefCenterName: null,
       reliefCenters: [],
-      preference: "anytime",
-      nameOfJob: "cooking",
-      formCount: 1
+      isSubmitTableVisible: false,
+      isReliefCenterFormVisible: true,
+      tasks: [
+        {
+          taskID: 1,
+          numberOfPeople: 10,
+          typeOfJob: "Cooking",
+          preference: "anytime"
+        },
+        {
+          taskID: 2,
+          numberOfPeople: 5,
+          typeOfJob: "Driving",
+          preference: "preference",
+          date: new Date(),
+          start_time: new Date(),
+          end_time: new Date()
+        }
+      ]
     };
-  }
-
-  // Handle Change?
-  handleChange = e => {
-    this.setState({ preference: e.target.value });
-  };
-
-  // Handle Click?
-  handleClick(event) {
-    console.log(event.target);
   }
 
   // Handle AutoComplete Change
@@ -137,7 +152,7 @@ export default class ReliefCenterForms extends Component {
     return option.title;
   };
 
-  // Custom Component
+  // Custom Radio Component -- Don't Use it
   StyledRadio = props => {
     const classes = useStyles();
     return (
@@ -154,10 +169,176 @@ export default class ReliefCenterForms extends Component {
     );
   };
 
+  // Handle Number of People Change
+  handleNumberOfPeopleChange = (e, taskID) => {
+    // Get the Number of people
+    const numberOfPeople = e.target.value;
+    // Find the object.. in tasks.. and update the concerned value.
+    const { tasks } = this.state;
+    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
+
+    tasks[foundIndex]["numberOfPeople"] = numberOfPeople;
+  };
+
+  // Handle Preference Change
+  handlePreferenceChange = (e, taskID) => {
+    // Get the Preference
+    const preference = e.target.value;
+
+    // Find the object.. in tasks.. and update the concerned value.
+    const { tasks } = this.state;
+    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
+
+    tasks[foundIndex]["preference"] = preference;
+    this.setState({ tasks });
+  };
+
+  // Handle Type of Job Change
+  handleTypeOfJobChange = (e, taskID) => {
+    // Get the Preference
+    const typeOfJob = e.target.value;
+
+    // Find the object.. in tasks.. and update the concerned value.
+    const { tasks } = this.state;
+    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
+
+    tasks[foundIndex]["typeOfJob"] = typeOfJob;
+    this.setState({ tasks });
+  };
+
   // Add Form Button Handler
   addForm = () => {
-    this.setState({ formCount: this.state.formCount + 1 });
+    const { tasks } = this.state;
+    tasks.push({
+      // Problematic if someone decides to delete one of the items!
+      taskID: tasks.length + 1,
+      numberOfPeople: 2,
+      nameOfJob: "Cooking",
+      typeOfJob: "Cooking",
+      preference: "anytime"
+    });
+
+    this.setState({ tasks });
   };
+
+  // Handle Date and Time change for Preference
+  handleDateTimeChange = (momentObject, taskID, ID) => {
+    // Get the Preference
+    const date = momentObject._d;
+
+    // Find the object.. in tasks.. and update the concerned value.
+    const { tasks } = this.state;
+    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
+
+    tasks[foundIndex][ID] = date;
+    this.setState({ tasks });
+  };
+
+  // Relief Center Form
+  handleSubmitReliefCenterForm = () => {
+    if (this.state.reliefCenterName)
+      this.setState({
+        isSubmitTableVisible: true,
+        isReliefCenterFormVisible: false
+      });
+    else {
+      this.setState({ isErrorVisible: true });
+    }
+  };
+
+  // Task Card Component
+  TaskCard = ({
+    taskID,
+    numberOfPeople,
+    typeOfJob,
+    preference,
+    date,
+    start_time,
+    end_time,
+    onNumberOfPeopleChange,
+    onPreferenceChange,
+    onTypeOfJobChange
+  }) => (
+    <Card taskID={taskID} style={{ padding: 50, marginBottom: 25 }}>
+      {numberOfPeople > 0 && typeOfJob && (
+        <Typography align="left" variant="h4">
+          Requesting {numberOfPeople} volunteers for {typeOfJob}
+        </Typography>
+      )}
+
+      <Grid container justify="center" spacing={2}>
+        <Grid xs={4} item>
+          <InputLabel id="volunteerDetail">Type of Job</InputLabel>
+
+          {/* Type of Task (Job)! */}
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={typeOfJob}
+            fullWidth
+            onChange={e => onTypeOfJobChange(e, taskID)}
+          >
+            <MenuItem value={"Driving"}>Driving</MenuItem>
+            <MenuItem value={"Baby Sitting"}>Baby Sitting</MenuItem>
+            <MenuItem value={"Cooking"}>Cooking</MenuItem>
+            <MenuItem value={"Other"}>Other</MenuItem>
+          </Select>
+        </Grid>
+
+        <Grid xs={3} item>
+          {/* Number of people needed */}
+          <TextField
+            defaultValue={numberOfPeople || 1}
+            onChange={e => onNumberOfPeopleChange(e, taskID)}
+            type="number"
+            fullWidth
+            InputProps={{
+              inputProps: {
+                max: 10,
+                min: 1
+              }
+            }}
+            label="People Needed"
+          ></TextField>
+        </Grid>
+      </Grid>
+
+      {/* Preference */}
+      <RadioGroup
+        aria-label="preference"
+        name="preference"
+        value={preference}
+        onChange={e => onPreferenceChange(e, taskID)}
+      >
+        <FormControlLabel
+          value="anytime"
+          control={<Radio />}
+          label="Any time"
+        />
+        <FormControlLabel
+          value="preference"
+          control={<Radio />}
+          label="Choose your preference"
+        />
+      </RadioGroup>
+
+      {preference == "preference" && (
+        <DateTimePicker
+          taskID={taskID}
+          selectedDate={date}
+          selectedStartTime={start_time}
+          selectedEndTime={end_time}
+          onDateChange={e => this.handleDateTimeChange(e, taskID, "date")}
+          onStartTimeChange={e =>
+            this.handleDateTimeChange(e, taskID, "start_time")
+          }
+          onEndTimeChange={e =>
+            this.handleDateTimeChange(e, taskID, "end_time")
+          }
+        />
+      )}
+    </Card>
+  );
 
   // Lifecycle Methods
   async componentDidMount() {
@@ -171,114 +352,111 @@ export default class ReliefCenterForms extends Component {
   }
 
   render() {
-    const { reliefCenterName, preference, nameOfJob, formCount } = this.state;
+    const {
+      reliefCenterName,
+      tasks,
+      isSubmitTableVisible,
+      isReliefCenterFormVisible,
+      isErrorVisible
+    } = this.state;
     return (
       <>
-        <Typography align="left" variant="h3">
-          Relief Center Form
-        </Typography>
+        {/* Error */}
+        {!reliefCenterName && (
+          <Alert severity="error">
+            Please select an existing Relief Center or create a new one!
+          </Alert>
+        )}
 
-        <Card style={{ padding: 25, marginBottom: 25 }}>
-          <Autocomplete
-            value={reliefCenterName}
-            onChange={this.handleAutoCompleteChange}
-            filterOptions={this.handleFilterOptions}
-            id="relief-center-name"
-            options={this.state.reliefCenters.map(reliefCenter => ({
-              title: reliefCenter.name
-            }))}
-            freeSolo
-            renderOption={option => option.title}
-            getOptionLabel={this.getOptionLabel}
-            renderInput={params => (
-              <TextField
-                {...params}
-                placeholder="Main Street Relief Center"
-                label="Relief Center Name"
-                variant="outlined"
-                block
-                InputLabelProps={{
-                  shrink: true
-                }}
-                fullWidth
-              />
-            )}
-          />
-        </Card>
-
-        {[...Array(formCount)].map((e, i) => (
-          <Card key={i} style={{ padding: 50 }}>
-            {this.state.numberOfPeople > 0 && this.state.typeOfJob && (
-              <Typography align="left" variant="body1">
-                Requesting {this.state.numberOfPeople} volunteers for{" "}
-                {this.state.typeOfJob}
-              </Typography>
-            )}
-
-            <Grid container justify="flex-start">
-              <Grid xs={4} item>
-                <InputLabel id="volunteerDetail">Type of Job</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={nameOfJob}
-                  fullWidth
-                  onChange={this.handleChange}
-                >
-                  <MenuItem value={"driving"}> Driving </MenuItem>
-                  <MenuItem value={"baby_sitting"}> Baby Sitting </MenuItem>
-                  <MenuItem value={"cooking"}> Cooking </MenuItem>
-                  <MenuItem value={"other"}> Other </MenuItem>
-                </Select>
-              </Grid>
-
-              <Grid xs={2} item>
-                <TextField
-                  defaultValue={this.state.numberOfPeople || 1}
-                  onChange={e =>
-                    this.setState({ numberOfPeople: e.target.value })
-                  }
-                  type="number"
-                  fullWidth
-                  InputProps={{
-                    inputProps: {
-                      max: 10,
-                      min: 1
-                    }
-                  }}
-                  label="People Needed"
-                ></TextField>
-              </Grid>
-            </Grid>
-
-            {/* <FormLabel component="legend"></FormLabel> */}
-            <RadioGroup
-              aria-label="preference"
-              name="preference"
-              value={preference}
-              onChange={this.handleChange}
-            >
-              <FormControlLabel
-                value="anytime"
-                control={<Radio />}
-                label="Any time"
-              />
-              <FormControlLabel
-                value="preference"
-                control={<Radio />}
-                label="Choose your preference"
-              />
-            </RadioGroup>
-
-            {this.state.preference == "preference" && <DateTimePicker />}
+        {/* Submitted Card */}
+        {isSubmitTableVisible && (
+          <Card>
+            <SubmittedTasksTableComponent tasks={tasks} />
           </Card>
-        ))}
+        )}
 
-        <Button onClick={this.addForm}>
-          ADD <AddCircleOutlineIcon />
-        </Button>
+        {isReliefCenterFormVisible && (
+          <>
+            {/* Panel Title - Relief Center Form */}
+            <Typography align="left" variant="h3">
+              {reliefCenterName == null || reliefCenterName == ""
+                ? "Relief Center Form"
+                : `${reliefCenterName.title} Form`}
+            </Typography>
 
-        <Button variant="contained">Submit</Button>
+            {/* Relief Center Name Input */}
+            <Card style={{ padding: 25, marginBottom: 25 }}>
+              <Autocomplete
+                value={reliefCenterName}
+                onChange={this.handleAutoCompleteChange}
+                filterOptions={this.handleFilterOptions}
+                id="relief-center-name"
+                options={this.state.reliefCenters.map(reliefCenter => ({
+                  title: reliefCenter.name
+                }))}
+                freeSolo
+                renderOption={option => option.title}
+                getOptionLabel={this.getOptionLabel}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    placeholder="Main Street Relief Center"
+                    label="Relief Center Name"
+                    variant="outlined"
+                    block
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    fullWidth
+                  />
+                )}
+              />
+            </Card>
+
+            {/* Task Cards */}
+            {tasks.map((task, index) => {
+              const {
+                taskID,
+                numberOfPeople,
+                nameOfJob,
+                typeOfJob,
+                date,
+                start_time,
+                end_time,
+                preference
+              } = task;
+              return (
+                <this.TaskCard
+                  key={index}
+                  taskID={taskID}
+                  numberOfPeople={numberOfPeople}
+                  nameOfJob={nameOfJob}
+                  typeOfJob={typeOfJob}
+                  preference={preference}
+                  date={date}
+                  start_time={start_time}
+                  end_time={end_time}
+                  onNumberOfPeopleChange={this.handleNumberOfPeopleChange}
+                  onPreferenceChange={this.handlePreferenceChange}
+                  onTypeOfJobChange={this.handleTypeOfJobChange}
+                />
+              );
+            })}
+
+            {/* Button to Add More Task Cards */}
+            <Button onClick={this.addForm}>
+              ADD <AddCircleOutlineIcon />
+            </Button>
+
+            {/* Submit Button */}
+            <Button
+              variant="contained"
+              onClick={this.handleSubmitReliefCenterForm}
+            >
+              Submit
+            </Button>
+          </>
+        )}
       </>
     );
   }

@@ -61,6 +61,11 @@ class Home extends Component {
   };
   async componentDidMount() {
     clientSocket.connect();
+
+    clientSocket.on("reliefCenterDataChange", () => {
+      // Get the latest changes
+      console.log("Data was changed..");
+    });
     // http://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d
     const news = await axios.get(
       "https://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d"

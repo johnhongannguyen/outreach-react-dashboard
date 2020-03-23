@@ -309,11 +309,6 @@ export default function Dashboard() {
             {/* Changing Components Here */}
 
             <Switch>
-              {/* Dashboard Route */}
-              <Route path="/dashboard/home">
-                <Home />
-              </Route>
-
               {/* Volunteers Route */}
               <Route path="/dashboard/volunteers">
                 <Volunteers />
@@ -337,6 +332,11 @@ export default function Dashboard() {
               {/* Settings Route */}
               <Route path="/dashboard/settings">
                 <div>Settings</div>
+              </Route>
+
+              {/* Dashboard Route */}
+              <Route path="/dashboard/">
+                <Home />
               </Route>
             </Switch>
 

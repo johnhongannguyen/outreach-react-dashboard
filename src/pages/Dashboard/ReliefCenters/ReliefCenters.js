@@ -62,7 +62,7 @@ class ReliefCenters extends Component {
   }
 
   // Function to check if its the homepage
-  isHomePage = () => this.props.location.pathname === "/dashboard/home";
+  isHomePage = () => this.props.location.pathname === "/dashboard/";
 
   // API Call
   getDataFromAPI = async relativePath => {
@@ -146,19 +146,6 @@ class ReliefCenters extends Component {
 
             {/* Sorting Button Group */}
             <Grid item xs="4">
-              {/* <ButtonGroup
-                variant="contained"
-                size="large"
-                color="primary"
-                aria-label="large outlined primary button group"
-              >
-                <Button onClick={() => this.handleButtonPress("All")}>
-                  All
-                </Button>
-                <Button>Oldest</Button>
-                <Button>Recent</Button>
-              </ButtonGroup> */}
-
               <Button variant="outlined" color="primary">
                 All
               </Button>
