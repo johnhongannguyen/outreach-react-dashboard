@@ -10,6 +10,7 @@ import {
 } from "@material-ui/pickers";
 
 export default function DateTimePicker({
+  taskID,
   selectedDate,
   selectedStartTime,
   selectedEndTime,
@@ -28,7 +29,7 @@ export default function DateTimePicker({
             margin="normal"
             label="Date"
             value={selectedDate}
-            onChange={onDateChange}
+            onChange={e => onDateChange(e, taskID)}
             KeyboardButtonProps={{
               "aria-label": "change date"
             }}
