@@ -4,10 +4,17 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  TextField
+  TextField,
+  Card,
+  Typography,
+  FormControlLabel,
+  FormLabel,
+  RadioGroup,
+  Radio
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
+<<<<<<< HEAD
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -25,6 +32,10 @@ import {
 } from "@material-ui/pickers";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
+=======
+
+import Theme from "../../../theme";
+>>>>>>> staging
 
 // Styles
 const useStyles = makeStyles({
@@ -114,7 +125,7 @@ export default class ReliefCenterForms extends Component {
     const { nameOfJob } = this.props;
 
     return (
-      <>
+      <ThemeProvider theme={Theme}>
         <Typography align="left" variant="h3">
           Relief Center Form
         </Typography>
@@ -227,6 +238,7 @@ export default class ReliefCenterForms extends Component {
             </FormControl>
           </FormControl>
         </Card>
+<<<<<<< HEAD
         <div align="left" style={{ display: "flex" }}>
           <Typography style={{ marginTop: "25px", marginRight: " 10px" }}>
             Add
@@ -246,6 +258,9 @@ export default class ReliefCenterForms extends Component {
           </Button>
         </div>
       </>
+=======
+      </ThemeProvider>
+>>>>>>> staging
     );
   }
 }

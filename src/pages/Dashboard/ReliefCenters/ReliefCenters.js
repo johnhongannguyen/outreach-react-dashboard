@@ -1,24 +1,27 @@
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { Link, withRouter, Redirect } from "react-router-dom";
 
-// Axios
-import axios from "axios";
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
 import {
   Paper,
   Grid,
   Typography,
   Button,
+  ButtonGroup,
   Badge,
   TextField,
-  InputAdornment
+  InputAdornment,
+  ThemeProvider
 } from "@material-ui/core";
-
 import { Search as SearchIcon } from "@material-ui/icons";
-import ReliefCenterActionCard from "../../../components/Dashboard/ReliefCenterActionCard";
 
-// React Router
-import { Link, withRouter, Redirect } from "react-router-dom";
-import AssignVolunteers from "./AssignVolunteers";
+// Axios
+import axios from "axios";
+
+// Custom Components and Themes
+import ReliefCenterActionCard from "../../../components/Dashboard/ReliefCenterActionCard";
+import Theme from "../../../theme";
 
 // ENV
 const API_URL = process.env.REACT_APP_API_URL;
@@ -53,9 +56,13 @@ class ReliefCenters extends Component {
 
     this.state = {
       notifications: [],
-      reliefCenters: []
+      reliefCenters: [],
+      reliefCenterSearchValue: ""
     };
   }
+
+  // Function to check if its the homepage
+  isHomePage = () => this.props.location.pathname === "/dashboard/";
 
   // API Call
   getDataFromAPI = async relativePath => {
@@ -77,9 +84,23 @@ class ReliefCenters extends Component {
     this.props.history.push(
       `/dashboard/relief-center/id/${reliefCenterID}/assign`
     );
-
-    // return <Redirect to="/dashboard/relief-centers/assign" />;
   };
+
+  handleButtonPress(type) {
+    switch (type) {
+      case "All":
+        // code block
+        break;
+      case "Oldest":
+        // code block
+        break;
+      case "Recent":
+        // code block
+        break;
+      default:
+      // code block
+    }
+  }
 
   componentDidMount() {
     this.getDataFromAPI("/relief-center/all/requirement");
@@ -90,48 +111,98 @@ class ReliefCenters extends Component {
 
     const { notifications, reliefCenters } = this.state;
     return (
-      <>
+      <ThemeProvider theme={Theme}>
+        {/* Title */}
         <Typography align="left" variant="h5" component="h3">
-          Relief Centers - Action Needed
+          Relief Centers{" "}
+          <Typography variant="body2" component="span">
+            - Action Needed
+          </Typography>
         </Typography>
-        <Grid xs="12">
-          <TextField
-            block
-            id="outlined-search"
-            label="Search Relief Center"
-            type="search"
-            variant="standard"
-            fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              )
-            }}
-          />
-        </Grid>
 
+        {/* Internal Page: Search, Sort, and Request Form Button */}
+        {!this.isHomePage() && (
+          <Grid justify="flex-start" container xs="12">
+            {/* Search Input */}
+            <Grid item xs="6">
+              <TextField
+                fullWidth
+                onChange={event =>
+                  this.setState({ reliefCenterSearchValue: event.target.value })
+                }
+                id="outlined-search"
+                label="Search Relief Center"
+                type="search"
+                variant="standard"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Grid>
+
+            {/* Sorting Button Group */}
+            <Grid item xs="4">
+              <Button variant="outlined" color="primary">
+                All
+              </Button>
+              <Button variant="outlined" color="primary">
+                Oldest
+              </Button>
+              <Button variant="outlined" color="primary">
+                Recent
+              </Button>
+            </Grid>
+
+            {/* Request Form Button */}
+            <Grid item xs="2">
+              <Button variant="contained" color="primary">
+                <Link to="/dashboard/relief-center-forms">Request Form</Link>
+              </Button>
+            </Grid>
+          </Grid>
+        )}
+
+        {/* Relief Center Container */}
         <Paper className={classes.paper}>
           <Grid justify="center" container>
-            {reliefCenters.map(reliefCenter => (
-              <Grid item className={classes.hoverStyle}>
-                <ReliefCenterActionCard
-                  name={reliefCenter.name}
-                  list={reliefCenter.required}
-                  onAssignClick={() => this.assignVolunteers(reliefCenter._id)}
-                />
-              </Grid>
-            ))}
+            {reliefCenters.length > 0 &&
+              reliefCenters
+                .sort((a, b) => {
+                  return a.updatedAt > b.updatedAt ? 1 : -1;
+                })
+                .filter(reliefCenter =>
+                  reliefCenter.name
+                    .toLowerCase()
+                    .includes(this.state.reliefCenterSearchValue.toLowerCase())
+                )
+                .map(reliefCenter => (
+                  <Grid item className={classes.hoverStyle}>
+                    <ReliefCenterActionCard
+                      name={reliefCenter.name}
+                      list={reliefCenter.required}
+                      onAssignClick={() =>
+                        this.assignVolunteers(reliefCenter._id)
+                      }
+                    />
+                    {reliefCenter.updatedAt}
+                  </Grid>
+                ))}
           </Grid>
 
-          <Grid container justify="flex-end">
-            <Link to="/dashboard/relief-centers">
-              <Button>See All..</Button>
-            </Link>
-          </Grid>
+          {/* See All Button (On Home Page) */}
+          {this.isHomePage() && (
+            <Grid container justify="flex-end">
+              <Link to="/dashboard/relief-centers">
+                <Button>See All</Button>
+              </Link>
+            </Grid>
+          )}
         </Paper>
-      </>
+      </ThemeProvider>
     );
   }
 }

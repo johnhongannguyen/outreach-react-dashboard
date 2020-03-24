@@ -192,8 +192,3 @@ class TeamPage extends React.Component {
 }
 
 export default TeamPage;
-
-// display: flex;
-// flex-wrap: wrap;
-// justify-content: center
-// width: 25%;

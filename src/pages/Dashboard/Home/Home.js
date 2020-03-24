@@ -11,13 +11,17 @@ import NotificationCard from "../../../components/Dashboard/NotificationCard";
 import Volunteers from "../Volunteers/Volunteers";
 import ReliefCenters from "../ReliefCenters/ReliefCenters";
 
+// Web Sockets - Socket.io
+import { clientSocket, adminSocket } from "../../../web-sockets";
+
 // ENV
 const API_URL = process.env.REACT_APP_API_URL;
 
 //     await fetchDataFromAPI("/relief-center");
 const styles = theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    fontFamily: "Open Sans"
   },
   // homeGrid: { backgroundColor: "#111C24" },
   paper: {
@@ -44,13 +48,34 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      notifications: []
+      notifications: [],
+      updates: null
     };
+  }
+
+  // Handle Notify Click
+  handleNotifyClick = broadcastMessage => {
+    console.log("Trying to broadcast:", broadcastMessage);
+
+    clientSocket.emit("broadcastMessage", broadcastMessage);
+  };
+  async componentDidMount() {
+    clientSocket.connect();
+
+    clientSocket.on("reliefCenterDataChange", () => {
+      // Get the latest changes
+      console.log("Data was changed..");
+    });
+    // http://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d
+    const news = await axios.get(
+      "https://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d"
+    );
+    this.setState({ updates: news.data });
   }
 
   render() {
     const { classes } = this.props;
-    const { notifications } = this.state;
+    const { updates } = this.state;
     return (
       <>
         <Grid container className={classes.root} spacing={2}>
@@ -67,20 +92,24 @@ class Home extends Component {
           {/* Notifications (Alerts) */}
           <Grid item xs={12} lg={6}>
             <Typography variant="h5" align="left" component="h3">
-              Notifications
+              Updates
             </Typography>
             <Paper className={classes.paper}>
               <Grid justify="center" container>
-                {notifications.length < 0 ? (
-                  <Grid item>No New Notifications</Grid>
+                {updates ? (
+                  updates &&
+                  updates.articles.slice(0, 3).map(update => (
+                    <Grid item className={classes.hoverStyle}>
+                      <NotificationCard
+                        content={update.title}
+                        onNotifyClick={() =>
+                          this.handleNotifyClick(update.title)
+                        }
+                      />
+                    </Grid>
+                  ))
                 ) : (
-                  notifications
-                    .filter(index => index < 3)
-                    .map(value => (
-                      <Grid item className={classes.hoverStyle}>
-                        <NotificationCard content="Really long test with the notication card" />
-                      </Grid>
-                    ))
+                  <Grid item>No New Notifications</Grid>
                 )}
               </Grid>
 

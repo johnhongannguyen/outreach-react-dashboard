@@ -55,7 +55,7 @@ export default function ReliefCenterActionCard({ list, name, onAssignClick }) {
       </CardContent>
       <CardActions>
         <Grid container justify="flex-end">
-          <Button color="primary" variant="contained" onClick={onAssignClick}>
+          <Button color="primary" variant="outlined" onClick={onAssignClick}>
             Assign
           </Button>
         </Grid>

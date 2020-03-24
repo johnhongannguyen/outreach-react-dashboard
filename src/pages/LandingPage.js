@@ -4,8 +4,13 @@ import { Typography, Container } from "@material-ui/core";
 
 // Get Components
 import OutreachDefinition from "../components/LandingPage/OutreachDefinition/OutreachDefinition";
+import Outreachuserflow from "../components/LandingPage/Outreach-Userflow/Outreachuserflow";
 import AllFeatures from "../components/LandingPage/Features-Section/AllFeatures";
 import Video from "../components/LandingPage/VideoSection/Video.js";
+import Donation from "../components/LandingPage/Donation/Donation";
+import Header from "../components/LandingPage/Header/Header.js";
+import Footer from "../components/LandingPage/Footer/Footer.js";
+import Mockup from "../components/LandingPage/MobileMockups/Mockup.js"
 
 // Landing Page
 export default function LandingPage() {
@@ -14,7 +19,7 @@ export default function LandingPage() {
   return (
     <Container classes={classes} maxWidth="lg">
       {/* Section - HEADER */}
-
+      <Header />
       {/* Section - HERO */}
       <Video />
 
@@ -24,11 +29,16 @@ export default function LandingPage() {
       {/* Section - HOW OUTREACH HELPS (features) */}
       <AllFeatures />
 
-      {/* Section - DONATION */}
+      {/* Section - HOW OUTREACH WORKS  */}
+      <Outreachuserflow />
 
+      {/* Section - DONATION */}
+      <Donation />
       {/* Section - DOWNLOAD */}
+      <Mockup />
 
       {/* Section - FOOTER */}
+      <Footer />
     </Container>
   );
 }

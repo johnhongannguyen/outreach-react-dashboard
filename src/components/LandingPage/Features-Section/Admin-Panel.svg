@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="210" height="157.8" viewBox="0 0 210 157.8">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#f27821"/>
+      <stop offset="1" stop-color="#ff512f"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_11" data-name="Group 11" transform="translate(-92.009 -205.927)">
+    <path id="Path_1" data-name="Path 1" d="M226.819,126.562c-.027-.008-.032-.01-.012-.006Z" transform="translate(-5.952 137.28)" fill="url(#linear-gradient)"/>
+    <path id="Path_2" data-name="Path 2" d="M226.819,126.562c-.027-.008-.032-.01-.012-.006Z" transform="translate(-5.952 137.28)" fill="url(#linear-gradient)"/>
+    <path id="Path_3" data-name="Path 3" d="M286.009,119.727a100,100,0,1,1-200,0" transform="translate(11 139)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="10"/>
+    <path id="Path_5" data-name="Path 5" d="M242.156,147.658v-7.486l-7.041-.895-1.271-3.068,4.347-5.611-5.3-5.3-5.479,4.479a34.168,34.168,0,0,0-3.2-1.4l-.895-7.044h-7.489l-.895,7.044-3.067,1.271-5.611-4.347-5.3,5.3,4.347,5.611-1.271,3.068-7.041.895v7.486l7.028.893a16.043,16.043,0,0,0,1.268,3.09l-4.332,5.594,5.3,5.293,5.573-4.316a16.116,16.116,0,0,0,3.112,1.3l.888,6.988h7.489l.888-6.988a16.066,16.066,0,0,0,3.113-1.3l5.573,4.316,5.3-5.293-4.332-5.594a16.044,16.044,0,0,0,1.268-3.09Zm-22.578,4.567a8.309,8.309,0,1,1,8.308-8.31A8.31,8.31,0,0,1,219.578,152.225Z" transform="translate(2.444 138.751)" fill="#fff"/>
+    <path id="Path_6" data-name="Path 6" d="M206.679,107.505a33.58,33.58,0,0,0-34.1,46.907H127.6V121.357a22.319,22.319,0,0,1,22.318-22.319h39.265A22.261,22.261,0,0,1,206.679,107.505Z" transform="translate(22 145.034)" fill="#fff"/>
+    <circle id="Ellipse_1" data-name="Ellipse 1" cx="16.444" cy="16.444" r="16.444" transform="translate(175.105 205.927)" fill="#fff"/>
+    <path id="Path_7" data-name="Path 7" d="M237.705,110.827" transform="translate(-9.026 141.712)" stroke="#231f20" stroke-linecap="round" stroke-miterlimit="10" stroke-width="15" fill="url(#linear-gradient)"/>
+  </g>
+</svg>
