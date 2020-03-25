@@ -113,12 +113,14 @@ class AssignVolunteers extends Component {
                     <TableCell align="center" component="th" scope="row">
                       {job.type}
                     </TableCell>
-                    <TableCell align="center">{job.total}</TableCell>
+                    <TableCell align="center">{job.total_capacity}</TableCell>
+                    <TableCell align="center">{job.assigned}</TableCell>
                     <TableCell align="center">
-                      {job.assignedVolunteers}
+                      {job.volunteer_requests}
                     </TableCell>
-                    <TableCell align="center">{job.pendingRequests}</TableCell>
-                    <TableCell align="center">{job.need}</TableCell>
+                    <TableCell align="center">
+                      {job.total_capacity - job.assigned}
+                    </TableCell>
                     {/* User Suggestion Column */}
                     <TableCell align="center">
                       {/* Suggest a Random User! */}

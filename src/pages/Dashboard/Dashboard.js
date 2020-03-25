@@ -3,7 +3,12 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 
 // React Router
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink
+} from "react-router-dom";
 
 // Material UI - Core - Imports
 import {
@@ -282,7 +287,9 @@ export default function Dashboard() {
               onClose={handleUserMenuClose}
             >
               <MenuItem onClick={handleUserMenuClose}>Profile</MenuItem>
-              <MenuItem onClick={handleUserMenuClose}>Sign Out</MenuItem>
+              <MenuItem onClick={handleUserMenuClose}>
+                <NavLink to="/login">Test</NavLink>
+              </MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>

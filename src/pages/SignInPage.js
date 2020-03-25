@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,6 +12,7 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import Axios from "axios";
 
 function Copyright() {
   return (
@@ -31,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     height: "100vh"
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundImage: "url(https://source.unsplash.com/featured/?coronavirus)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "dark"
@@ -59,8 +60,27 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignInPage() {
+export const SignInPage = props => {
   const classes = useStyles();
+
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  const handleSignInClick = async () => {
+    try {
+      if (email && password) {
+        const data = await Axios.post("http://127.0.0.1:4000/api/auth/login", {
+          email: email,
+          password: password
+        });
+        if (data) {
+          props.history.push("/dashboard");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -72,7 +92,7 @@ export default function SignInPage() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign in to the Outreach Dashboard
           </Typography>
           <form className={classes.form} noValidate>
             <TextField
@@ -85,6 +105,7 @@ export default function SignInPage() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={e => setEmail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -96,17 +117,18 @@ export default function SignInPage() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={e => setPassword(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={handleSignInClick}
             >
               Sign In
             </Button>
@@ -130,4 +152,4 @@ export default function SignInPage() {
       </Grid>
     </Grid>
   );
-}
+};
