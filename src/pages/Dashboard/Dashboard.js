@@ -3,7 +3,12 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 
 // React Router
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink
+} from "react-router-dom";
 
 // Material UI - Core - Imports
 import {
@@ -41,6 +46,13 @@ import Volunteers from "./Volunteers/Volunteers";
 import ReliefCenters from "./ReliefCenters/ReliefCenters";
 import Home from "./Home/Home";
 import AssignVolunteers from "./ReliefCenters/AssignVolunteers";
+
+// Redux
+// Getting Auth (was in Home during the example follow-up)
+import { connect } from "react-redux";
+import { setAuthAndUnlockDashBoard, logOut } from "../../actions/authActions";
+
+// Logo
 const outreachLogo = require("../../assets/outreach_logo.png");
 
 // Copyright Component
@@ -141,7 +153,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Dashboard() {
+function Dashboard({ user, logOut }) {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(true);
@@ -192,6 +204,11 @@ export default function Dashboard() {
     setOpen(false);
   };
 
+  // Logout
+  const handleLogout = () => {
+    logOut();
+  };
+
   return (
     <Router>
       <div className={classes.root}>
@@ -216,17 +233,7 @@ export default function Dashboard() {
             >
               <MenuIcon />
             </IconButton>
-            {/* Text in the center */}
-            {/* <Typography
-              component="h1"
-              variant="h6"
-              color="primary"
-              noWrap
-              className={classes.title}
-            >
-              Outreach Admin Panel
-            </Typography> */}
-            {/* Notifications on the Right */}
+
             <IconButton onClick={handleNotificationsClick} color="inherit">
               <Badge badgeContent={2} color="secondary">
                 <NotificationsIcon color="primary" />
@@ -264,14 +271,14 @@ export default function Dashboard() {
               onClick={handleUserMenuClick}
             >
               <Avatar
-                alt="Blandy Castro"
-                src="https://avatars1.githubusercontent.com/u/109951?s=400&v=4"
+                alt="User Photo"
+                src="https://source.unsplash.com/JN0SUcTOig0/240x180"
                 className={classes.orange}
               >
                 {/* Fallback: Initials of the person who's logged in */}
                 BC
               </Avatar>
-              &nbsp; Blandy Castro
+              &nbsp; {user ? user.name : "Anonymous User"}
             </Button>
 
             <Menu
@@ -282,7 +289,7 @@ export default function Dashboard() {
               onClose={handleUserMenuClose}
             >
               <MenuItem onClick={handleUserMenuClose}>Profile</MenuItem>
-              <MenuItem onClick={handleUserMenuClose}>Sign Out</MenuItem>
+              <MenuItem onClick={handleLogout}>Log Out</MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
@@ -350,3 +357,12 @@ export default function Dashboard() {
     </Router>
   );
 }
+
+// Redux - Map State to Sign In Page props
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { setAuthAndUnlockDashBoard, logOut })(
+  Dashboard
+);
