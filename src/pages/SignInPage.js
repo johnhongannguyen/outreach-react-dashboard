@@ -12,8 +12,13 @@ import {
   Paper,
   Box,
   Grid,
+  Collapse,
   Typography
 } from "@material-ui/core";
+
+// Labs
+import Alert from "@material-ui/lab/Alert";
+import AlertTitle from "@material-ui/lab/AlertTitle";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
@@ -77,6 +82,7 @@ export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [alert, setAlert] = useState(null);
 
   // On Form Submit
   const handleFormSubmit = e => {
@@ -88,7 +94,14 @@ export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
         password: password
       })
       .then(response => {
-        setAuthAndUnlockDashBoard(response.data);
+        if (response.data.role === "admin")
+          setAuthAndUnlockDashBoard(response.data);
+        else
+          setAlert({
+            alertTitle: "Error",
+            alert: "Sorry, that is not an admin account.",
+            alertSeverity: "error"
+          });
       })
       .catch(err => {
         console.log("Error:", err);
@@ -107,6 +120,16 @@ export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
           <Typography component="h1" variant="h5">
             Sign in to the Outreach Dashboard
           </Typography>
+
+          {alert && (
+            <Collapse in={alert}>
+              <Alert severity={alert.alertSeverity}>
+                <AlertTitle>{alert.alertTitle}</AlertTitle>
+                {alert.alert}
+              </Alert>
+            </Collapse>
+          )}
+
           <form
             className={classes.form}
             action="/api/auth/login"
