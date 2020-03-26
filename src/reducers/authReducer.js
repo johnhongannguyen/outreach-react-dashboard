@@ -19,7 +19,9 @@ export default function(state = initialState, action) {
     case LOGIN_FAILURE:
       return Object.assign({}, state, {
         isWaiting: false,
-        isAuthenticated: false
+        isAuthenticated: false,
+        user: null,
+        token: null
       });
     default: {
       return state;
