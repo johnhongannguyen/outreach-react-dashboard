@@ -221,17 +221,7 @@ export default function Dashboard() {
             >
               <MenuIcon />
             </IconButton>
-            {/* Text in the center */}
-            {/* <Typography
-              component="h1"
-              variant="h6"
-              color="primary"
-              noWrap
-              className={classes.title}
-            >
-              Outreach Admin Panel
-            </Typography> */}
-            {/* Notifications on the Right */}
+
             <IconButton onClick={handleNotificationsClick} color="inherit">
               <Badge badgeContent={2} color="secondary">
                 <NotificationsIcon color="primary" />
@@ -269,14 +259,14 @@ export default function Dashboard() {
               onClick={handleUserMenuClick}
             >
               <Avatar
-                alt="Blandy Castro"
+                alt="User Photo"
                 src="https://avatars1.githubusercontent.com/u/109951?s=400&v=4"
                 className={classes.orange}
               >
                 {/* Fallback: Initials of the person who's logged in */}
                 BC
               </Avatar>
-              &nbsp; Blandy Castro
+              &nbsp; {true ? "Angel Augustine" : "Blandy Castro"}
             </Button>
 
             <Menu
