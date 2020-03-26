@@ -1,0 +1,127 @@
+.footer {
+  background-color: #2e2e2e;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.footer .logo {
+  margin-bottom: 0;
+}
+
+.footer-outreach-logo {
+  width: 5rem;
+}
+
+.footer {
+  padding: 1rem;
+  /* display: grid; */
+  /* grid-template-columns: 0.5fr 1.5fr 3fr; */
+  /* padding-top: 1rem; */
+  /* padding-bottom: 1rem; */
+}
+
+.footer a {
+  grid-column: 1/2;
+  display: block;
+}
+
+.footer .logo {
+  flex: 50%;
+  grid-column: 2/3;
+  margin-top: 0;
+  align-self: center;
+  text-align: left !important;
+}
+
+.footer .logo a {
+  color: white;
+  font-size: 1.5rem;
+  /* position: absolute; */
+}
+
+.footer .nl-btn {
+  background-image: linear-gradient(#f27821, #f16908, #e7281f);
+  border-radius: 10px !important;
+}
+
+.footer .navigation {
+  display: flex;
+  flex: 30%;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+.footer .navigation li {
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.footer .navigation li a {
+  text-decoration: none;
+  color: black;
+  color: white;
+  font-family: quicksand;
+  font-weight: 300;
+  font-size: 13px;
+}
+.logo-nav-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex: row;
+}
+/* Style for NewsLetter Section --------------------------------------------------- */
+.news-letter-container {
+  position: relative;
+  top: -50px;
+}
+
+.news-letter-container span {
+  font-size: 1rem;
+}
+.NewsLTitle {
+  font-family: quicksand;
+  color: #f16f22;
+  font-weight: bold;
+}
+.nl-subcontainer {
+  text-align: center;
+}
+
+.nl-subcontainer .btn,
+input {
+  font-size: 0.6rem;
+}
+
+/* .MuiButton-root{
+   border-radius: 10rem;
+} */
+.nl-subcontainer input::placeholder {
+  font-size: 15px;
+}
+.nl-subcontainer input {
+  padding-top: 4px;
+  font-size: 15px;
+  padding-left: 4px;
+  padding-bottom: 4px;
+  padding-right: 120px;
+  margin-right: 0.75rem;
+  height: 2rem;
+  border: 1px solid gainsboro;
+  display: inline;
+  width: 40vw;
+  line-height: 0;
+}
+.MuiButton-root {
+  padding: 6px 16px !important;
+}
+@media screen and (min-width: 1060px) {
+  .nl-subcontainer input {
+    width: 30vw;
+  }
+}
