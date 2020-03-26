@@ -54,7 +54,7 @@
 /* =================== Media Queries ================================= */
 @media screen and (min-width: 700px) {
   .MuiToolbar-regular {
-    display: none !important;
+    /* display: none !important; */
   }
   .header-menu {
     display: flex !important;

@@ -32,10 +32,15 @@ export class ConnectedApp extends Component {
     return (
       <div className="App">
         <Router>
+          {/* Landing Page Route */}
+          <Route exact path="/">
+            <LandingPage />
+          </Route>
+
           <Switch>
             {/* Dashboard Route */}
             <Route
-              path="/dashboard/"
+              path="/dashboard"
               render={() =>
                 isAuthenticated ? (
                   <Dashboard user={user} />
@@ -65,11 +70,6 @@ export class ConnectedApp extends Component {
             {/* Team Page Route */}
             <Route path="/team">
               <TeamPage />
-            </Route>
-
-            {/* Landing Page Route */}
-            <Route path="/">
-              <LandingPage />
             </Route>
           </Switch>
         </Router>
