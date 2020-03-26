@@ -83,7 +83,7 @@ export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
     e.preventDefault();
 
     axios
-      .post("http://localhost:4000/api/auth/login", {
+      .post("/api/auth/login", {
         email: email,
         password: password
       })
