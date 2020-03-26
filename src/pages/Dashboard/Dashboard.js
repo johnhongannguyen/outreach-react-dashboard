@@ -46,6 +46,13 @@ import Volunteers from "./Volunteers/Volunteers";
 import ReliefCenters from "./ReliefCenters/ReliefCenters";
 import Home from "./Home/Home";
 import AssignVolunteers from "./ReliefCenters/AssignVolunteers";
+
+// Redux
+// Getting Auth (was in Home during the example follow-up)
+import { connect } from "react-redux";
+import { setAuthAndUnlockDashBoard, logOut } from "../../actions/authActions";
+
+// Logo
 const outreachLogo = require("../../assets/outreach_logo.png");
 
 // Copyright Component
@@ -146,7 +153,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Dashboard() {
+function Dashboard({ user, logOut }) {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(true);
@@ -195,6 +202,11 @@ export default function Dashboard() {
   };
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  // Logout
+  const handleLogout = () => {
+    logOut();
   };
 
   return (
@@ -260,13 +272,13 @@ export default function Dashboard() {
             >
               <Avatar
                 alt="User Photo"
-                src="https://avatars1.githubusercontent.com/u/109951?s=400&v=4"
+                src="https://source.unsplash.com/JN0SUcTOig0/240x180"
                 className={classes.orange}
               >
                 {/* Fallback: Initials of the person who's logged in */}
                 BC
               </Avatar>
-              &nbsp; {true ? "Angel Augustine" : "Blandy Castro"}
+              &nbsp; {user ? user.name : "Anonymous User"}
             </Button>
 
             <Menu
@@ -277,9 +289,7 @@ export default function Dashboard() {
               onClose={handleUserMenuClose}
             >
               <MenuItem onClick={handleUserMenuClose}>Profile</MenuItem>
-              <MenuItem onClick={handleUserMenuClose}>
-                <NavLink to="/login">Test</NavLink>
-              </MenuItem>
+              <MenuItem onClick={handleLogout}>Log Out</MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
@@ -347,3 +357,12 @@ export default function Dashboard() {
     </Router>
   );
 }
+
+// Redux - Map State to Sign In Page props
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { setAuthAndUnlockDashBoard, logOut })(
+  Dashboard
+);

@@ -17,10 +17,14 @@ import {
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 
-import { Link as RouterLink } from "react-router-dom";
+// Redux
+// Getting Auth (was in Home during the example follow-up)
 import { connect } from "react-redux";
+import { setAuthAndUnlockDashBoard } from "../actions/authActions";
+
+// Axios
+import axios from "axios";
 
 function Copyright() {
   return (
@@ -68,23 +72,28 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const SignInPage = props => {
+export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
   const classes = useStyles();
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
-  const [reliefCenter, setReliefCenter] = useState(null);
 
-  // const checkLoginStatus = () => {
-  //   axios
-  //     .get("/api/auth/login", { withCredentials: true })
-  //     .then(response => {
-  //       console.log("Logged in?", response);
-  //     })
-  //     .catch(error => {
-  //       console.log("Check Login Error:", error);
-  //     });
-  // };
+  // On Form Submit
+  const handleFormSubmit = e => {
+    e.preventDefault();
+
+    axios
+      .post("http://localhost:4000/api/auth/login", {
+        email: email,
+        password: password
+      })
+      .then(response => {
+        setAuthAndUnlockDashBoard(response.data);
+      })
+      .catch(err => {
+        console.log("Error:", err);
+      });
+  };
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -137,8 +146,7 @@ export const SignInPage = props => {
               variant="contained"
               color="primary"
               className={classes.submit}
-              type="submit"
-              // onClick={handleSignInClick}
+              onClick={handleFormSubmit}
             >
               Sign In
             </Button>
@@ -163,3 +171,12 @@ export const SignInPage = props => {
     </Grid>
   );
 };
+
+// Redux - Map State to Sign In Page props
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { setAuthAndUnlockDashBoard })(
+  SignInPage
+);

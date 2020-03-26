@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 
 // Redux Provider
 import { Provider } from "react-redux";
 import store from "./store";
 
-// Connected App
+// Connected App (with Redux Store)
 import ConnectedApp from "./ConnectedApp";
+
 // App
 class App extends React.Component {
   render() {
@@ -19,10 +20,4 @@ class App extends React.Component {
   }
 }
 
-// Home.propTypes = {
-//   getItems: PropTypes.func.isRequired,
-//   item: PropTypes.object.isRequired
-// };
-
-// export default connect(mapStateToProps, { getItems })(withStyles(styles)(Home));
 export default App;

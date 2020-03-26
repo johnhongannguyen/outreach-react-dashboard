@@ -1,7 +1,7 @@
 import { LOGIN_SUCCESS, LOGIN_FAILURE } from "../actions/types";
 
 const initialState = {
-  isWaiting: true,
+  isWaiting: false,
   isAuthenticated: false,
   user: null,
   token: null
@@ -19,7 +19,7 @@ export default function(state = initialState, action) {
     case LOGIN_FAILURE:
       return Object.assign({}, state, {
         isWaiting: false,
-        authenticated: false
+        isAuthenticated: false
       });
     default: {
       return state;
