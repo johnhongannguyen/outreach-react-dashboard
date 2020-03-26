@@ -1,18 +1,26 @@
-import React, { useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
+import React, { useState, useEffect } from "react";
+
+// Material UI
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  Typography
+} from "@material-ui/core";
+
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Axios from "axios";
+import axios from "axios";
+
+import { Link as RouterLink } from "react-router-dom";
+import { connect } from "react-redux";
 
 function Copyright() {
   return (
@@ -65,22 +73,18 @@ export const SignInPage = props => {
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [reliefCenter, setReliefCenter] = useState(null);
 
-  const handleSignInClick = async () => {
-    try {
-      if (email && password) {
-        const data = await Axios.post("http://127.0.0.1:4000/api/auth/login", {
-          email: email,
-          password: password
-        });
-        if (data) {
-          props.history.push("/dashboard");
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const checkLoginStatus = () => {
+  //   axios
+  //     .get("/api/auth/login", { withCredentials: true })
+  //     .then(response => {
+  //       console.log("Logged in?", response);
+  //     })
+  //     .catch(error => {
+  //       console.log("Check Login Error:", error);
+  //     });
+  // };
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -94,7 +98,12 @@ export const SignInPage = props => {
           <Typography component="h1" variant="h5">
             Sign in to the Outreach Dashboard
           </Typography>
-          <form className={classes.form} noValidate>
+          <form
+            className={classes.form}
+            action="/api/auth/login"
+            method="POST"
+            noValidate
+          >
             <TextField
               variant="outlined"
               margin="normal"
@@ -128,7 +137,8 @@ export const SignInPage = props => {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={handleSignInClick}
+              type="submit"
+              // onClick={handleSignInClick}
             >
               Sign In
             </Button>

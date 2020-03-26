@@ -1,51 +1,28 @@
 import React, { useState } from "react";
 import "./App.css";
 
-import { SignInPage } from "./pages/SignInPage";
-import LandingPage from "./pages/LandingPage";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import ContactPage from "./pages/ContactPage/ContactPage.js";
-import TeamPage from "./pages/TeamPage/TeamPicture.js";
-import { ProtectedRoute } from "./routers/ProtectedRoute";
+// Redux Provider
+import { Provider } from "react-redux";
+import store from "./store";
 
-// Component
-function App() {
-  const [volunteerRequests, setVolunteerRequests] = useState([]);
-  const value = { volunteerRequests, setVolunteerRequests };
-
-  return (
-    <div className="App">
-      <Router>
-        <Switch>
-          {/* Dashboard Route */}
-          <Router path="/dashboard">
-            <Dashboard />
-          </Router>
-
-          {/* Login Page Route */}
-          <Route path="/login">
-            <SignInPage />
-          </Route>
-
-          {/* Contact Page Route */}
-          <Route path="/contact">
-            <ContactPage />
-          </Route>
-
-          {/* Team Page Route */}
-          <Route path="/team">
-            <TeamPage />
-          </Route>
-
-          {/* Landing Page Route */}
-          <Route path="/">
-            <LandingPage />
-          </Route>
-        </Switch>
-      </Router>
-    </div>
-  );
+// Connected App
+import ConnectedApp from "./ConnectedApp";
+// App
+class App extends React.Component {
+  render() {
+    return (
+      // Redux Provider
+      <Provider store={store}>
+        <ConnectedApp />
+      </Provider>
+    );
+  }
 }
 
+// Home.propTypes = {
+//   getItems: PropTypes.func.isRequired,
+//   item: PropTypes.object.isRequired
+// };
+
+// export default connect(mapStateToProps, { getItems })(withStyles(styles)(Home));
 export default App;

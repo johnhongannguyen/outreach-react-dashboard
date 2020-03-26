@@ -4,8 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 // Axios
 import axios from "axios";
 import { Paper, Grid, Typography, Button, Badge } from "@material-ui/core";
-import VolunteerRequestCard from "../../../components/Dashboard/VolunteerRequestCard";
-import ReliefCenterActionCard from "../../../components/Dashboard/ReliefCenterActionCard";
 import { Link } from "react-router-dom";
 import NotificationCard from "../../../components/Dashboard/NotificationCard";
 import Volunteers from "../Volunteers/Volunteers";
@@ -60,13 +58,17 @@ class Home extends Component {
     clientSocket.emit("broadcastMessage", broadcastMessage);
   };
   async componentDidMount() {
-    clientSocket.connect();
+    // React Redux
+    // this.props.getItems();
 
+    // Socket.io
+    clientSocket.connect();
     clientSocket.on("reliefCenterDataChange", () => {
       // Get the latest changes
       console.log("Data was changed..");
     });
-    // http://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d
+
+    // News API
     const news = await axios.get(
       "https://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d"
     );
@@ -76,9 +78,14 @@ class Home extends Component {
   render() {
     const { classes } = this.props;
     const { updates } = this.state;
+    // Redux
+    // const { items } = this.props.item;
     return (
       <>
         <Grid container className={classes.root} spacing={2}>
+          {/* Redux Test */}
+          {/* <div>{JSON.stringify(items)}</div> */}
+
           {/* Volunteer Requests */}
           <Grid item xs={12} className={classes.homeGrid}>
             <Volunteers />

@@ -2,7 +2,7 @@
   "name": "outreach-react-dashboard",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://outreach.nikhilwadekar.com",
+  "proxy": "http://localhost:4000",
   "dependencies": {
     "@date-io/date-fns": "^2.4.0",
     "@date-io/moment": "^1.3.13",
@@ -18,13 +18,19 @@
     "dotenv": "^8.2.0",
     "material-ui-image": "^3.2.3",
     "moment": "^2.24.0",
+    "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.17",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.12.0",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
+    "react-router-redux": "^4.0.8",
     "react-scripts": "3.3.1",
     "react-swipeable-views": "^0.13.9",
     "reactstrap": "^8.4.1",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
     "socket.io-client": "^2.3.0"
   },
   "scripts": {
