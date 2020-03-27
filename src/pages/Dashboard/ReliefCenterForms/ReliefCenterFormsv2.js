@@ -29,6 +29,7 @@ import Autocomplete, {
   createFilterOptions
 } from "@material-ui/lab/Autocomplete";
 import Alert from "@material-ui/lab/Alert";
+import AlertTitle from "@material-ui/lab/AlertTitle";
 
 // Custom Components
 import DateTimePicker from "../../../components/Dashboard/DateTimePicker";
@@ -363,16 +364,22 @@ export default class ReliefCenterForms extends Component {
       <>
         {/* Error */}
         {!reliefCenterName && (
-          <Alert severity="error">
+          <Alert severity="info">
             Please select an existing Relief Center or create a new one!
           </Alert>
         )}
 
         {/* Submitted Card */}
         {isSubmitTableVisible && (
-          <Card>
-            <SubmittedTasksTableComponent tasks={tasks} />
-          </Card>
+          <>
+            <Alert severity="success">
+              <AlertTitle>Success</AlertTitle>
+              This is a success alert — check it out!
+            </Alert>
+            <Card>
+              <SubmittedTasksTableComponent tasks={tasks} />
+            </Card>
+          </>
         )}
 
         {isReliefCenterFormVisible && (

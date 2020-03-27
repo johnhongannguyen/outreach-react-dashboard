@@ -18,7 +18,7 @@ import {
 } from "@material-ui/icons";
 
 // React Router
-import { Link, BrowserRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Custom Components and Themes
 import Theme from "../../theme";

@@ -1,17 +1,30 @@
-import React from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
+import React, { useState, useEffect } from "react";
+
+// Material UI
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  Typography
+} from "@material-ui/core";
+
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+
+// Redux
+// Getting Auth (was in Home during the example follow-up)
+import { connect } from "react-redux";
+import { setAuthAndUnlockDashBoard } from "../actions/authActions";
+
+// Axios
+import axios from "axios";
 
 function Copyright() {
   return (
@@ -31,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     height: "100vh"
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundImage: "url(https://source.unsplash.com/featured/?coronavirus)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "dark"
@@ -59,8 +72,28 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignInPage() {
+export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
   const classes = useStyles();
+
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  // On Form Submit
+  const handleFormSubmit = e => {
+    e.preventDefault();
+
+    axios
+      .post("/api/auth/login", {
+        email: email,
+        password: password
+      })
+      .then(response => {
+        setAuthAndUnlockDashBoard(response.data);
+      })
+      .catch(err => {
+        console.log("Error:", err);
+      });
+  };
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -72,9 +105,14 @@ export default function SignInPage() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign in to the Outreach Dashboard
           </Typography>
-          <form className={classes.form} noValidate>
+          <form
+            className={classes.form}
+            action="/api/auth/login"
+            method="POST"
+            noValidate
+          >
             <TextField
               variant="outlined"
               margin="normal"
@@ -85,6 +123,7 @@ export default function SignInPage() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={e => setEmail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -96,17 +135,18 @@ export default function SignInPage() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={e => setPassword(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={handleFormSubmit}
             >
               Sign In
             </Button>
@@ -130,4 +170,13 @@ export default function SignInPage() {
       </Grid>
     </Grid>
   );
-}
+};
+
+// Redux - Map State to Sign In Page props
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { setAuthAndUnlockDashBoard })(
+  SignInPage
+);
