@@ -74,20 +74,16 @@ class Volunteers extends Component {
   }
 
   approveVolunteerRequest = (taskID, emailID) => {
-    axios
-      .post(`${API_URL}/relief-center/id/${taskID}/${emailID}`)
-      .then(response => {
+    axios.post(`${API_URL}/relief-center/id/${taskID}/${emailID}`).then(res => {
+      if (res.status === 200) {
+        // If Approved in DB.. filter locally from the state
         const updatedVolunteerRequests = this.state.volunteerRequests.filter(
-          volunteerRequest => volunteerRequest.volunteer_email != emailID
+          volunteerRequest => volunteerRequest.task_id != taskID
         );
 
-        //   this.setState({people: this.state.people.filter(function(person) {
-        //     return person !== e.target.value
-        // })});
-
-        if (response.status == 200)
-          this.setState({ volunteerRequests: updatedVolunteerRequests });
-      });
+        this.setState({ volunteerRequests: updatedVolunteerRequests });
+      }
+    });
   };
 
   render() {
