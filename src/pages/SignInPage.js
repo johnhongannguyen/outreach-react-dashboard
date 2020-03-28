@@ -94,14 +94,7 @@ export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
         password: password
       })
       .then(response => {
-        if (response.data.role === "admin")
-          setAuthAndUnlockDashBoard(response.data);
-        else
-          setAlert({
-            alertTitle: "Error",
-            alert: "Sorry, that is not an admin account.",
-            alertSeverity: "error"
-          });
+        if (response) setAuthAndUnlockDashBoard(response.data);
       })
       .catch(err => {
         console.log("Error:", err);

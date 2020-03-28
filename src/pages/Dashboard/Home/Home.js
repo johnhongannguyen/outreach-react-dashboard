@@ -63,6 +63,11 @@ class Home extends Component {
 
     // Socket.io
     clientSocket.connect();
+
+    // DEBUG CONNECTITON
+    console.log(clientSocket.connected);
+    // console.log(adminSocket.connected);
+
     clientSocket.on("reliefCenterDataChange", () => {
       // Get the latest changes
       console.log("Data was changed..");
