@@ -11,8 +11,12 @@ import { Typography, Grid, Paper, Button, Badge } from "@material-ui/core";
 // Custom Outreach Components
 import VolunteerRequestCard from "../../../components/Dashboard/VolunteerRequestCard";
 
+// Web Sockets - Socket.io
+import { clientSocket, adminSocket } from "../../../web-sockets";
+
 // ENV
 const API_URL = process.env.REACT_APP_API_URL;
+
 // Styles
 const styles = theme => ({
   root: {
@@ -67,6 +71,11 @@ class Volunteers extends Component {
   // When component
   componentDidMount() {
     this.getDataFromAPI("/user/admin/requests/received");
+
+    clientSocket.on("reliefCenterDataChange", () => {
+      // Get the latest changes
+      this.getDataFromAPI("/user/admin/requests/received");
+    });
 
     // Set Limits based on where the user is
     if (this.isHomePage()) this.setState({ volunteerRequestsLimit: 4 });
