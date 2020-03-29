@@ -20,7 +20,8 @@ export default function VolunteerRequestCard({
   content,
   title,
   contentExtra,
-  onAccept
+  onAccept,
+  onDecline
 }) {
   const classes = useStyles();
 
@@ -39,7 +40,9 @@ export default function VolunteerRequestCard({
       </CardContent>
       <CardActions>
         <Grid container justify="space-between">
-          <Button color="danger">Decline</Button>
+          <Button color="danger" onClick={onDecline}>
+            Decline
+          </Button>
           <Button color="primary" variant="outlined" onClick={onAccept}>
             Accept
           </Button>
