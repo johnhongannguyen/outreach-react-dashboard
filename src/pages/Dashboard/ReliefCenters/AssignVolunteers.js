@@ -40,7 +40,7 @@ class AssignVolunteers extends Component {
     super(props);
 
     this.state = {
-      reliefCenter: { required: [] },
+      reliefCenter: [],
       suggestions: []
     };
   }
@@ -58,7 +58,10 @@ class AssignVolunteers extends Component {
   // Get Relief Center by ID
   getReliefCenterByID = reliefCenterID => {
     Axios.get(
-      `${API_URL}/relief-center/id/${reliefCenterID}/requirement`
+      // http://localhost:4000/api/relief-center/id/5e5c039b1ee4727041e2f274/requirement/assign
+      //       `${API_URL}/relief-center/id/${reliefCenterID}/requirement`
+
+      `${API_URL}/relief-center/id/${reliefCenterID}/requirement/assign`
     ).then(response => this.setState({ reliefCenter: response.data }));
   };
 
@@ -83,7 +86,7 @@ class AssignVolunteers extends Component {
           <IconButton onClick={() => this.props.history.goBack()}>
             <ArrowBack />
           </IconButton>
-          {reliefCenter.name}
+          {reliefCenter.name || "Relief Center Name"}
         </Typography>
 
         {/* Table Starts */}
@@ -94,9 +97,12 @@ class AssignVolunteers extends Component {
               <TableRow>
                 <TableCell align="center">Job</TableCell>
                 <TableCell align="center">Total</TableCell>
-                <TableCell align="center">Assigned Volunteers</TableCell>
-                <TableCell align="center">Pending Requests</TableCell>
+                <TableCell align="center">Assigned</TableCell>
+                <TableCell align="center">Pending</TableCell>
                 <TableCell align="center">Need</TableCell>
+                <TableCell align="center">Date</TableCell>
+                <TableCell align="center">Start Time</TableCell>
+                <TableCell align="center">End Time</TableCell>
                 <TableCell align="center">Suggestions</TableCell>
               </TableRow>
             </TableHead>
@@ -104,7 +110,7 @@ class AssignVolunteers extends Component {
 
             {/* Table Body Starts */}
             <TableBody>
-              {reliefCenter.required.map((job, index) => {
+              {reliefCenter.map((job, index) => {
                 const { name } = this.state.suggestions;
                 return (
                   <TableRow key={index}>
@@ -112,12 +118,24 @@ class AssignVolunteers extends Component {
                       {job.type}
                     </TableCell>
                     <TableCell align="center">{job.total_capacity}</TableCell>
-                    <TableCell align="center">{job.assigned}</TableCell>
+                    <TableCell align="center">{job.assigned_total}</TableCell>
                     <TableCell align="center">
-                      {job.volunteer_requests}
+                      {job.volunteer_requests_total}
                     </TableCell>
                     <TableCell align="center">
-                      {job.total_capacity - job.assigned}
+                      {job.total_capacity - job.assigned_total}
+                    </TableCell>
+
+                    <TableCell align="center">
+                      {job.date ? job.date : "N/A"}
+                    </TableCell>
+                    <TableCell align="center">
+                      {" "}
+                      {job.start_time ? job.start_time : "N/A"}
+                    </TableCell>
+                    <TableCell align="center">
+                      {" "}
+                      {job.end_time ? job.end_time : "N/A"}
                     </TableCell>
                     {/* User Suggestion Column */}
                     <TableCell align="center">
