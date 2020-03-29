@@ -171,9 +171,9 @@ class ReliefCenters extends Component {
           <Grid justify="center" container>
             {reliefCenters.length > 0 &&
               reliefCenters
-                .sort((a, b) => {
-                  return a.updatedAt > b.updatedAt ? 1 : -1;
-                })
+                // .sort((a, b) => {
+                //   return a.updatedAt > b.updatedAt ? 1 : -1;
+                // })
                 .filter(reliefCenter =>
                   reliefCenter.name
                     .toLowerCase()
