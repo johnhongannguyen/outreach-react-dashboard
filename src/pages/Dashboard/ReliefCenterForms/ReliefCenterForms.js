@@ -14,8 +14,28 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
+<<<<<<< HEAD
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormLabel from "@material-ui/core/FormLabel";
+import Card from "@material-ui/core/Card";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import "date-fns";
+import Grid from "@material-ui/core/Grid";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+=======
 
 import Theme from "../../../theme";
+>>>>>>> staging
 
 // Styles
 const useStyles = makeStyles({
@@ -70,24 +90,20 @@ export default class ReliefCenterForms extends Component {
       nameOfCenter: "Flood",
       nameOfJob: "Driving",
       numberOfPeople: 0,
-      typeOfJob: ""
+      typeOfJob: "",
+      selectedDate: new Date()
     };
   }
   handleChange = e => {
     this.setState({ typeOfJob: e.target.value });
   };
 
+  handleSelectedDate = date => {
+    this.setState({ selectedDate: date });
+  };
   handleClick(event) {
     console.log(event.target);
   }
-  // handleDateChange = date => {
-  //   setSelectedDate(date);
-  // };
-
-  // selectedDate = ()=>{
-
-  // }
-
   StyledRadio = props => {
     const classes = useStyles();
     return (
@@ -107,6 +123,7 @@ export default class ReliefCenterForms extends Component {
   render() {
     const { nameOfCenter } = this.props;
     const { nameOfJob } = this.props;
+
     return (
       <ThemeProvider theme={Theme}>
         <Typography align="left" variant="h3">
@@ -165,6 +182,43 @@ export default class ReliefCenterForms extends Component {
                   control={<this.StyledRadio />}
                   label="Choose your preference"
                 />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Grid container justify="space-around">
+                    <KeyboardDatePicker
+                      disableToolbar
+                      variant="inline"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="date-picker-inline"
+                      label="Date"
+                      value={this.selectedDate}
+                      onChange={this.handleSelectedDate}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date"
+                      }}
+                    />
+                    <KeyboardTimePicker
+                      margin="normal"
+                      id="time-picker-start"
+                      label="Start Time"
+                      value={this.selectedDate}
+                      onChange={this.handleSelectedDate}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date"
+                      }}
+                    />
+                    <KeyboardTimePicker
+                      margin="normal"
+                      id="time-picker"
+                      label="End Time"
+                      value={this.selectedDate}
+                      onChange={this.handleSelectedDate}
+                      KeyboardButtonProps={{
+                        "aria-label": "change time"
+                      }}
+                    />
+                  </Grid>
+                </MuiPickersUtilsProvider>
               </RadioGroup>
 
               <TextField
@@ -184,7 +238,29 @@ export default class ReliefCenterForms extends Component {
             </FormControl>
           </FormControl>
         </Card>
+<<<<<<< HEAD
+        <div align="left" style={{ display: "flex" }}>
+          <Typography style={{ marginTop: "25px", marginRight: " 10px" }}>
+            Add
+          </Typography>
+          <Fab color="primary" aria-label="add" style={{ marginTop: "10px" }}>
+            <AddIcon></AddIcon>
+          </Fab>
+        </div>
+
+        <div
+          className="submit_button"
+          align="left"
+          style={{ marginTop: "20px" }}
+        >
+          <Button variant="contained" color="secondary">
+            Submit
+          </Button>
+        </div>
+      </>
+=======
       </ThemeProvider>
+>>>>>>> staging
     );
   }
 }
