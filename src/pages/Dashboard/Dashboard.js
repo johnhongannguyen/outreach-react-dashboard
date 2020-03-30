@@ -43,9 +43,14 @@ import { mainListItems } from "./listItems";
 // Custom Outreach Dashboard Components
 import ReliefCenterForms from "./ReliefCenterForms/ReliefCenterFormsv2";
 import Volunteers from "./Volunteers/Volunteers";
-import ReliefCenters from "./ReliefCenters/ReliefCenters";
+
 import Home from "./Home/Home";
+
+// Relief Centers
+import ReliefCenters from "./ReliefCenters/ReliefCenters";
 import AssignVolunteers from "./ReliefCenters/AssignVolunteers";
+import AssignedVolunteers from "./ReliefCenters/AssignedVolunteers";
+import RequestsSent from "./ReliefCenters/RequestsSent";
 
 // Redux
 // Getting Auth (was in Home during the example follow-up)
@@ -329,6 +334,16 @@ function Dashboard({ user, logOut }) {
               {/* Relief Centers Route */}
               <Route path="/dashboard/relief-center/id/:reliefCenterID/assign">
                 <AssignVolunteers />
+              </Route>
+
+              {/* Relief Centers Route - Assigned Volunteers */}
+              <Route path="/dashboard/relief-center/id/:reliefCenterID/task/:taskID/assigned">
+                <AssignedVolunteers />
+              </Route>
+
+              {/* Relief Centers Route - Pending Volunteers */}
+              <Route path="/dashboard/relief-center/id/:reliefCenterID/task/:taskID/pending">
+                <RequestsSent />
               </Route>
 
               {/* Relief Center Forms Route */}

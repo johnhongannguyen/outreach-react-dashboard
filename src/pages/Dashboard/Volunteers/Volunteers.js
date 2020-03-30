@@ -100,6 +100,7 @@ class Volunteers extends Component {
     axios
       .post(`${API_URL}/relief-center/id/${taskID}/${emailID}/decline`)
       .then(response => {
+        console.log(response);
         const updatedVolunteerRequests = this.state.volunteerRequests.filter(
           volunteerRequest => volunteerRequest.volunteer_email != emailID
         );

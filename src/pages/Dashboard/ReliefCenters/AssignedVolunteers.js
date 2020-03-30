@@ -36,7 +36,7 @@ const styles = theme => ({
   }
 });
 
-class AssignVolunteers extends Component {
+class AssignedVolunteers extends Component {
   constructor(props) {
     super(props);
 
@@ -47,113 +47,8 @@ class AssignVolunteers extends Component {
     };
   }
 
-  // Get Relief Center by ID
-  getReliefCenterByID = reliefCenterID => {
-    console.log(
-      `${API_URL}/relief-center/id/${reliefCenterID}/requirement/assign`
-    );
-    axios
-      .get(`${API_URL}/relief-center/id/${reliefCenterID}/requirement/assign`)
-      .then(response => {
-        this.setState({ reliefCenter: response.data });
-        console.log(response);
-      });
-
-    axios
-      .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
-      .then(response => {
-        this.setState({ reliefCenterInfo: response.data });
-        console.log(response);
-      });
-  };
-
-  // Get Suggestions For a Task
-  // getSuggestionsForATask = async taskID => {
-  //   const suggestions = await axios.get(
-  //     `${API_URL}/user/suggest/task/${taskID}`
-  //   );
-
-  //   console.log(suggestions.data[0]);
-  //   this.setState({ suggestions: suggestions.data });
-  //   return suggestions.data[0];
-  // };
-
-  // Get Suggestions
-  getSuggestions = async number => {
-    const suggestions = await axios.get(`${API_URL}/user/suggest/`);
-    this.setState({ suggestions: suggestions.data });
-  };
-
-  // Send Request to Volunteer
-  sendRequestToVolunteer = (volunteerEmail, taskID) => {
-    // Send Request with POST Request
-    axios
-      .post(`${API_URL}/user/admin/request/${volunteerEmail}/${taskID}`)
-      .then(res => {
-        if (res.status == 200) {
-          // Change Button to Sent!; Suggest more if there's room.
-
-          const { reliefCenterID } = this.props.match.params;
-
-          console.log("Done!");
-          this.getReliefCenterByID(reliefCenterID);
-        }
-      })
-      .catch(err => console.log(err));
-
-    console.log(`Sending request to User:${volunteerEmail} for Task:${taskID}`);
-  };
-
-  // Suggest ONE user from suggestions
-  suggestUser(taskID, assigned, requestsSentByAdmin, volunteerRequests) {
-    let { suggestions } = this.state;
-
-    // Filter Suggestions (We don't need users that are/have assigned, requests, requested etc.)
-    const filteredSuggestions = suggestions.filter(suggestion => {
-      const { email } = suggestion;
-
-      // Suggestion should not exist in any of: Assigned, Request Received, Request Sent
-      return (
-        !assigned.includes(email) &&
-        !requestsSentByAdmin.includes(email) &&
-        !volunteerRequests.includes(email)
-      );
-    });
-
-    // Return one of filtered Suggestions Randomly!
-
-    if (!!filteredSuggestions.length)
-      return filteredSuggestions[
-        Math.floor(Math.random() * filteredSuggestions.length)
-      ];
-    else return { name: "No Suggestions", email: "" };
-  }
-
-  //
-  getAssigned = taskID => {
-    const { reliefCenterID } = this.props.match.params;
-    this.props.history.push(
-      `/dashboard/relief-center/id/${reliefCenterID}/task/${taskID}/assigned`
-    );
-  };
-
-  //
-  getPendingRequests = taskID => {
-    const { reliefCenterID } = this.props.match.params;
-
-    this.props.history.push(
-      `/dashboard/relief-center/id/${reliefCenterID}/task/${taskID}/pending`
-    );
-  };
-
   componentDidMount() {
     const { reliefCenterID } = this.props.match.params;
-
-    // Get Info about the Relief Center into consideration
-    this.getReliefCenterByID(reliefCenterID);
-
-    // Get Suggestions!
-    this.getSuggestions();
   }
 
   render() {
@@ -169,7 +64,7 @@ class AssignVolunteers extends Component {
           <IconButton onClick={() => this.props.history.goBack()}>
             <ArrowBack />
           </IconButton>
-          {reliefCenterInfo.name || "Relief Center Name"}
+          {reliefCenterInfo.name || "Assigned Volunteers"}
         </Typography>
 
         {/* Table Starts */}
@@ -239,22 +134,19 @@ class AssignVolunteers extends Component {
                     <TableCell align="center">
                       {/* Suggest a Random User! */}
                       {suggestions.length > 0 && (
-                        <>
-                          <Suggestion
-                            user={
-                              // Suggest Voluteers which are: not assigned, not requested, not requesting
-                              this.suggestUser(
-                                job.task_id,
-                                job.assigned,
-                                job.requests_sent_by_admin,
-                                job.volunteer_requests
-                              )
-                            }
-                            taskID={job.task_id}
-                            onSendRequestClick={this.sendRequestToVolunteer}
-                          />
-                          <Button>See All</Button>
-                        </>
+                        <Suggestion
+                          user={
+                            // Suggest Voluteers which are: not assigned, not requested, not requesting
+                            this.suggestUser(
+                              job.task_id,
+                              job.assigned,
+                              job.requests_sent_by_admin,
+                              job.volunteer_requests
+                            )
+                          }
+                          taskID={job.task_id}
+                          onSendRequestClick={this.sendRequestToVolunteer}
+                        />
                       )}
                     </TableCell>
                   </TableRow>
@@ -271,4 +163,4 @@ class AssignVolunteers extends Component {
   }
 }
 
-export default withStyles(styles)(withRouter(AssignVolunteers));
+export default withStyles(styles)(withRouter(AssignedVolunteers));
