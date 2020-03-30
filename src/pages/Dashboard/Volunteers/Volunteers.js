@@ -87,14 +87,25 @@ class Volunteers extends Component {
       .post(`${API_URL}/relief-center/id/${taskID}/${emailID}`)
       .then(response => {
         const updatedVolunteerRequests = this.state.volunteerRequests.filter(
-          volunteerRequest => volunteerRequest.volunteer_email != emailID
+          volunteerRequest => volunteerRequest.volunteer_email !== emailID
         );
 
-        //   this.setState({people: this.state.people.filter(function(person) {
-        //     return person !== e.target.value
-        // })});
+        if (response.status === 200)
+          this.setState({ volunteerRequests: updatedVolunteerRequests });
+      });
+  };
 
-        if (response.status == 200)
+  // Decline Volunteer's Request
+  declineVolunteerRequest = (taskID, emailID) => {
+    axios
+      .post(`${API_URL}/relief-center/id/${taskID}/${emailID}/decline`)
+      .then(response => {
+        console.log(response);
+        const updatedVolunteerRequests = this.state.volunteerRequests.filter(
+          volunteerRequest => volunteerRequest.volunteer_email !== emailID
+        );
+
+        if (response.status === 200)
           this.setState({ volunteerRequests: updatedVolunteerRequests });
       });
   };
@@ -147,13 +158,14 @@ class Volunteers extends Component {
                         content={`wants to help with ${type}`}
                         contentExtra={`at ${name} on ${date} from ${start_time} to ${end_time}`}
                         onAccept={() => {
-                          console.log("Accept was pressed!");
                           this.approveVolunteerRequest(
                             task_id,
                             volunteer_email
                           );
                         }}
-                        onDecline={"test"}
+                        onDecline={() =>
+                          this.declineVolunteerRequest(task_id, volunteer_email)
+                        }
                       />
                     </Grid>
                   );

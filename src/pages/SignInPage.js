@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 // Material UI
 import {
@@ -82,7 +82,7 @@ export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
-  const [alert, setAlert] = useState(null);
+  // const [alert, setAlert] = useState(null);
 
   // On Form Submit
   const handleFormSubmit = e => {

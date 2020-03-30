@@ -69,7 +69,6 @@ class ReliefCenters extends Component {
     await axios
       .get(`${API_URL}${relativePath}`)
       .then(response => {
-        console.log(response.data);
         this.setState({
           reliefCenters: response.data
         });
@@ -80,22 +79,56 @@ class ReliefCenters extends Component {
   };
 
   assignVolunteers = reliefCenterID => {
-    console.log(reliefCenterID);
     this.props.history.push(
       `/dashboard/relief-center/id/${reliefCenterID}/assign`
     );
   };
 
   handleButtonPress(type) {
+    // Get Relief Centers from the state
+    const { reliefCenters } = this.state;
+
+    // Oldest First Function
+    const byOldestFirst = (a, b) => {
+      const aTimeStampedAt = a.updatedAt || a.createdAt;
+      const bTimeStampedAt = b.updatedAt || b.createdAt;
+
+      if (aTimeStampedAt > bTimeStampedAt) {
+        return 1;
+      }
+      if (bTimeStampedAt > aTimeStampedAt) {
+        return -1;
+      }
+      return 0;
+    };
+
+    // Recent First Function
+    const byRecentFirst = (a, b) => {
+      const aTimeStampedAt = a.updatedAt || a.createdAt;
+      const bTimeStampedAt = b.updatedAt || b.createdAt;
+
+      if (aTimeStampedAt > bTimeStampedAt) {
+        return -1;
+      }
+      if (bTimeStampedAt > aTimeStampedAt) {
+        return 1;
+      }
+      return 0;
+    };
+
     switch (type) {
       case "All":
         // code block
         break;
       case "Oldest":
         // code block
+        reliefCenters.sort(byOldestFirst);
+        this.setState({ reliefCenters });
         break;
       case "Recent":
         // code block
+        reliefCenters.sort(byRecentFirst);
+        this.setState({ reliefCenters });
         break;
       default:
       // code block
@@ -146,13 +179,25 @@ class ReliefCenters extends Component {
 
             {/* Sorting Button Group */}
             <Grid item xs="4">
-              <Button variant="outlined" color="primary">
+              <Button
+                onClick={() => this.handleButtonPress("All")}
+                variant="outlined"
+                color="primary"
+              >
                 All
               </Button>
-              <Button variant="outlined" color="primary">
+              <Button
+                onClick={() => this.handleButtonPress("Oldest")}
+                variant="outlined"
+                color="primary"
+              >
                 Oldest
               </Button>
-              <Button variant="outlined" color="primary">
+              <Button
+                onClick={() => this.handleButtonPress("Recent")}
+                variant="outlined"
+                color="primary"
+              >
                 Recent
               </Button>
             </Grid>
@@ -171,9 +216,9 @@ class ReliefCenters extends Component {
           <Grid justify="center" container>
             {reliefCenters.length > 0 &&
               reliefCenters
-                .sort((a, b) => {
-                  return a.updatedAt > b.updatedAt ? 1 : -1;
-                })
+                // .sort((a, b) => {
+                //   return a.updatedAt > b.updatedAt ? 1 : -1;
+                // })
                 .filter(reliefCenter =>
                   reliefCenter.name
                     .toLowerCase()

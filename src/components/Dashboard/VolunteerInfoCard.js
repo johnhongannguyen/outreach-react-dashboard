@@ -16,12 +16,12 @@ const useStyles = makeStyles({
   }
 });
 
-export default function VolunteerRequestCard({
+export default function VolunteerInfoCard({
   content,
   title,
   contentExtra,
-  onAccept,
-  onDecline
+  buttonText,
+  onButtonClick
 }) {
   const classes = useStyles();
 
@@ -39,12 +39,9 @@ export default function VolunteerRequestCard({
         </Typography>
       </CardContent>
       <CardActions>
-        <Grid container justify="space-between">
-          <Button color="danger" onClick={onDecline}>
-            Decline
-          </Button>
-          <Button color="primary" variant="outlined" onClick={onAccept}>
-            Accept
+        <Grid container justify="space-around">
+          <Button color="primary" variant="outlined" onClick={onButtonClick}>
+            {buttonText}
           </Button>
         </Grid>
       </CardActions>

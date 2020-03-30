@@ -5,7 +5,6 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Axios from "axios";
 
 const useStyles = makeStyles({
   root: {
@@ -28,30 +27,31 @@ const useStyles = makeStyles({
   }
 });
 
-// Send Request to Volunteer
-const sendRequestToVolunteer = volunteerID => {
-  Axios.post();
-};
-
-export default function Suggestion({ user }) {
+export default function Suggestion({ user, onSendRequestClick, taskID }) {
   const classes = useStyles();
 
+  console.log(user);
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <Typography variant="body1" component="h4">
           {user.name}
         </Typography>
+        <Typography variant="body2" component="h4">
+          {user.email}
+        </Typography>
       </CardContent>
       <CardActions className={classes.action}>
-        <Button
-          color="primary"
-          variant="outlined"
-          size="medium"
-          onClick={() => sendRequestToVolunteer(user._id)}
-        >
-          Send Request
-        </Button>
+        {user.name !== "No Suggestions" && (
+          <Button
+            color="primary"
+            variant="outlined"
+            size="medium"
+            onClick={() => onSendRequestClick(user.email, taskID)}
+          >
+            Send Request
+          </Button>
+        )}
       </CardActions>
     </Card>
   );
