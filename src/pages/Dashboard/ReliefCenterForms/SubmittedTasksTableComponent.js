@@ -49,18 +49,18 @@ export default function SubmittedTasksTableComponent({ tasks }) {
               </TableCell>
               <TableCell align="right">{task.numberOfPeople}</TableCell>
               <TableCell align="right">
-                {task.preference == "preference"
+                {task.preference === "preference"
                   ? Date(task.date).toString()
                   : "N/A"}
               </TableCell>
 
               <TableCell align="right">
-                {task.preference == "preference"
+                {task.preference === "preference"
                   ? Date(task.start_time).toString()
                   : "N/A"}
               </TableCell>
               <TableCell align="right">
-                {task.preference == "preference"
+                {task.preference === "preference"
                   ? Date(task.end_time).toString()
                   : "N/A"}
               </TableCell>

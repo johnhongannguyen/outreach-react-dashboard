@@ -3,12 +3,7 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 
 // React Router
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  NavLink
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Material UI - Core - Imports
 import {
@@ -19,7 +14,6 @@ import {
   Toolbar,
   List,
   Typography,
-  Divider,
   IconButton,
   Badge,
   Container,
@@ -27,14 +21,12 @@ import {
   Menu,
   MenuItem,
   Button,
-  Avatar,
-  CardMedia
+  Avatar
 } from "@material-ui/core";
 
 // Material UI - Icons - Imports
 import {
   Menu as MenuIcon,
-  ChevronLeft as ChevronLeftIcon,
   NotificationsOutlined as NotificationsIcon
 } from "@material-ui/icons";
 
@@ -51,6 +43,8 @@ import ReliefCenters from "./ReliefCenters/ReliefCenters";
 import AssignVolunteers from "./ReliefCenters/AssignVolunteers";
 import AssignedVolunteers from "./ReliefCenters/AssignedVolunteers";
 import RequestsSent from "./ReliefCenters/RequestsSent";
+import RequestsReceived from "./ReliefCenters/RequestsReceived";
+import Suggestions from "./ReliefCenters/Suggestions";
 
 // Redux
 // Getting Auth (was in Home during the example follow-up)
@@ -344,6 +338,16 @@ function Dashboard({ user, logOut }) {
               {/* Relief Centers Route - Pending Volunteers */}
               <Route path="/dashboard/relief-center/id/:reliefCenterID/task/:taskID/pending">
                 <RequestsSent />
+              </Route>
+
+              {/* Relief Centers Route - Requests Received from Volunteers */}
+              <Route path="/dashboard/relief-center/id/:reliefCenterID/task/:taskID/received">
+                <RequestsReceived />
+              </Route>
+
+              {/* Relief Centers Route - Requests Received from Volunteers */}
+              <Route path="/dashboard/relief-center/id/:reliefCenterID/task/:taskID/suggestions">
+                <Suggestions />
               </Route>
 
               {/* Relief Center Forms Route */}

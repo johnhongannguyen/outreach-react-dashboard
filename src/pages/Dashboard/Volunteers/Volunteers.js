@@ -87,10 +87,10 @@ class Volunteers extends Component {
       .post(`${API_URL}/relief-center/id/${taskID}/${emailID}`)
       .then(response => {
         const updatedVolunteerRequests = this.state.volunteerRequests.filter(
-          volunteerRequest => volunteerRequest.volunteer_email != emailID
+          volunteerRequest => volunteerRequest.volunteer_email !== emailID
         );
 
-        if (response.status == 200)
+        if (response.status === 200)
           this.setState({ volunteerRequests: updatedVolunteerRequests });
       });
   };
@@ -102,10 +102,10 @@ class Volunteers extends Component {
       .then(response => {
         console.log(response);
         const updatedVolunteerRequests = this.state.volunteerRequests.filter(
-          volunteerRequest => volunteerRequest.volunteer_email != emailID
+          volunteerRequest => volunteerRequest.volunteer_email !== emailID
         );
 
-        if (response.status == 200)
+        if (response.status === 200)
           this.setState({ volunteerRequests: updatedVolunteerRequests });
       });
   };
