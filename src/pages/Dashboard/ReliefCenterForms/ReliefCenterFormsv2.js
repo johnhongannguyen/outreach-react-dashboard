@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import moment from "moment";
+
+// React Router
+import { withRouter } from "react-router-dom";
+
 // Material UI
 import {
   FormControl,
@@ -79,7 +83,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default class ReliefCenterForms extends Component {
+class ReliefCenterForms extends Component {
   constructor(props) {
     super(props);
 
@@ -314,6 +318,11 @@ export default class ReliefCenterForms extends Component {
     this.setState({ tasks });
   };
 
+  // Go To Add New Relief Center Page
+  addNewReliefCenter = () => {
+    this.props.history.push(`/dashboard/relief-center/new`);
+  };
+
   // Handle Relief Center Form Reset
   resetReliefCenterForm = () => {
     this.setState({
@@ -487,7 +496,11 @@ export default class ReliefCenterForms extends Component {
                   : `${reliefCenterName} Form`}
               </Typography>
               {!reliefCenterName && (
-                <Button variant="contained" color="primary">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={this.addNewReliefCenter}
+                >
                   <AddCircleOutlineIcon /> ADD NEW
                 </Button>
               )}
@@ -563,3 +576,5 @@ export default class ReliefCenterForms extends Component {
     );
   }
 }
+
+export default withRouter(ReliefCenterForms);
