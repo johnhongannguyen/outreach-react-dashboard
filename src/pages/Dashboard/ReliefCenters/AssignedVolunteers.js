@@ -25,6 +25,10 @@ import VolunteerInfoCard from "../../../components/Dashboard/VolunteerInfoCard";
 
 // axios
 import axios from "axios";
+
+// Web Sockets - Socket.io
+import { clientSocket, adminSocket } from "../../../web-sockets";
+
 // API URL
 const API_URL = process.env.REACT_APP_API_URL;
 
