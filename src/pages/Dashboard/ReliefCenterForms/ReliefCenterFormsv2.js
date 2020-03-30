@@ -89,21 +89,21 @@ export default class ReliefCenterForms extends Component {
       isSubmitTableVisible: false,
       isReliefCenterFormVisible: true,
       tasks: [
-        {
-          taskID: 1,
-          numberOfPeople: 10,
-          typeOfJob: "Cooking",
-          preference: "anytime"
-        },
-        {
-          taskID: 2,
-          numberOfPeople: 5,
-          typeOfJob: "Driving",
-          preference: "preference",
-          date: new Date(),
-          start_time: new Date(),
-          end_time: new Date()
-        }
+        // {
+        //   taskID: 1,
+        //   numberOfPeople: 10,
+        //   typeOfJob: "Cooking",
+        //   preference: "anytime"
+        // },
+        // {
+        //   taskID: 2,
+        //   numberOfPeople: 5,
+        //   typeOfJob: "Driving",
+        //   preference: "preference",
+        //   date: new Date(),
+        //   start_time: new Date(),
+        //   end_time: new Date()
+        // }
       ]
     };
   }
@@ -191,6 +191,18 @@ export default class ReliefCenterForms extends Component {
     const foundIndex = tasks.findIndex(task => task.taskID == taskID);
 
     tasks[foundIndex]["preference"] = preference;
+
+    // If Preferred -- Set Date, Start Time and End Time
+    if (preference == "preference") {
+      tasks[foundIndex]["date"] = new Date();
+      tasks[foundIndex]["start_time"] = new Date();
+      tasks[foundIndex]["end_time"] = new Date();
+    } else if (preference == "anytime") {
+      tasks[foundIndex]["date"] = undefined;
+      tasks[foundIndex]["start_time"] = undefined;
+      tasks[foundIndex]["end_time"] = undefined;
+    }
+
     this.setState({ tasks });
   };
 
@@ -214,8 +226,8 @@ export default class ReliefCenterForms extends Component {
       // Problematic if someone decides to delete one of the items!
       taskID: tasks.length + 1,
       numberOfPeople: 2,
-      nameOfJob: "Cooking",
       typeOfJob: "Cooking",
+      description: "The description goes here",
       preference: "anytime"
     });
 
@@ -237,14 +249,42 @@ export default class ReliefCenterForms extends Component {
 
   // Relief Center Form
   handleSubmitReliefCenterForm = () => {
-    if (this.state.reliefCenterName)
-      this.setState({
-        isSubmitTableVisible: true,
-        isReliefCenterFormVisible: false
+    // If Relief Center is selected and user has added one task..
+    if (this.state.reliefCenterName && this.state.tasks.length > 0) {
+      // Map it before sending..
+      let tasksToBeSentToDB = this.state.tasks.map(task => {
+        const {
+          numberOfPeople,
+          typeOfJob,
+          preference,
+          date,
+          description,
+          start_time,
+          end_time
+        } = task;
+        return {
+          type: typeOfJob,
+          date,
+          description,
+          required: numberOfPeople,
+          preference,
+          time: { start: start_time, end: end_time },
+          requests: { sent: [], received: [] },
+          assigned: []
+        };
       });
-    else {
-      this.setState({ isErrorVisible: true });
+
+      console.log(tasksToBeSentToDB);
+    } else {
+      console.log(
+        "Sorry, you have to select a relief center first and add at least one task."
+      );
     }
+  };
+
+  // Handle Relief Center Change
+  onReliefCenterChange = e => {
+    this.setState({ reliefCenterName: e.target.value });
   };
 
   // Task Card Component
@@ -362,6 +402,9 @@ export default class ReliefCenterForms extends Component {
     } = this.state;
     return (
       <>
+        {/* Debug */}
+
+        <div>{JSON.stringify(this.state.tasks)}</div>
         {/* Error */}
         {!reliefCenterName && (
           <Alert severity="info">
@@ -388,12 +431,12 @@ export default class ReliefCenterForms extends Component {
             <Typography align="left" variant="h3">
               {reliefCenterName == null || reliefCenterName == ""
                 ? "Relief Center Form"
-                : `${reliefCenterName.title} Form`}
+                : `${reliefCenterName} Form`}
             </Typography>
 
             {/* Relief Center Name Input */}
             <Card style={{ padding: 25, marginBottom: 25 }}>
-              <Autocomplete
+              {/* <Autocomplete
                 value={reliefCenterName}
                 onChange={this.handleAutoCompleteChange}
                 filterOptions={this.handleFilterOptions}
@@ -417,7 +460,25 @@ export default class ReliefCenterForms extends Component {
                     fullWidth
                   />
                 )}
-              />
+              /> */}
+
+              <InputLabel id="demo-simple-select-label">
+                Relief Center Name
+              </InputLabel>
+              {/* Type of Task (Job)! */}
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={reliefCenterName}
+                fullWidth
+                onChange={e => this.onReliefCenterChange(e)}
+              >
+                {this.state.reliefCenters.map(reliefCenter => (
+                  <MenuItem value={reliefCenter.name}>
+                    {reliefCenter.name}
+                  </MenuItem>
+                ))}
+              </Select>
             </Card>
 
             {/* Task Cards */}
