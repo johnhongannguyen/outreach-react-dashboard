@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import Axios from "axios";
-import _ from "moment";
+import moment from "moment";
+
+// React Router
+import { withRouter } from "react-router-dom";
+
 // Material UI
 import {
   FormControl,
@@ -18,6 +22,9 @@ import {
   Typography
 } from "@material-ui/core";
 
+// Axios
+import axios from "axios";
+
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 
@@ -34,6 +41,10 @@ import AlertTitle from "@material-ui/lab/AlertTitle";
 // Custom Components
 import DateTimePicker from "../../../components/Dashboard/DateTimePicker";
 import SubmittedTasksTableComponent from "./SubmittedTasksTableComponent";
+
+// API URL
+const API_URL = process.env.REACT_APP_API_URL;
+
 // Styles
 const useStyles = makeStyles({
   root: {
@@ -79,32 +90,22 @@ const useStyles = makeStyles({
   }
 });
 
-export default class ReliefCenterForms extends Component {
+class ReliefCenterForms extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       reliefCenterName: null,
+      reliefCenterID: null,
       reliefCenters: [],
       isSubmitTableVisible: false,
       isReliefCenterFormVisible: true,
-      tasks: [
-        {
-          taskID: 1,
-          numberOfPeople: 10,
-          typeOfJob: "Cooking",
-          preference: "anytime"
-        },
-        {
-          taskID: 2,
-          numberOfPeople: 5,
-          typeOfJob: "Driving",
-          preference: "preference",
-          date: new Date(),
-          start_time: new Date(),
-          end_time: new Date()
-        }
-      ]
+      submitError: {
+        isSet: false,
+        message:
+          "Sorry, you have to select a relief center first and add at least one task."
+      },
+      tasks: []
     };
   }
 
@@ -191,6 +192,18 @@ export default class ReliefCenterForms extends Component {
     const foundIndex = tasks.findIndex(task => task.taskID == taskID);
 
     tasks[foundIndex]["preference"] = preference;
+
+    // If Preferred -- Set Date, Start Time and End Time
+    if (preference == "preference") {
+      tasks[foundIndex]["date"] = new Date();
+      tasks[foundIndex]["start_time"] = new Date();
+      tasks[foundIndex]["end_time"] = new Date();
+    } else if (preference == "anytime") {
+      tasks[foundIndex]["date"] = undefined;
+      tasks[foundIndex]["start_time"] = undefined;
+      tasks[foundIndex]["end_time"] = undefined;
+    }
+
     this.setState({ tasks });
   };
 
@@ -213,9 +226,9 @@ export default class ReliefCenterForms extends Component {
     tasks.push({
       // Problematic if someone decides to delete one of the items!
       taskID: tasks.length + 1,
-      numberOfPeople: 2,
-      nameOfJob: "Cooking",
+      numberOfPeople: 1,
       typeOfJob: "Cooking",
+      description: "The Description Goes Here",
       preference: "anytime"
     });
 
@@ -231,20 +244,115 @@ export default class ReliefCenterForms extends Component {
     const { tasks } = this.state;
     const foundIndex = tasks.findIndex(task => task.taskID == taskID);
 
-    tasks[foundIndex][ID] = date;
+    // Conditions
+    const isStartTimeBeforeEndTime =
+      ID == "start_time" &&
+      ID !== "date" &&
+      moment(date).isBefore(tasks[foundIndex]["end_time"]);
+
+    const isEndTimeBeforeStartTime =
+      ID !== "date" &&
+      ID == "end_time" &&
+      moment(date).isAfter(tasks[foundIndex]["start_time"]);
+
+    // Valid start and end times
+    if (isStartTimeBeforeEndTime || isEndTimeBeforeStartTime) {
+      tasks[foundIndex][ID] = date;
+    }
+    if (ID == "date") tasks[foundIndex][ID] = date;
     this.setState({ tasks });
   };
 
   // Relief Center Form
-  handleSubmitReliefCenterForm = () => {
-    if (this.state.reliefCenterName)
+  handleSubmitReliefCenterForm = async () => {
+    // If Relief Center is selected and user has added one task..
+    if (this.state.reliefCenterName && this.state.tasks.length > 0) {
+      this.setState({
+        submitError: { ...this.state.submitError, isSet: false }
+      });
+      // Map it before sending..
+      let tasksToBeSentToDB = this.state.tasks.map(task => {
+        const {
+          numberOfPeople,
+          typeOfJob,
+          preference,
+          date,
+          description,
+          start_time,
+          end_time
+        } = task;
+        return {
+          type: typeOfJob,
+          date,
+          description,
+          required: numberOfPeople,
+          preference,
+          time: { start: start_time, end: end_time },
+          requests: { sent: [], received: [] },
+          assigned: []
+        };
+      });
+
+      // Send the new tasks!
+      const finalDBData = { volunteers: { opportunities: tasksToBeSentToDB } };
+
+      await axios.put(
+        `${API_URL}/relief-center/${this.state.reliefCenterID}/tasks/add`,
+        tasksToBeSentToDB
+      );
+
+      // Get the submitted Table with a Button to Reset the tasks and add new/more tasks
       this.setState({
         isSubmitTableVisible: true,
         isReliefCenterFormVisible: false
       });
-    else {
-      this.setState({ isErrorVisible: true });
+    } else {
+      this.setState({
+        submitError: { ...this.state.submitError, isSet: true }
+      });
     }
+  };
+
+  // Handle Relief Center Change
+  onReliefCenterChange = e => {
+    // Find the object.. in tasks.. and update the concerned value.
+    const reliefCenterName = e.target.value;
+    const foundIndex = this.state.reliefCenters.findIndex(
+      reliefCenter => reliefCenter.name == reliefCenterName
+    );
+
+    const reliefCenterID = this.state.reliefCenters[foundIndex]["_id"];
+
+    console.log(reliefCenterID);
+    this.setState({ reliefCenterName, reliefCenterID });
+  };
+
+  // Handle Description Change
+  onDescriptionChange = (e, taskID) => {
+    // Get the Preference
+    const description = e.target.value;
+
+    // Find the object.. in tasks.. and update the concerned value.
+    const { tasks } = this.state;
+    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
+
+    tasks[foundIndex]["description"] = description;
+    this.setState({ tasks });
+  };
+
+  // Go To Add New Relief Center Page
+  addNewReliefCenter = () => {
+    this.props.history.push(`/dashboard/relief-center/new`);
+  };
+
+  // Handle Relief Center Form Reset
+  resetReliefCenterForm = () => {
+    this.setState({
+      isReliefCenterFormVisible: true,
+      isSubmitTableVisible: false,
+      tasks: [],
+      reliefCenterName: ""
+    });
   };
 
   // Task Card Component
@@ -263,7 +371,7 @@ export default class ReliefCenterForms extends Component {
     <Card taskID={taskID} style={{ padding: 50, marginBottom: 25 }}>
       {numberOfPeople > 0 && typeOfJob && (
         <Typography align="left" variant="h4">
-          Requesting {numberOfPeople} volunteers for {typeOfJob}
+          Requesting {numberOfPeople} volunteer(s) for {typeOfJob}
         </Typography>
       )}
 
@@ -295,7 +403,7 @@ export default class ReliefCenterForms extends Component {
             fullWidth
             InputProps={{
               inputProps: {
-                max: 10,
+                max: 25,
                 min: 1
               }
             }}
@@ -338,6 +446,12 @@ export default class ReliefCenterForms extends Component {
           }
         />
       )}
+
+      <TextField
+        onChange={e => this.onDescriptionChange(e, taskID)}
+        fullWidth
+        label="Task Description"
+      ></TextField>
     </Card>
   );
 
@@ -358,66 +472,81 @@ export default class ReliefCenterForms extends Component {
       tasks,
       isSubmitTableVisible,
       isReliefCenterFormVisible,
-      isErrorVisible
+      isErrorVisible,
+      submitError
     } = this.state;
     return (
       <>
-        {/* Error */}
+        {/* Error Message Box */}
         {!reliefCenterName && (
           <Alert severity="info">
             Please select an existing Relief Center or create a new one!
           </Alert>
         )}
 
+        {/* Submit Error Message Box */}
+        {submitError.isSet && (
+          <Alert severity="error">{submitError.message}</Alert>
+        )}
+
         {/* Submitted Card */}
         {isSubmitTableVisible && (
           <>
             <Alert severity="success">
-              <AlertTitle>Success</AlertTitle>
-              This is a success alert — check it out!
+              <AlertTitle>
+                {reliefCenterName} Form Submission Succcess
+              </AlertTitle>
+              {this.state.tasks.length} task(s) were added to {reliefCenterName}
             </Alert>
             <Card>
               <SubmittedTasksTableComponent tasks={tasks} />
             </Card>
+
+            <Button onClick={this.resetReliefCenterForm}>Add More</Button>
           </>
         )}
 
+        {/* Relief Center Form */}
         {isReliefCenterFormVisible && (
           <>
-            {/* Panel Title - Relief Center Form */}
-            <Typography align="left" variant="h3">
-              {reliefCenterName == null || reliefCenterName == ""
-                ? "Relief Center Form"
-                : `${reliefCenterName.title} Form`}
-            </Typography>
+            {/* Top Header & Add New Button */}
+            <Grid container justify="space-between">
+              {/* Panel Title - Relief Center Form */}
+              <Typography align="left" variant="h3">
+                {reliefCenterName == null || reliefCenterName == ""
+                  ? "Relief Center Form"
+                  : `${reliefCenterName} Form`}
+              </Typography>
+              {!reliefCenterName && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={this.addNewReliefCenter}
+                >
+                  <AddCircleOutlineIcon /> ADD NEW
+                </Button>
+              )}
+            </Grid>
 
             {/* Relief Center Name Input */}
             <Card style={{ padding: 25, marginBottom: 25 }}>
-              <Autocomplete
+              <InputLabel id="demo-simple-select-label">
+                Relief Center Name
+              </InputLabel>
+              {/* Relief Center Selection! */}
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
                 value={reliefCenterName}
-                onChange={this.handleAutoCompleteChange}
-                filterOptions={this.handleFilterOptions}
-                id="relief-center-name"
-                options={this.state.reliefCenters.map(reliefCenter => ({
-                  title: reliefCenter.name
-                }))}
-                freeSolo
-                renderOption={option => option.title}
-                getOptionLabel={this.getOptionLabel}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    placeholder="Main Street Relief Center"
-                    label="Relief Center Name"
-                    variant="outlined"
-                    block
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                    fullWidth
-                  />
-                )}
-              />
+                fullWidth
+                onChange={e => this.onReliefCenterChange(e)}
+              >
+                {this.state.reliefCenters.map(reliefCenter => (
+                  <MenuItem value={reliefCenter.name}>
+                    {reliefCenter.name}
+                  </MenuItem>
+                ))}
+              </Select>
             </Card>
 
             {/* Task Cards */}
@@ -426,6 +555,7 @@ export default class ReliefCenterForms extends Component {
                 taskID,
                 numberOfPeople,
                 nameOfJob,
+                description,
                 typeOfJob,
                 date,
                 start_time,
@@ -452,7 +582,7 @@ export default class ReliefCenterForms extends Component {
 
             {/* Button to Add More Task Cards */}
             <Button onClick={this.addForm}>
-              ADD <AddCircleOutlineIcon />
+              ADD TASK <AddCircleOutlineIcon />
             </Button>
 
             {/* Submit Button */}
@@ -468,3 +598,5 @@ export default class ReliefCenterForms extends Component {
     );
   }
 }
+
+export default withRouter(ReliefCenterForms);

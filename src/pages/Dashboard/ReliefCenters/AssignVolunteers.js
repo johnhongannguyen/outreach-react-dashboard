@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+
 // Material UI
 import {
   Typography,
@@ -22,6 +23,9 @@ import Theme from "../../../theme";
 
 // axios
 import axios from "axios";
+
+// Moment!
+import moment from "moment";
 
 // Web Sockets - Socket.io
 import { clientSocket, adminSocket } from "../../../web-sockets";
@@ -254,13 +258,17 @@ class AssignVolunteers extends Component {
                     </TableCell>
 
                     <TableCell align="center">
-                      {job.date ? new Date(job.date).toDateString() : "N/A"}
+                      {job.date ? moment(job.date).format("MM-DD-YYYY") : "N/A"}
                     </TableCell>
                     <TableCell align="center">
-                      {job.start_time ? job.start_time : "N/A"}
+                      {job.start_time
+                        ? moment(job.start_time).format("MM:HH A")
+                        : "N/A"}
                     </TableCell>
                     <TableCell align="center">
-                      {job.end_time ? job.end_time : "N/A"}
+                      {job.end_time
+                        ? moment(job.end_time).format("MM:HH A")
+                        : "N/A"}
                     </TableCell>
                     {/* User Suggestion Column */}
                     <TableCell align="center">

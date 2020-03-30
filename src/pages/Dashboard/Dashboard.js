@@ -46,6 +46,9 @@ import RequestsSent from "./ReliefCenters/RequestsSent";
 import RequestsReceived from "./ReliefCenters/RequestsReceived";
 import Suggestions from "./ReliefCenters/Suggestions";
 
+// Relief Center Forms
+import NewReliefCenterForm from "./ReliefCenterForms/NewReliefCenterForm";
+
 // Redux
 // Getting Auth (was in Home during the example follow-up)
 import { connect } from "react-redux";
@@ -323,6 +326,11 @@ function Dashboard({ user, logOut }) {
               {/* Relief Centers Route */}
               <Route path="/dashboard/relief-centers">
                 <ReliefCenters />
+              </Route>
+
+              {/* Relief Centers Route */}
+              <Route path="/dashboard/relief-center/new">
+                <NewReliefCenterForm />
               </Route>
 
               {/* Relief Centers Route */}

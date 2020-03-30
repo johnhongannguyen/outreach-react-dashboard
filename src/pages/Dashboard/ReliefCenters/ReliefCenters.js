@@ -233,7 +233,6 @@ class ReliefCenters extends Component {
                         this.assignVolunteers(reliefCenter._id)
                       }
                     />
-                    {reliefCenter.updatedAt}
                   </Grid>
                 ))}
           </Grid>

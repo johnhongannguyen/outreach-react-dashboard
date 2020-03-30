@@ -14,6 +14,9 @@ import VolunteerRequestCard from "../../../components/Dashboard/VolunteerRequest
 // Web Sockets - Socket.io
 import { clientSocket, adminSocket } from "../../../web-sockets";
 
+// Moment!
+import moment from "moment";
+
 // ENV
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -155,7 +158,11 @@ class Volunteers extends Component {
                       <VolunteerRequestCard
                         title={volunteer_name}
                         content={`wants to help with ${type}`}
-                        contentExtra={`at ${name} on ${date} from ${start_time} to ${end_time}`}
+                        contentExtra={`at ${name} on ${moment(date).format(
+                          "MM-DD-YYYY"
+                        )} from ${moment(start_time).format(
+                          "MM:HH A"
+                        )} to ${moment(end_time).format("MM:HH A")}`}
                         onAccept={() => {
                           this.approveVolunteerRequest(
                             task_id,
