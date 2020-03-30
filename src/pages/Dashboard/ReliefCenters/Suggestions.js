@@ -74,17 +74,41 @@ class Suggestions extends Component {
       });
   };
 
+  // Send Request to Volunteer
+  sendRequestToVolunteer = (volunteerEmail, taskID) => {
+    // Send Request with POST Request
+    axios
+      .post(`${API_URL}/user/admin/request/${volunteerEmail}/${taskID}`)
+      .then(res => {
+        if (res.status == 200) {
+          // Change Button to Sent!; Suggest more if there's room.
+
+          const { reliefCenterID } = this.props.match.params;
+
+          this.getSuggestions();
+        }
+      })
+      .catch(err => console.log(err));
+
+    console.log(`Sending request to User:${volunteerEmail} for Task:${taskID}`);
+  };
+
+  // Get Suggestions for the Task
+  getSuggestions = () => {
+    const { taskID } = this.props.match.params;
+    axios.get(`${API_URL}/user/suggest/task/${taskID}`).then(res => {
+      if (res.status == 200) {
+        this.setState({ suggestions: res.data });
+      }
+    });
+  };
+
   componentDidMount() {
     const { reliefCenterID, taskID } = this.props.match.params;
 
     this.getReliefCenterByID(reliefCenterID);
 
-    axios.get(`${API_URL}/user/suggest/task/${taskID}`).then(res => {
-      if (res.status == 200) {
-        this.setState({ suggestions: res.data });
-        console.log(this.state.suggestions);
-      }
-    });
+    this.getSuggestions();
   }
 
   render() {
@@ -93,6 +117,8 @@ class Suggestions extends Component {
 
     // Get Stuff from the state
     const { suggestions, reliefCenterInfo } = this.state;
+    const { reliefCenterID, taskID } = this.props.match.params;
+
     return (
       <ThemeProvider theme={Theme}>
         {/* Back Arrow with Relief Center's Name */}
@@ -121,6 +147,7 @@ class Suggestions extends Component {
                     <Grid item className={classes.hoverStyle}>
                       <Suggestion
                         user={suggestedVolunteer}
+                        taskID={taskID}
                         onSendRequestClick={this.sendRequestToVolunteer}
                       />
                     </Grid>

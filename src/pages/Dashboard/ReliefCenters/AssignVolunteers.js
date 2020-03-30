@@ -251,19 +251,13 @@ class AssignVolunteers extends Component {
                     </TableCell>
 
                     <TableCell align="center">
-                      <Button>
-                        {" "}
-                        {job.date ? new Date(job.date).toDateString() : "N/A"}
-                      </Button>
+                      {job.date ? new Date(job.date).toDateString() : "N/A"}
                     </TableCell>
                     <TableCell align="center">
-                      <Button>
-                        {" "}
-                        {job.start_time ? job.start_time : "N/A"}
-                      </Button>
+                      {job.start_time ? job.start_time : "N/A"}
                     </TableCell>
                     <TableCell align="center">
-                      <Button> {job.end_time ? job.end_time : "N/A"}</Button>
+                      {job.end_time ? job.end_time : "N/A"}
                     </TableCell>
                     {/* User Suggestion Column */}
                     <TableCell align="center">
