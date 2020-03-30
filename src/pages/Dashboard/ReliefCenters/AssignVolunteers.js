@@ -129,7 +129,7 @@ class AssignVolunteers extends Component {
     else return { name: "No Suggestions", email: "" };
   }
 
-  //
+  // Get Assigned Volunteers
   getAssigned = taskID => {
     const { reliefCenterID } = this.props.match.params;
     this.props.history.push(
@@ -137,12 +137,30 @@ class AssignVolunteers extends Component {
     );
   };
 
-  //
+  // Get Pending Requests to be accepted by Volunteers
   getPendingRequests = taskID => {
     const { reliefCenterID } = this.props.match.params;
 
     this.props.history.push(
       `/dashboard/relief-center/id/${reliefCenterID}/task/${taskID}/pending`
+    );
+  };
+
+  // Get Requests Received from Volunteers
+  getRequestsReceived = taskID => {
+    const { reliefCenterID } = this.props.match.params;
+
+    this.props.history.push(
+      `/dashboard/relief-center/id/${reliefCenterID}/task/${taskID}/received`
+    );
+  };
+
+  // Get All Suggestions
+  getAllSuggestions = taskID => {
+    const { reliefCenterID } = this.props.match.params;
+
+    this.props.history.push(
+      `/dashboard/relief-center/id/${reliefCenterID}/task/${taskID}/suggestions`
     );
   };
 
@@ -169,7 +187,8 @@ class AssignVolunteers extends Component {
           <IconButton onClick={() => this.props.history.goBack()}>
             <ArrowBack />
           </IconButton>
-          {reliefCenterInfo.name || "Relief Center Name"}
+          {`${reliefCenterInfo.name} > Volunteer Management` ||
+            "Volunteer Management"}
         </Typography>
 
         {/* Table Starts */}
@@ -179,10 +198,10 @@ class AssignVolunteers extends Component {
             <TableHead>
               <TableRow>
                 <TableCell align="center">Job</TableCell>
-                <TableCell align="center">Capacity</TableCell>
+                <TableCell align="center">Short By</TableCell>
                 <TableCell align="center">Assigned</TableCell>
                 <TableCell align="center">Requests Sent</TableCell>
-                <TableCell align="center">Need</TableCell>
+                <TableCell align="center">Requests Received</TableCell>
                 <TableCell align="center">Date</TableCell>
                 <TableCell align="center">Start Time</TableCell>
                 <TableCell align="center">End Time</TableCell>
@@ -200,7 +219,9 @@ class AssignVolunteers extends Component {
                     <TableCell align="center" component="th" scope="row">
                       {job.type}
                     </TableCell>
-                    <TableCell align="center">{job.total_capacity}</TableCell>
+                    <TableCell align="center">
+                      {job.total_capacity - job.assigned_total}
+                    </TableCell>
                     <TableCell align="center">
                       <Button
                         onClick={() => {
@@ -220,11 +241,20 @@ class AssignVolunteers extends Component {
                       </Button>
                     </TableCell>
                     <TableCell align="center">
-                      <Button>{job.total_capacity - job.assigned_total}</Button>
+                      <Button
+                        onClick={() => {
+                          this.getRequestsReceived(job.task_id);
+                        }}
+                      >
+                        {job.volunteer_requests_total}
+                      </Button>
                     </TableCell>
 
                     <TableCell align="center">
-                      <Button> {job.date ? job.date : "N/A"}</Button>
+                      <Button>
+                        {" "}
+                        {job.date ? new Date(job.date).toDateString() : "N/A"}
+                      </Button>
                     </TableCell>
                     <TableCell align="center">
                       <Button>
@@ -253,7 +283,11 @@ class AssignVolunteers extends Component {
                             taskID={job.task_id}
                             onSendRequestClick={this.sendRequestToVolunteer}
                           />
-                          <Button>See All</Button>
+                          <Button
+                            onClick={() => this.getAllSuggestions(job.task_id)}
+                          >
+                            See All
+                          </Button>
                         </>
                       )}
                     </TableCell>

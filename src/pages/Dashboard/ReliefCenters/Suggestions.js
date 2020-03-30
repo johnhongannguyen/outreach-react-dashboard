@@ -39,7 +39,7 @@ const styles = theme => ({
     color: theme.palette.text.secondary
     // backgroundColor: "#111C24"
   },
-  assignedVolunteers: {
+  suggestions: {
     // backgroundColor: "white"
   },
   hoverStyle: {
@@ -52,7 +52,7 @@ const styles = theme => ({
   }
 });
 
-class AssignedVolunteers extends Component {
+class Suggestions extends Component {
   constructor(props) {
     super(props);
 
@@ -60,7 +60,7 @@ class AssignedVolunteers extends Component {
       // reliefCenter: [],
       // suggestions: [],
       reliefCenterInfo: {},
-      assignedVolunteers: []
+      suggestions: []
     };
   }
 
@@ -79,10 +79,10 @@ class AssignedVolunteers extends Component {
 
     this.getReliefCenterByID(reliefCenterID);
 
-    axios.get(`${API_URL}/relief-center/task/${taskID}/assigned`).then(res => {
+    axios.get(`${API_URL}/user/suggest/task/${taskID}`).then(res => {
       if (res.status == 200) {
-        this.setState({ assignedVolunteers: res.data });
-        console.log(this.state.assignedVolunteers);
+        this.setState({ suggestions: res.data });
+        console.log(this.state.suggestions);
       }
     });
   }
@@ -92,7 +92,7 @@ class AssignedVolunteers extends Component {
     const classes = styles;
 
     // Get Stuff from the state
-    const { assignedVolunteers, reliefCenterInfo } = this.state;
+    const { suggestions, reliefCenterInfo } = this.state;
     return (
       <ThemeProvider theme={Theme}>
         {/* Back Arrow with Relief Center's Name */}
@@ -100,8 +100,8 @@ class AssignedVolunteers extends Component {
           <IconButton onClick={() => this.props.history.goBack()}>
             <ArrowBack />
           </IconButton>
-          {`${reliefCenterInfo.name} > Assigned Volunteers` ||
-            "Assigned Volunteers"}
+          {`${reliefCenterInfo.name} > Suggested Volunteers` ||
+            "Suggested Volunteers"}
         </Typography>
 
         {/* Box Starts */}
@@ -110,25 +110,23 @@ class AssignedVolunteers extends Component {
             container
             spacing={2}
             justify="center"
-            className={classes.assignedVolunteers}
+            className={classes.suggestions}
           >
-            {assignedVolunteers &&
-              assignedVolunteers
+            {suggestions &&
+              suggestions
                 // .slice(0, assignedVolunteersLimit)
-                .map(assignedVolunteer => {
-                  const { _id, name, email } = assignedVolunteer;
+                .map(suggestedVolunteer => {
+                  const { _id, name, email } = suggestedVolunteer;
                   return (
                     <Grid item className={classes.hoverStyle}>
-                      <VolunteerInfoCard
-                        title={name}
-                        content={email}
-                        buttonText="Unassign"
-                        onButtonClick={() => console.log("Button Pressed")}
+                      <Suggestion
+                        user={suggestedVolunteer}
+                        onSendRequestClick={this.sendRequestToVolunteer}
                       />
                     </Grid>
                   );
                 })}
-            {assignedVolunteers.length < 1 && <div>No Assigned Volunteers</div>}
+            {suggestions.length < 1 && <div>No Suggested Volunteers</div>}
           </Grid>
         </Paper>
 
@@ -138,4 +136,4 @@ class AssignedVolunteers extends Component {
   }
 }
 
-export default withStyles(styles)(withRouter(AssignedVolunteers));
+export default withStyles(styles)(withRouter(Suggestions));

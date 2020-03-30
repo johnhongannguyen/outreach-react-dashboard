@@ -4,11 +4,6 @@ import { withRouter } from "react-router-dom";
 import {
   Typography,
   IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
   Button,
   TableRow,
   Paper,
@@ -22,6 +17,7 @@ import { withStyles, ThemeProvider } from "@material-ui/core/styles";
 import Suggestion from "../../../components/Dashboard/Suggestion";
 import Theme from "../../../theme";
 import VolunteerInfoCard from "../../../components/Dashboard/VolunteerInfoCard";
+import VolunteerRequestCard from "../../../components/Dashboard/VolunteerRequestCard";
 
 // axios
 import axios from "axios";
@@ -39,7 +35,7 @@ const styles = theme => ({
     color: theme.palette.text.secondary
     // backgroundColor: "#111C24"
   },
-  assignedVolunteers: {
+  requestsReceivedList: {
     // backgroundColor: "white"
   },
   hoverStyle: {
@@ -52,7 +48,7 @@ const styles = theme => ({
   }
 });
 
-class AssignedVolunteers extends Component {
+class RequestsSent extends Component {
   constructor(props) {
     super(props);
 
@@ -60,7 +56,7 @@ class AssignedVolunteers extends Component {
       // reliefCenter: [],
       // suggestions: [],
       reliefCenterInfo: {},
-      assignedVolunteers: []
+      requestsReceivedList: []
     };
   }
 
@@ -79,12 +75,14 @@ class AssignedVolunteers extends Component {
 
     this.getReliefCenterByID(reliefCenterID);
 
-    axios.get(`${API_URL}/relief-center/task/${taskID}/assigned`).then(res => {
-      if (res.status == 200) {
-        this.setState({ assignedVolunteers: res.data });
-        console.log(this.state.assignedVolunteers);
-      }
-    });
+    axios
+      .get(`${API_URL}/relief-center/task/${taskID}/requests_received`)
+      .then(res => {
+        if (res.status == 200) {
+          this.setState({ requestsReceivedList: res.data });
+          console.log(this.state.requestsReceivedList);
+        }
+      });
   }
 
   render() {
@@ -92,7 +90,7 @@ class AssignedVolunteers extends Component {
     const classes = styles;
 
     // Get Stuff from the state
-    const { assignedVolunteers, reliefCenterInfo } = this.state;
+    const { requestsReceivedList, reliefCenterInfo } = this.state;
     return (
       <ThemeProvider theme={Theme}>
         {/* Back Arrow with Relief Center's Name */}
@@ -100,35 +98,37 @@ class AssignedVolunteers extends Component {
           <IconButton onClick={() => this.props.history.goBack()}>
             <ArrowBack />
           </IconButton>
-          {`${reliefCenterInfo.name} > Assigned Volunteers` ||
-            "Assigned Volunteers"}
+          {`${reliefCenterInfo.name} > Requests Received` ||
+            "Requests Received"}
         </Typography>
 
         {/* Box Starts */}
         <Paper className={classes.paper}>
           <Grid
             container
-            spacing={2}
             justify="center"
-            className={classes.assignedVolunteers}
+            spacing={2}
+            className={classes.requestsReceivedList}
           >
-            {assignedVolunteers &&
-              assignedVolunteers
+            {requestsReceivedList &&
+              requestsReceivedList
                 // .slice(0, assignedVolunteersLimit)
-                .map(assignedVolunteer => {
-                  const { _id, name, email } = assignedVolunteer;
+                .map(requestReceived => {
+                  const { _id, name, email } = requestReceived;
                   return (
                     <Grid item className={classes.hoverStyle}>
-                      <VolunteerInfoCard
+                      <VolunteerRequestCard
                         title={name}
                         content={email}
-                        buttonText="Unassign"
-                        onButtonClick={() => console.log("Button Pressed")}
+                        onAccept={() => console.log("Accept Pressed")}
+                        onAccept={() => console.log("Decline Pressed")}
                       />
                     </Grid>
                   );
                 })}
-            {assignedVolunteers.length < 1 && <div>No Assigned Volunteers</div>}
+            {requestsReceivedList.length < 1 && (
+              <div>No requests received for this task.</div>
+            )}
           </Grid>
         </Paper>
 
@@ -138,4 +138,4 @@ class AssignedVolunteers extends Component {
   }
 }
 
-export default withStyles(styles)(withRouter(AssignedVolunteers));
+export default withStyles(styles)(withRouter(RequestsSent));

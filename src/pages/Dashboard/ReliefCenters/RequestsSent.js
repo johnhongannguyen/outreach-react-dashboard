@@ -11,7 +11,9 @@ import {
   TableHead,
   Button,
   TableRow,
-  Paper
+  Paper,
+  Grid,
+  Link
 } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import { withStyles, ThemeProvider } from "@material-ui/core/styles";
@@ -19,20 +21,34 @@ import { withStyles, ThemeProvider } from "@material-ui/core/styles";
 // Custom Components and Themes
 import Suggestion from "../../../components/Dashboard/Suggestion";
 import Theme from "../../../theme";
+import VolunteerInfoCard from "../../../components/Dashboard/VolunteerInfoCard";
 
 // axios
 import axios from "axios";
 // API URL
 const API_URL = process.env.REACT_APP_API_URL;
 
+// Styles
 const styles = theme => ({
-  table: {
-    minWidth: 650
+  root: {
+    flexGrow: 1
   },
-  suggestion: {
-    maxWidth: 20,
-    padding: 10,
-    margin: 10
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary
+    // backgroundColor: "#111C24"
+  },
+  requestsSentList: {
+    // backgroundColor: "white"
+  },
+  hoverStyle: {
+    transition: "1s cubic-bezier(.47,1.64,.41,.8)",
+    marginTop: "1rem",
+    marginRight: "1rem",
+    "&:hover": {
+      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)"
+    }
   }
 });
 
@@ -41,14 +57,36 @@ class RequestsSent extends Component {
     super(props);
 
     this.state = {
-      reliefCenter: [],
-      suggestions: [],
-      reliefCenterInfo: {}
+      // reliefCenter: [],
+      // suggestions: [],
+      reliefCenterInfo: {},
+      requestsSentList: []
     };
   }
 
+  // Get Relief Center by ID
+  getReliefCenterByID = reliefCenterID => {
+    axios
+      .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
+      .then(response => {
+        this.setState({ reliefCenterInfo: response.data });
+        console.log(response);
+      });
+  };
+
   componentDidMount() {
-    const { reliefCenterID } = this.props.match.params;
+    const { reliefCenterID, taskID } = this.props.match.params;
+
+    this.getReliefCenterByID(reliefCenterID);
+
+    axios
+      .get(`${API_URL}/relief-center/task/${taskID}/requests_sent`)
+      .then(res => {
+        if (res.status == 200) {
+          this.setState({ requestsSentList: res.data });
+          console.log(this.state.requestsSentList);
+        }
+      });
   }
 
   render() {
@@ -56,7 +94,7 @@ class RequestsSent extends Component {
     const classes = styles;
 
     // Get Stuff from the state
-    const { reliefCenter, suggestions, reliefCenterInfo } = this.state;
+    const { requestsSentList, reliefCenterInfo } = this.state;
     return (
       <ThemeProvider theme={Theme}>
         {/* Back Arrow with Relief Center's Name */}
@@ -64,100 +102,38 @@ class RequestsSent extends Component {
           <IconButton onClick={() => this.props.history.goBack()}>
             <ArrowBack />
           </IconButton>
-          {reliefCenterInfo.name || "Volunteers Requests Sent"}
+          {`${reliefCenterInfo.name} > Requests Sent` || "Requests Sent"}
         </Typography>
 
-        {/* Table Starts */}
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            {/* Table Header Starts */}
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">Job</TableCell>
-                <TableCell align="center">Capacity</TableCell>
-                <TableCell align="center">Assigned</TableCell>
-                <TableCell align="center">Requests Sent</TableCell>
-                <TableCell align="center">Need</TableCell>
-                <TableCell align="center">Date</TableCell>
-                <TableCell align="center">Start Time</TableCell>
-                <TableCell align="center">End Time</TableCell>
-                <TableCell align="center">Suggestions</TableCell>
-              </TableRow>
-            </TableHead>
-            {/* Table Header Ends */}
+        {/* Box Starts */}
+        <Paper className={classes.paper}>
+          <Grid
+            container
+            justify="center"
+            spacing={2}
+            className={classes.requestsSentList}
+          >
+            {requestsSentList &&
+              requestsSentList
+                // .slice(0, assignedVolunteersLimit)
+                .map(assignedVolunteer => {
+                  const { _id, name, email } = assignedVolunteer;
+                  return (
+                    <Grid item className={classes.hoverStyle}>
+                      <VolunteerInfoCard
+                        title={name}
+                        content={email}
+                        buttonText="Revoke Request"
+                        onButtonClick={() => console.log("Button Pressed")}
+                      />
+                    </Grid>
+                  );
+                })}
+            {requestsSentList.length < 1 && <div>No Requests Sent</div>}
+          </Grid>
+        </Paper>
 
-            {/* Table Body Starts */}
-            <TableBody>
-              {reliefCenter.map((job, index) => {
-                // const { name } = this.state.suggestions;
-                return (
-                  <TableRow key={index}>
-                    <TableCell align="center" component="th" scope="row">
-                      {job.type}
-                    </TableCell>
-                    <TableCell align="center">{job.total_capacity}</TableCell>
-                    <TableCell align="center">
-                      <Button
-                        onClick={() => {
-                          this.getAssigned(job.task_id);
-                        }}
-                      >
-                        {job.assigned_total}
-                      </Button>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Button
-                        onClick={() => {
-                          this.getPendingRequests(job.task_id);
-                        }}
-                      >
-                        {job.requests_sent_by_admin_total}
-                      </Button>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Button>{job.total_capacity - job.assigned_total}</Button>
-                    </TableCell>
-
-                    <TableCell align="center">
-                      <Button> {job.date ? job.date : "N/A"}</Button>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Button>
-                        {" "}
-                        {job.start_time ? job.start_time : "N/A"}
-                      </Button>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Button> {job.end_time ? job.end_time : "N/A"}</Button>
-                    </TableCell>
-                    {/* User Suggestion Column */}
-                    <TableCell align="center">
-                      {/* Suggest a Random User! */}
-                      {suggestions.length > 0 && (
-                        <Suggestion
-                          user={
-                            // Suggest Voluteers which are: not assigned, not requested, not requesting
-                            this.suggestUser(
-                              job.task_id,
-                              job.assigned,
-                              job.requests_sent_by_admin,
-                              job.volunteer_requests
-                            )
-                          }
-                          taskID={job.task_id}
-                          onSendRequestClick={this.sendRequestToVolunteer}
-                        />
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-            {/* Table Body Ends */}
-          </Table>
-        </TableContainer>
-
-        {/* Table Ends */}
+        {/* Box Ends */}
       </ThemeProvider>
     );
   }
