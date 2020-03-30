@@ -216,7 +216,7 @@ export default class ReliefCenterForms extends Component {
       taskID: tasks.length + 1,
       numberOfPeople: 1,
       typeOfJob: "Cooking",
-      description: "The description goes here",
+      description: "The Description Goes Here",
       preference: "anytime"
     });
 
@@ -232,12 +232,7 @@ export default class ReliefCenterForms extends Component {
     const { tasks } = this.state;
     const foundIndex = tasks.findIndex(task => task.taskID == taskID);
 
-    // console.log("ID", ID);
-    // console.log("date", date);
-    // console.log("start_time", tasks[foundIndex]["start_time"]);
-    // console.log("end_time", tasks[foundIndex]["end_time"]);
-
-    // DEBUG
+    // Conditions
     const isStartTimeBeforeEndTime =
       ID == "start_time" &&
       ID !== "date" &&
@@ -304,6 +299,19 @@ export default class ReliefCenterForms extends Component {
   // Handle Relief Center Change
   onReliefCenterChange = e => {
     this.setState({ reliefCenterName: e.target.value });
+  };
+
+  // Handle Description Change
+  onDescriptionChange = (e, taskID) => {
+    // Get the Preference
+    const description = e.target.value;
+
+    // Find the object.. in tasks.. and update the concerned value.
+    const { tasks } = this.state;
+    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
+
+    tasks[foundIndex]["description"] = description;
+    this.setState({ tasks });
   };
 
   // Handle Relief Center Form Reset
@@ -407,6 +415,12 @@ export default class ReliefCenterForms extends Component {
           }
         />
       )}
+
+      <TextField
+        onChange={e => this.onDescriptionChange(e, taskID)}
+        fullWidth
+        label="Task Description"
+      ></TextField>
     </Card>
   );
 
@@ -432,14 +446,14 @@ export default class ReliefCenterForms extends Component {
     } = this.state;
     return (
       <>
-        {/* Error */}
+        {/* Error Message Box */}
         {!reliefCenterName && (
           <Alert severity="info">
             Please select an existing Relief Center or create a new one!
           </Alert>
         )}
 
-        {/* Submit Error */}
+        {/* Submit Error Message Box */}
         {submitError.isSet && (
           <Alert severity="error">{submitError.message}</Alert>
         )}
@@ -461,8 +475,10 @@ export default class ReliefCenterForms extends Component {
           </>
         )}
 
+        {/* Relief Center Form */}
         {isReliefCenterFormVisible && (
           <>
+            {/* Top Header & Add New Button */}
             <Grid container justify="space-between">
               {/* Panel Title - Relief Center Form */}
               <Typography align="left" variant="h3">
@@ -479,36 +495,10 @@ export default class ReliefCenterForms extends Component {
 
             {/* Relief Center Name Input */}
             <Card style={{ padding: 25, marginBottom: 25 }}>
-              {/* <Autocomplete
-                value={reliefCenterName}
-                onChange={this.handleAutoCompleteChange}
-                filterOptions={this.handleFilterOptions}
-                id="relief-center-name"
-                options={this.state.reliefCenters.map(reliefCenter => ({
-                  title: reliefCenter.name
-                }))}
-                freeSolo
-                renderOption={option => option.title}
-                getOptionLabel={this.getOptionLabel}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    placeholder="Main Street Relief Center"
-                    label="Relief Center Name"
-                    variant="outlined"
-                    block
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                    fullWidth
-                  />
-                )}
-              /> */}
-
               <InputLabel id="demo-simple-select-label">
                 Relief Center Name
               </InputLabel>
-              {/* Type of Task (Job)! */}
+              {/* Relief Center Selection! */}
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -530,6 +520,7 @@ export default class ReliefCenterForms extends Component {
                 taskID,
                 numberOfPeople,
                 nameOfJob,
+                description,
                 typeOfJob,
                 date,
                 start_time,
