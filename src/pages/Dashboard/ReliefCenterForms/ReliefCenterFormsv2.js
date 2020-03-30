@@ -22,6 +22,9 @@ import {
   Typography
 } from "@material-ui/core";
 
+// Axios
+import axios from "axios";
+
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 
@@ -38,6 +41,10 @@ import AlertTitle from "@material-ui/lab/AlertTitle";
 // Custom Components
 import DateTimePicker from "../../../components/Dashboard/DateTimePicker";
 import SubmittedTasksTableComponent from "./SubmittedTasksTableComponent";
+
+// API URL
+const API_URL = process.env.REACT_APP_API_URL;
+
 // Styles
 const useStyles = makeStyles({
   root: {
@@ -89,6 +96,7 @@ class ReliefCenterForms extends Component {
 
     this.state = {
       reliefCenterName: null,
+      reliefCenterID: null,
       reliefCenters: [],
       isSubmitTableVisible: false,
       isReliefCenterFormVisible: true,
@@ -256,7 +264,7 @@ class ReliefCenterForms extends Component {
   };
 
   // Relief Center Form
-  handleSubmitReliefCenterForm = () => {
+  handleSubmitReliefCenterForm = async () => {
     // If Relief Center is selected and user has added one task..
     if (this.state.reliefCenterName && this.state.tasks.length > 0) {
       this.setState({
@@ -286,7 +294,12 @@ class ReliefCenterForms extends Component {
       });
 
       // Send the new tasks!
-      console.log(tasksToBeSentToDB);
+      const finalDBData = { volunteers: { opportunities: tasksToBeSentToDB } };
+
+      await axios.put(
+        `${API_URL}/relief-center/${this.state.reliefCenterID}/tasks/add`,
+        tasksToBeSentToDB
+      );
 
       // Get the submitted Table with a Button to Reset the tasks and add new/more tasks
       this.setState({
@@ -302,7 +315,16 @@ class ReliefCenterForms extends Component {
 
   // Handle Relief Center Change
   onReliefCenterChange = e => {
-    this.setState({ reliefCenterName: e.target.value });
+    // Find the object.. in tasks.. and update the concerned value.
+    const reliefCenterName = e.target.value;
+    const foundIndex = this.state.reliefCenters.findIndex(
+      reliefCenter => reliefCenter.name == reliefCenterName
+    );
+
+    const reliefCenterID = this.state.reliefCenters[foundIndex]["_id"];
+
+    console.log(reliefCenterID);
+    this.setState({ reliefCenterName, reliefCenterID });
   };
 
   // Handle Description Change

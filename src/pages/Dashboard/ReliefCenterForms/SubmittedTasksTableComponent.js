@@ -59,12 +59,12 @@ export default function SubmittedTasksTableComponent({ tasks }) {
 
               <TableCell align="right">
                 {task.preference === "preference"
-                  ? moment(task.start_time).format("HH:MM A")
+                  ? moment(task.start_time).format("MM:HH A")
                   : "N/A"}
               </TableCell>
               <TableCell align="right">
                 {task.preference === "preference"
-                  ? moment(task.end_time).format("HH:MM A")
+                  ? moment(task.end_time).format("MM:HH A")
                   : "N/A"}
               </TableCell>
             </TableRow>
