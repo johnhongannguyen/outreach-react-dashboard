@@ -70,7 +70,6 @@ class RequestsSent extends Component {
       .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
       .then(response => {
         this.setState({ reliefCenterInfo: response.data });
-        console.log(response);
       });
   };
 
@@ -103,7 +102,6 @@ class RequestsSent extends Component {
       .then(res => {
         if (res.status == 200) {
           this.setState({ requestsReceivedList: res.data });
-          console.log(this.state.requestsReceivedList);
         }
       });
   };
@@ -116,8 +114,6 @@ class RequestsSent extends Component {
     this.getRequestsReceived(taskID);
 
     clientSocket.on("reliefCenterDataChange", () => {
-      console.log("Change detected in Requests Recveied");
-
       this.getReliefCenterByID(reliefCenterID);
 
       this.getRequestsReceived(taskID);

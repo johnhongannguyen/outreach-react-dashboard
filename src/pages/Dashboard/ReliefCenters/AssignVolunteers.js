@@ -53,21 +53,16 @@ class AssignVolunteers extends Component {
 
   // Get Relief Center by ID
   getReliefCenterByID = reliefCenterID => {
-    console.log(
-      `${API_URL}/relief-center/id/${reliefCenterID}/requirement/assign`
-    );
     axios
       .get(`${API_URL}/relief-center/id/${reliefCenterID}/requirement/assign`)
       .then(response => {
         this.setState({ reliefCenter: response.data });
-        console.log(response);
       });
 
     axios
       .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
       .then(response => {
         this.setState({ reliefCenterInfo: response.data });
-        console.log(response);
       });
   };
 
@@ -77,7 +72,6 @@ class AssignVolunteers extends Component {
   //     `${API_URL}/user/suggest/task/${taskID}`
   //   );
 
-  //   console.log(suggestions.data[0]);
   //   this.setState({ suggestions: suggestions.data });
   //   return suggestions.data[0];
   // };
@@ -99,13 +93,10 @@ class AssignVolunteers extends Component {
 
           const { reliefCenterID } = this.props.match.params;
 
-          console.log("Done!");
           this.getReliefCenterByID(reliefCenterID);
         }
       })
       .catch(err => console.log(err));
-
-    console.log(`Sending request to User:${volunteerEmail} for Task:${taskID}`);
   };
 
   // Suggest ONE user from suggestions
@@ -178,8 +169,6 @@ class AssignVolunteers extends Component {
     this.getSuggestions();
 
     clientSocket.on("reliefCenterDataChange", () => {
-      console.log("Change detected in AssignVolunteers");
-
       // Get Info about the Relief Center into consideration
       this.getReliefCenterByID(reliefCenterID);
 

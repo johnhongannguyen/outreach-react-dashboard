@@ -30,7 +30,6 @@ const useStyles = makeStyles({
 export default function Suggestion({ user, onSendRequestClick, taskID }) {
   const classes = useStyles();
 
-  console.log(user);
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>

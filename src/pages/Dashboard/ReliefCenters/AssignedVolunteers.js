@@ -77,7 +77,6 @@ class AssignedVolunteers extends Component {
         .then(res => {
           if (res.status == 200) {
             this.setState({ assignedVolunteers: res.data });
-            console.log(this.state.assignedVolunteers);
           }
         });
   };
@@ -88,7 +87,6 @@ class AssignedVolunteers extends Component {
       .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
       .then(response => {
         this.setState({ reliefCenterInfo: response.data });
-        console.log(response);
       });
   };
 
@@ -110,8 +108,6 @@ class AssignedVolunteers extends Component {
     this.getAssignedVolunteers();
 
     clientSocket.on("reliefCenterDataChange", () => {
-      console.log("Change detected in Assigned Volunteers");
-
       this.getReliefCenterByID(reliefCenterID);
 
       this.getAssignedVolunteers();

@@ -74,7 +74,6 @@ class RequestsSent extends Component {
       .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
       .then(response => {
         this.setState({ reliefCenterInfo: response.data });
-        console.log(response);
       });
   };
 
@@ -108,8 +107,6 @@ class RequestsSent extends Component {
     this.getRequestsSent(taskID);
 
     clientSocket.on("reliefCenterDataChange", () => {
-      console.log("Change detected in Requests Sent");
-
       this.getReliefCenterByID(reliefCenterID);
 
       this.getRequestsSent(taskID);

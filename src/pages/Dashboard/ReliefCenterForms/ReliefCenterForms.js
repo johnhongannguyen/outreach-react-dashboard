@@ -102,7 +102,6 @@ export default class ReliefCenterForms extends Component {
     this.setState({ selectedDate: date });
   };
   handleClick(event) {
-    console.log(event.target);
   }
   StyledRadio = props => {
     const classes = useStyles();

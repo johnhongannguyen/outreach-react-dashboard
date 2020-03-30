@@ -53,8 +53,6 @@ class Home extends Component {
 
   // Handle Notify Click
   handleNotifyClick = broadcastMessage => {
-    console.log("Trying to broadcast:", broadcastMessage);
-
     clientSocket.emit("broadcastMessage", broadcastMessage);
   };
   async componentDidMount() {
@@ -64,13 +62,8 @@ class Home extends Component {
     // Socket.io
     clientSocket.connect();
 
-    // DEBUG CONNECTITON
-    console.log(clientSocket.connected);
-    // console.log(adminSocket.connected);
-
     clientSocket.on("reliefCenterDataChange", () => {
       // Get the latest changes
-      console.log("Data was changed..");
     });
 
     // News API

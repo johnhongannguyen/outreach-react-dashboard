@@ -74,7 +74,6 @@ class Suggestions extends Component {
       .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
       .then(response => {
         this.setState({ reliefCenterInfo: response.data });
-        console.log(response);
       });
   };
 
@@ -93,8 +92,6 @@ class Suggestions extends Component {
         }
       })
       .catch(err => console.log(err));
-
-    console.log(`Sending request to User:${volunteerEmail} for Task:${taskID}`);
   };
 
   // Get Suggestions for the Task
@@ -115,8 +112,6 @@ class Suggestions extends Component {
     this.getSuggestions();
 
     clientSocket.on("reliefCenterDataChange", () => {
-      console.log("Change detected in Suggestions");
-
       this.getReliefCenterByID(reliefCenterID);
 
       this.getSuggestions();
