@@ -240,16 +240,20 @@ export default class ReliefCenterForms extends Component {
     // DEBUG
     const isStartTimeBeforeEndTime =
       ID == "start_time" &&
+      ID !== "date" &&
       moment(date).isBefore(tasks[foundIndex]["end_time"]);
 
     const isEndTimeBeforeStartTime =
-      ID == "end_time" && moment(date).isAfter(tasks[foundIndex]["start_time"]);
+      ID !== "date" &&
+      ID == "end_time" &&
+      moment(date).isAfter(tasks[foundIndex]["start_time"]);
 
     // Valid start and end times
     if (isStartTimeBeforeEndTime || isEndTimeBeforeStartTime) {
       tasks[foundIndex][ID] = date;
-      this.setState({ tasks });
     }
+    if (ID == "date") tasks[foundIndex][ID] = date;
+    this.setState({ tasks });
   };
 
   // Relief Center Form
@@ -444,8 +448,10 @@ export default class ReliefCenterForms extends Component {
         {isSubmitTableVisible && (
           <>
             <Alert severity="success">
-              <AlertTitle>Success</AlertTitle>
-              This is a success alert — check it out!
+              <AlertTitle>
+                {reliefCenterName} Form Submission Succcess
+              </AlertTitle>
+              {this.state.tasks.length} task(s) were added to {reliefCenterName}
             </Alert>
             <Card>
               <SubmittedTasksTableComponent tasks={tasks} />
