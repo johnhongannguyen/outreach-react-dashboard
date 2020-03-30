@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Axios from "axios";
-import _ from "moment";
+import moment from "moment";
 // Material UI
 import {
   FormControl,
@@ -88,23 +88,12 @@ export default class ReliefCenterForms extends Component {
       reliefCenters: [],
       isSubmitTableVisible: false,
       isReliefCenterFormVisible: true,
-      tasks: [
-        // {
-        //   taskID: 1,
-        //   numberOfPeople: 10,
-        //   typeOfJob: "Cooking",
-        //   preference: "anytime"
-        // },
-        // {
-        //   taskID: 2,
-        //   numberOfPeople: 5,
-        //   typeOfJob: "Driving",
-        //   preference: "preference",
-        //   date: new Date(),
-        //   start_time: new Date(),
-        //   end_time: new Date()
-        // }
-      ]
+      submitError: {
+        isSet: false,
+        message:
+          "Sorry, you have to select a relief center first and add at least one task."
+      },
+      tasks: []
     };
   }
 
@@ -225,7 +214,7 @@ export default class ReliefCenterForms extends Component {
     tasks.push({
       // Problematic if someone decides to delete one of the items!
       taskID: tasks.length + 1,
-      numberOfPeople: 2,
+      numberOfPeople: 1,
       typeOfJob: "Cooking",
       description: "The description goes here",
       preference: "anytime"
@@ -243,14 +232,33 @@ export default class ReliefCenterForms extends Component {
     const { tasks } = this.state;
     const foundIndex = tasks.findIndex(task => task.taskID == taskID);
 
-    tasks[foundIndex][ID] = date;
-    this.setState({ tasks });
+    // console.log("ID", ID);
+    // console.log("date", date);
+    // console.log("start_time", tasks[foundIndex]["start_time"]);
+    // console.log("end_time", tasks[foundIndex]["end_time"]);
+
+    // DEBUG
+    const isStartTimeBeforeEndTime =
+      ID == "start_time" &&
+      moment(date).isBefore(tasks[foundIndex]["end_time"]);
+
+    const isEndTimeBeforeStartTime =
+      ID == "end_time" && moment(date).isAfter(tasks[foundIndex]["start_time"]);
+
+    // Valid start and end times
+    if (isStartTimeBeforeEndTime || isEndTimeBeforeStartTime) {
+      tasks[foundIndex][ID] = date;
+      this.setState({ tasks });
+    }
   };
 
   // Relief Center Form
   handleSubmitReliefCenterForm = () => {
     // If Relief Center is selected and user has added one task..
     if (this.state.reliefCenterName && this.state.tasks.length > 0) {
+      this.setState({
+        submitError: { ...this.state.submitError, isSet: false }
+      });
       // Map it before sending..
       let tasksToBeSentToDB = this.state.tasks.map(task => {
         const {
@@ -274,17 +282,34 @@ export default class ReliefCenterForms extends Component {
         };
       });
 
+      // Send the new tasks!
       console.log(tasksToBeSentToDB);
+
+      // Get the submitted Table with a Button to Reset the tasks and add new/more tasks
+      this.setState({
+        isSubmitTableVisible: true,
+        isReliefCenterFormVisible: false
+      });
     } else {
-      console.log(
-        "Sorry, you have to select a relief center first and add at least one task."
-      );
+      this.setState({
+        submitError: { ...this.state.submitError, isSet: true }
+      });
     }
   };
 
   // Handle Relief Center Change
   onReliefCenterChange = e => {
     this.setState({ reliefCenterName: e.target.value });
+  };
+
+  // Handle Relief Center Form Reset
+  resetReliefCenterForm = () => {
+    this.setState({
+      isReliefCenterFormVisible: true,
+      isSubmitTableVisible: false,
+      tasks: [],
+      reliefCenterName: ""
+    });
   };
 
   // Task Card Component
@@ -303,7 +328,7 @@ export default class ReliefCenterForms extends Component {
     <Card taskID={taskID} style={{ padding: 50, marginBottom: 25 }}>
       {numberOfPeople > 0 && typeOfJob && (
         <Typography align="left" variant="h4">
-          Requesting {numberOfPeople} volunteers for {typeOfJob}
+          Requesting {numberOfPeople} volunteer(s) for {typeOfJob}
         </Typography>
       )}
 
@@ -335,7 +360,7 @@ export default class ReliefCenterForms extends Component {
             fullWidth
             InputProps={{
               inputProps: {
-                max: 10,
+                max: 25,
                 min: 1
               }
             }}
@@ -398,18 +423,21 @@ export default class ReliefCenterForms extends Component {
       tasks,
       isSubmitTableVisible,
       isReliefCenterFormVisible,
-      isErrorVisible
+      isErrorVisible,
+      submitError
     } = this.state;
     return (
       <>
-        {/* Debug */}
-
-        <div>{JSON.stringify(this.state.tasks)}</div>
         {/* Error */}
         {!reliefCenterName && (
           <Alert severity="info">
             Please select an existing Relief Center or create a new one!
           </Alert>
+        )}
+
+        {/* Submit Error */}
+        {submitError.isSet && (
+          <Alert severity="error">{submitError.message}</Alert>
         )}
 
         {/* Submitted Card */}
@@ -422,6 +450,8 @@ export default class ReliefCenterForms extends Component {
             <Card>
               <SubmittedTasksTableComponent tasks={tasks} />
             </Card>
+
+            <Button onClick={this.resetReliefCenterForm}>Add More</Button>
           </>
         )}
 
