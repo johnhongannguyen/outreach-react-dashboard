@@ -108,6 +108,14 @@ class AssignedVolunteers extends Component {
     this.getReliefCenterByID(reliefCenterID);
 
     this.getAssignedVolunteers();
+
+    clientSocket.on("reliefCenterDataChange", () => {
+      console.log("Change detected in Assigned Volunteers");
+
+      this.getReliefCenterByID(reliefCenterID);
+
+      this.getAssignedVolunteers();
+    });
   }
 
   render() {

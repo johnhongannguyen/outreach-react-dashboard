@@ -106,6 +106,14 @@ class RequestsSent extends Component {
     this.getReliefCenterByID(reliefCenterID);
 
     this.getRequestsSent(taskID);
+
+    clientSocket.on("reliefCenterDataChange", () => {
+      console.log("Change detected in Requests Sent");
+
+      this.getReliefCenterByID(reliefCenterID);
+
+      this.getRequestsSent(taskID);
+    });
   }
 
   render() {

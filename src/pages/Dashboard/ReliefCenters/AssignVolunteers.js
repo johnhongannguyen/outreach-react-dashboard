@@ -176,6 +176,16 @@ class AssignVolunteers extends Component {
 
     // Get Suggestions!
     this.getSuggestions();
+
+    clientSocket.on("reliefCenterDataChange", () => {
+      console.log("Change detected in AssignVolunteers");
+
+      // Get Info about the Relief Center into consideration
+      this.getReliefCenterByID(reliefCenterID);
+
+      // Get Suggestions!
+      this.getSuggestions();
+    });
   }
 
   render() {

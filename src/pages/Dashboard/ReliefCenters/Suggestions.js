@@ -113,6 +113,14 @@ class Suggestions extends Component {
     this.getReliefCenterByID(reliefCenterID);
 
     this.getSuggestions();
+
+    clientSocket.on("reliefCenterDataChange", () => {
+      console.log("Change detected in Suggestions");
+
+      this.getReliefCenterByID(reliefCenterID);
+
+      this.getSuggestions();
+    });
   }
 
   render() {
