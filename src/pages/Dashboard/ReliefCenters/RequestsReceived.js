@@ -70,11 +70,30 @@ class RequestsSent extends Component {
       });
   };
 
-  componentDidMount() {
-    const { reliefCenterID, taskID } = this.props.match.params;
+  // Approve Volunteer's Request
+  approveVolunteerRequest = (taskID, emailID) => {
+    axios
+      .post(`${API_URL}/relief-center/id/${taskID}/${emailID}`)
+      .then(response => {
+        if (response.status === 200) {
+          this.getRequestsReceived(taskID);
+        }
+      });
+  };
 
-    this.getReliefCenterByID(reliefCenterID);
+  // Decline Volunteer's Request
+  declineVolunteerRequest = (taskID, emailID) => {
+    axios
+      .post(`${API_URL}/relief-center/id/${taskID}/${emailID}/decline`)
+      .then(response => {
+        if (response.status === 200) {
+          this.getRequestsReceived(taskID);
+        }
+      });
+  };
 
+  // Get Received Requests for the Task
+  getRequestsReceived = taskID => {
     axios
       .get(`${API_URL}/relief-center/task/${taskID}/requests_received`)
       .then(res => {
@@ -83,6 +102,14 @@ class RequestsSent extends Component {
           console.log(this.state.requestsReceivedList);
         }
       });
+  };
+
+  componentDidMount() {
+    const { reliefCenterID, taskID } = this.props.match.params;
+
+    this.getReliefCenterByID(reliefCenterID);
+
+    this.getRequestsReceived(taskID);
   }
 
   render() {
@@ -91,6 +118,8 @@ class RequestsSent extends Component {
 
     // Get Stuff from the state
     const { requestsReceivedList, reliefCenterInfo } = this.state;
+    const { reliefCenterID, taskID } = this.props.match.params;
+
     return (
       <ThemeProvider theme={Theme}>
         {/* Back Arrow with Relief Center's Name */}
@@ -120,8 +149,12 @@ class RequestsSent extends Component {
                       <VolunteerRequestCard
                         title={name}
                         content={email}
-                        onAccept={() => console.log("Accept Pressed")}
-                        onAccept={() => console.log("Decline Pressed")}
+                        onAccept={() =>
+                          this.approveVolunteerRequest(taskID, email)
+                        }
+                        onDecline={() =>
+                          this.declineVolunteerRequest(taskID, email)
+                        }
                       />
                     </Grid>
                   );
