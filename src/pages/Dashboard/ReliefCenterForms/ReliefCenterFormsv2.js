@@ -463,12 +463,19 @@ export default class ReliefCenterForms extends Component {
 
         {isReliefCenterFormVisible && (
           <>
-            {/* Panel Title - Relief Center Form */}
-            <Typography align="left" variant="h3">
-              {reliefCenterName == null || reliefCenterName == ""
-                ? "Relief Center Form"
-                : `${reliefCenterName} Form`}
-            </Typography>
+            <Grid container justify="space-between">
+              {/* Panel Title - Relief Center Form */}
+              <Typography align="left" variant="h3">
+                {reliefCenterName == null || reliefCenterName == ""
+                  ? "Relief Center Form"
+                  : `${reliefCenterName} Form`}
+              </Typography>
+              {!reliefCenterName && (
+                <Button variant="contained" color="primary">
+                  <AddCircleOutlineIcon /> ADD NEW
+                </Button>
+              )}
+            </Grid>
 
             {/* Relief Center Name Input */}
             <Card style={{ padding: 25, marginBottom: 25 }}>
@@ -549,7 +556,7 @@ export default class ReliefCenterForms extends Component {
 
             {/* Button to Add More Task Cards */}
             <Button onClick={this.addForm}>
-              ADD <AddCircleOutlineIcon />
+              ADD TASK <AddCircleOutlineIcon />
             </Button>
 
             {/* Submit Button */}
