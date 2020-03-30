@@ -74,19 +74,34 @@ class RequestsSent extends Component {
       });
   };
 
-  componentDidMount() {
-    const { reliefCenterID, taskID } = this.props.match.params;
+  // Handle Revoke Request
+  handleRevokeRequest = (taskID, email) => {
+    // const { reliefCenterID, taskID } = this.props.match.params;
+    if (taskID)
+      axios.post(`${API_URL}/user/${email}/decline/${taskID}`).then(res => {
+        if (res.status == 200) {
+          this.getRequestsSent(taskID);
+        }
+      });
+  };
 
-    this.getReliefCenterByID(reliefCenterID);
-
+  // Get Requests Sent for the task
+  getRequestsSent = taskID => {
     axios
       .get(`${API_URL}/relief-center/task/${taskID}/requests_sent`)
       .then(res => {
         if (res.status == 200) {
           this.setState({ requestsSentList: res.data });
-          console.log(this.state.requestsSentList);
         }
       });
+  };
+
+  componentDidMount() {
+    const { reliefCenterID, taskID } = this.props.match.params;
+
+    this.getReliefCenterByID(reliefCenterID);
+
+    this.getRequestsSent(taskID);
   }
 
   render() {
@@ -95,6 +110,8 @@ class RequestsSent extends Component {
 
     // Get Stuff from the state
     const { requestsSentList, reliefCenterInfo } = this.state;
+    const { reliefCenterID, taskID } = this.props.match.params;
+
     return (
       <ThemeProvider theme={Theme}>
         {/* Back Arrow with Relief Center's Name */}
@@ -124,7 +141,9 @@ class RequestsSent extends Component {
                         title={name}
                         content={email}
                         buttonText="Revoke Request"
-                        onButtonClick={() => console.log("Button Pressed")}
+                        onButtonClick={() =>
+                          this.handleRevokeRequest(taskID, email)
+                        }
                       />
                     </Grid>
                   );
