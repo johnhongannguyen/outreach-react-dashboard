@@ -25,6 +25,10 @@ import VolunteerInfoCard from "../../../components/Dashboard/VolunteerInfoCard";
 
 // axios
 import axios from "axios";
+
+// Web Sockets - Socket.io
+import { clientSocket, adminSocket } from "../../../web-sockets";
+
 // API URL
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -70,8 +74,34 @@ class Suggestions extends Component {
       .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
       .then(response => {
         this.setState({ reliefCenterInfo: response.data });
-        console.log(response);
       });
+  };
+
+  // Send Request to Volunteer
+  sendRequestToVolunteer = (volunteerEmail, taskID) => {
+    // Send Request with POST Request
+    axios
+      .post(`${API_URL}/user/admin/request/${volunteerEmail}/${taskID}`)
+      .then(res => {
+        if (res.status == 200) {
+          // Change Button to Sent!; Suggest more if there's room.
+
+          const { reliefCenterID } = this.props.match.params;
+
+          this.getSuggestions();
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
+  // Get Suggestions for the Task
+  getSuggestions = () => {
+    const { taskID } = this.props.match.params;
+    axios.get(`${API_URL}/user/suggest/task/${taskID}`).then(res => {
+      if (res.status == 200) {
+        this.setState({ suggestions: res.data });
+      }
+    });
   };
 
   componentDidMount() {
@@ -79,11 +109,12 @@ class Suggestions extends Component {
 
     this.getReliefCenterByID(reliefCenterID);
 
-    axios.get(`${API_URL}/user/suggest/task/${taskID}`).then(res => {
-      if (res.status == 200) {
-        this.setState({ suggestions: res.data });
-        console.log(this.state.suggestions);
-      }
+    this.getSuggestions();
+
+    clientSocket.on("reliefCenterDataChange", () => {
+      this.getReliefCenterByID(reliefCenterID);
+
+      this.getSuggestions();
     });
   }
 
@@ -93,6 +124,8 @@ class Suggestions extends Component {
 
     // Get Stuff from the state
     const { suggestions, reliefCenterInfo } = this.state;
+    const { reliefCenterID, taskID } = this.props.match.params;
+
     return (
       <ThemeProvider theme={Theme}>
         {/* Back Arrow with Relief Center's Name */}
@@ -121,6 +154,7 @@ class Suggestions extends Component {
                     <Grid item className={classes.hoverStyle}>
                       <Suggestion
                         user={suggestedVolunteer}
+                        taskID={taskID}
                         onSendRequestClick={this.sendRequestToVolunteer}
                       />
                     </Grid>

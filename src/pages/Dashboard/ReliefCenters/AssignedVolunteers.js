@@ -25,6 +25,10 @@ import VolunteerInfoCard from "../../../components/Dashboard/VolunteerInfoCard";
 
 // axios
 import axios from "axios";
+
+// Web Sockets - Socket.io
+import { clientSocket, adminSocket } from "../../../web-sockets";
+
 // API URL
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -64,14 +68,36 @@ class AssignedVolunteers extends Component {
     };
   }
 
+  // Get Assigned Volunteers for the task
+  getAssignedVolunteers = () => {
+    const { reliefCenterID, taskID } = this.props.match.params;
+    if (taskID)
+      axios
+        .get(`${API_URL}/relief-center/task/${taskID}/assigned`)
+        .then(res => {
+          if (res.status == 200) {
+            this.setState({ assignedVolunteers: res.data });
+          }
+        });
+  };
+
   // Get Relief Center by ID
   getReliefCenterByID = reliefCenterID => {
     axios
       .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
       .then(response => {
         this.setState({ reliefCenterInfo: response.data });
-        console.log(response);
       });
+  };
+
+  // Handle Opt Out (Unassign)
+  handleOptOut = async (taskID, email) => {
+    axios.post(`${API_URL}/user/${email}/optout/${taskID}`).then(res => {
+      // If successfully opted out from DB..
+      if (res.status == 200) {
+        this.getAssignedVolunteers();
+      }
+    });
   };
 
   componentDidMount() {
@@ -79,11 +105,12 @@ class AssignedVolunteers extends Component {
 
     this.getReliefCenterByID(reliefCenterID);
 
-    axios.get(`${API_URL}/relief-center/task/${taskID}/assigned`).then(res => {
-      if (res.status == 200) {
-        this.setState({ assignedVolunteers: res.data });
-        console.log(this.state.assignedVolunteers);
-      }
+    this.getAssignedVolunteers();
+
+    clientSocket.on("reliefCenterDataChange", () => {
+      this.getReliefCenterByID(reliefCenterID);
+
+      this.getAssignedVolunteers();
     });
   }
 
@@ -93,6 +120,8 @@ class AssignedVolunteers extends Component {
 
     // Get Stuff from the state
     const { assignedVolunteers, reliefCenterInfo } = this.state;
+    const { reliefCenterID, taskID } = this.props.match.params;
+
     return (
       <ThemeProvider theme={Theme}>
         {/* Back Arrow with Relief Center's Name */}
@@ -123,7 +152,7 @@ class AssignedVolunteers extends Component {
                         title={name}
                         content={email}
                         buttonText="Unassign"
-                        onButtonClick={() => console.log("Button Pressed")}
+                        onButtonClick={() => this.handleOptOut(taskID, email)}
                       />
                     </Grid>
                   );

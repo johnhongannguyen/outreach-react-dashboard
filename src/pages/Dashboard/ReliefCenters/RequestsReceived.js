@@ -21,6 +21,10 @@ import VolunteerRequestCard from "../../../components/Dashboard/VolunteerRequest
 
 // axios
 import axios from "axios";
+
+// Web Sockets - Socket.io
+import { clientSocket, adminSocket } from "../../../web-sockets";
+
 // API URL
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -66,7 +70,39 @@ class RequestsSent extends Component {
       .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
       .then(response => {
         this.setState({ reliefCenterInfo: response.data });
-        console.log(response);
+      });
+  };
+
+  // Approve Volunteer's Request
+  approveVolunteerRequest = (taskID, emailID) => {
+    axios
+      .post(`${API_URL}/relief-center/id/${taskID}/${emailID}`)
+      .then(response => {
+        if (response.status === 200) {
+          this.getRequestsReceived(taskID);
+        }
+      });
+  };
+
+  // Decline Volunteer's Request
+  declineVolunteerRequest = (taskID, emailID) => {
+    axios
+      .post(`${API_URL}/relief-center/id/${taskID}/${emailID}/decline`)
+      .then(response => {
+        if (response.status === 200) {
+          this.getRequestsReceived(taskID);
+        }
+      });
+  };
+
+  // Get Received Requests for the Task
+  getRequestsReceived = taskID => {
+    axios
+      .get(`${API_URL}/relief-center/task/${taskID}/requests_received`)
+      .then(res => {
+        if (res.status == 200) {
+          this.setState({ requestsReceivedList: res.data });
+        }
       });
   };
 
@@ -75,14 +111,13 @@ class RequestsSent extends Component {
 
     this.getReliefCenterByID(reliefCenterID);
 
-    axios
-      .get(`${API_URL}/relief-center/task/${taskID}/requests_received`)
-      .then(res => {
-        if (res.status == 200) {
-          this.setState({ requestsReceivedList: res.data });
-          console.log(this.state.requestsReceivedList);
-        }
-      });
+    this.getRequestsReceived(taskID);
+
+    clientSocket.on("reliefCenterDataChange", () => {
+      this.getReliefCenterByID(reliefCenterID);
+
+      this.getRequestsReceived(taskID);
+    });
   }
 
   render() {
@@ -91,6 +126,8 @@ class RequestsSent extends Component {
 
     // Get Stuff from the state
     const { requestsReceivedList, reliefCenterInfo } = this.state;
+    const { reliefCenterID, taskID } = this.props.match.params;
+
     return (
       <ThemeProvider theme={Theme}>
         {/* Back Arrow with Relief Center's Name */}
@@ -120,8 +157,12 @@ class RequestsSent extends Component {
                       <VolunteerRequestCard
                         title={name}
                         content={email}
-                        onAccept={() => console.log("Accept Pressed")}
-                        onAccept={() => console.log("Decline Pressed")}
+                        onAccept={() =>
+                          this.approveVolunteerRequest(taskID, email)
+                        }
+                        onDecline={() =>
+                          this.declineVolunteerRequest(taskID, email)
+                        }
                       />
                     </Grid>
                   );

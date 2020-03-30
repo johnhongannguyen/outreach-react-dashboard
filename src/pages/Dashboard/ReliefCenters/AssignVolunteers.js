@@ -22,6 +22,10 @@ import Theme from "../../../theme";
 
 // axios
 import axios from "axios";
+
+// Web Sockets - Socket.io
+import { clientSocket, adminSocket } from "../../../web-sockets";
+
 // API URL
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -49,21 +53,16 @@ class AssignVolunteers extends Component {
 
   // Get Relief Center by ID
   getReliefCenterByID = reliefCenterID => {
-    console.log(
-      `${API_URL}/relief-center/id/${reliefCenterID}/requirement/assign`
-    );
     axios
       .get(`${API_URL}/relief-center/id/${reliefCenterID}/requirement/assign`)
       .then(response => {
         this.setState({ reliefCenter: response.data });
-        console.log(response);
       });
 
     axios
       .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
       .then(response => {
         this.setState({ reliefCenterInfo: response.data });
-        console.log(response);
       });
   };
 
@@ -73,7 +72,6 @@ class AssignVolunteers extends Component {
   //     `${API_URL}/user/suggest/task/${taskID}`
   //   );
 
-  //   console.log(suggestions.data[0]);
   //   this.setState({ suggestions: suggestions.data });
   //   return suggestions.data[0];
   // };
@@ -95,13 +93,10 @@ class AssignVolunteers extends Component {
 
           const { reliefCenterID } = this.props.match.params;
 
-          console.log("Done!");
           this.getReliefCenterByID(reliefCenterID);
         }
       })
       .catch(err => console.log(err));
-
-    console.log(`Sending request to User:${volunteerEmail} for Task:${taskID}`);
   };
 
   // Suggest ONE user from suggestions
@@ -172,6 +167,14 @@ class AssignVolunteers extends Component {
 
     // Get Suggestions!
     this.getSuggestions();
+
+    clientSocket.on("reliefCenterDataChange", () => {
+      // Get Info about the Relief Center into consideration
+      this.getReliefCenterByID(reliefCenterID);
+
+      // Get Suggestions!
+      this.getSuggestions();
+    });
   }
 
   render() {
@@ -251,19 +254,13 @@ class AssignVolunteers extends Component {
                     </TableCell>
 
                     <TableCell align="center">
-                      <Button>
-                        {" "}
-                        {job.date ? new Date(job.date).toDateString() : "N/A"}
-                      </Button>
+                      {job.date ? new Date(job.date).toDateString() : "N/A"}
                     </TableCell>
                     <TableCell align="center">
-                      <Button>
-                        {" "}
-                        {job.start_time ? job.start_time : "N/A"}
-                      </Button>
+                      {job.start_time ? job.start_time : "N/A"}
                     </TableCell>
                     <TableCell align="center">
-                      <Button> {job.end_time ? job.end_time : "N/A"}</Button>
+                      {job.end_time ? job.end_time : "N/A"}
                     </TableCell>
                     {/* User Suggestion Column */}
                     <TableCell align="center">
