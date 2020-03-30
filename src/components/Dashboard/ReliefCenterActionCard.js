@@ -42,7 +42,7 @@ export default function ReliefCenterActionCard({ list, name, onAssignClick }) {
             {list.map(listItem => (
               <ListItem>
                 <ListItemText>{listItem.type}</ListItemText>
-                <ListItemText>{listItem.total}</ListItemText>
+                <ListItemText>{listItem.total_capacity}</ListItemText>
               </ListItem>
             ))}
           </List>

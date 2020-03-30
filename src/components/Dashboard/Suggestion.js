@@ -37,6 +37,9 @@ export default function Suggestion({ user, onSendRequestClick, taskID }) {
         <Typography variant="body1" component="h4">
           {user.name}
         </Typography>
+        <Typography variant="body2" component="h4">
+          {user.email}
+        </Typography>
       </CardContent>
       <CardActions className={classes.action}>
         {user.name !== "No Suggestions" && (
