@@ -237,7 +237,7 @@ function Dashboard({ user, logOut }) {
             </IconButton>
 
             <IconButton onClick={handleNotificationsClick} color="inherit">
-              <Badge badgeContent={2} color="secondary">
+              <Badge badgeContent={2} color="primary">
                 <NotificationsIcon color="primary" />
               </Badge>
 

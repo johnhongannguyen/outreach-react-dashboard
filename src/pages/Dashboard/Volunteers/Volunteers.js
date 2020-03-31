@@ -6,13 +6,23 @@ import { withRouter, Link } from "react-router-dom";
 import axios from "axios";
 
 // Material UI - Core - Imports
-import { Typography, Grid, Paper, Button, Badge } from "@material-ui/core";
+import {
+  Typography,
+  Grid,
+  Paper,
+  Button,
+  Badge,
+  ThemeProvider
+} from "@material-ui/core";
 
 // Custom Outreach Components
 import VolunteerRequestCard from "../../../components/Dashboard/VolunteerRequestCard";
 
 // Web Sockets - Socket.io
 import { clientSocket, adminSocket } from "../../../web-sockets";
+
+// Custom Components and Themes
+import Theme from "../../../theme";
 
 // Moment!
 import moment from "moment";
@@ -26,18 +36,24 @@ const styles = theme => ({
     flexGrow: 1
   },
   paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
+    // padding: theme.spacing(2),
+    // textAlign: "center",
+    padding: 15,
     color: theme.palette.text.secondary
     // backgroundColor: "#111C24"
   },
+  seeAllButton: {
+    textTransform: "none",
+    textDecoration: "none"
+  },
+
   volunteerRequests: {
     // backgroundColor: "white"
   },
   hoverStyle: {
     transition: "1s cubic-bezier(.47,1.64,.41,.8)",
     marginTop: "1rem",
-    marginRight: "1rem",
+    // marginRight: "1rem",
     "&:hover": {
       boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)"
     }
@@ -81,7 +97,7 @@ class Volunteers extends Component {
     });
 
     // Set Limits based on where the user is
-    if (this.isHomePage()) this.setState({ volunteerRequestsLimit: 4 });
+    if (this.isHomePage()) this.setState({ volunteerRequestsLimit: 3 });
     else this.setState({ volunteerRequestsLimit: 20 });
   }
 
@@ -121,11 +137,11 @@ class Volunteers extends Component {
     } = this.state;
 
     return (
-      <>
-        <Typography align="left" variant="h5" component="h3">
+      <ThemeProvider theme={Theme}>
+        <Typography align="left" variant="h6" component="h3">
           <Badge
             badgeContent={volunteerRequests && volunteerRequests.length}
-            color="secondary"
+            color="primary"
           >
             Volunteer Requests
           </Badge>
@@ -133,8 +149,9 @@ class Volunteers extends Component {
 
         <Paper className={classes.paper}>
           <Grid
+            spacing={2}
             container
-            justify="center"
+            justify="space-evenly"
             className={classes.volunteerRequests}
           >
             {volunteerRequests &&
@@ -154,15 +171,17 @@ class Volunteers extends Component {
                     volunteer_name
                   } = volunteerRequest;
                   return (
-                    <Grid item className={classes.hoverStyle}>
+                    <Grid item xs={12} md={6} lg={4}>
                       <VolunteerRequestCard
+                        className={classes.hoverStyle}
                         title={volunteer_name}
-                        content={`wants to help with ${type}`}
-                        contentExtra={`at ${name} on ${moment(date).format(
+                        // content={`wants to help with ${type}`}
+                        content={`${type} - ${name}`}
+                        contentExtra={`${moment(date).format(
                           "MM-DD-YYYY"
-                        )} from ${moment(start_time).format(
-                          "MM:HH A"
-                        )} to ${moment(end_time).format("MM:HH A")}`}
+                        )} | ${moment(start_time).format("hh:MM A")} - ${moment(
+                          end_time
+                        ).format("hh:MM A")}`}
                         onAccept={() => {
                           this.approveVolunteerRequest(
                             task_id,
@@ -180,13 +199,13 @@ class Volunteers extends Component {
             {this.isHomePage() && (
               <Grid container justify="flex-end">
                 <Link to="/dashboard/volunteers">
-                  <Button>See All..</Button>
+                  <Button className={classes.seeAllButton}>See all..</Button>
                 </Link>
               </Grid>
             )}
           </Grid>
         </Paper>
-      </>
+      </ThemeProvider>
     );
   }
 }

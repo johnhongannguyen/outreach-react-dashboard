@@ -26,7 +26,7 @@ import Theme from "../../theme";
 export const mainListItems = (
   <ThemeProvider theme={Theme}>
     <ListItem
-      autoFocus
+      autoFocus={false}
       button
       component={Link}
       to={{ pathname: "/dashboard/", state: "flushDeal" }}

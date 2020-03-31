@@ -33,8 +33,8 @@ const styles = theme => ({
   },
   hoverStyle: {
     transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
-    marginTop: "1rem",
-    marginRight: "1rem",
+    marginBottom: "1rem",
+    // marginRight: "1rem",
     "&:hover": {
       boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)"
     }
@@ -96,34 +96,32 @@ class Home extends Component {
 
           {/* Notifications (Alerts) */}
           <Grid item xs={12} lg={6}>
-            <Typography variant="h5" align="left" component="h3">
+            <Typography variant="h6" align="left" component="h3">
               Updates
             </Typography>
-            <Paper className={classes.paper}>
-              <Grid justify="center" container>
-                {updates ? (
-                  updates &&
-                  updates.articles.slice(0, 3).map(update => (
-                    <Grid item className={classes.hoverStyle}>
-                      <NotificationCard
-                        content={update.title}
-                        onNotifyClick={() =>
-                          this.handleNotifyClick(update.title)
-                        }
-                      />
-                    </Grid>
-                  ))
-                ) : (
-                  <Grid item>No New Notifications</Grid>
-                )}
-              </Grid>
+            {/* <Paper className={classes.paper}> */}
+            <Grid justify="center" container>
+              {updates ? (
+                updates &&
+                updates.articles.slice(0, 3).map(update => (
+                  <Grid item className={classes.hoverStyle}>
+                    <NotificationCard
+                      content={update.title}
+                      onNotifyClick={() => this.handleNotifyClick(update.title)}
+                    />
+                  </Grid>
+                ))
+              ) : (
+                <Grid item>No New Notifications</Grid>
+              )}
+            </Grid>
 
-              <Grid container justify="flex-end">
-                <Link to="/dashboard/volunteers">
-                  <Button>See All..</Button>
-                </Link>
-              </Grid>
-            </Paper>
+            {/* <Grid container justify="flex-end">
+              <Link to="/dashboard/volunteers">
+                <Button>See All..</Button>
+              </Link>
+            </Grid> */}
+            {/* </Paper> */}
           </Grid>
         </Grid>
       </>

@@ -12,9 +12,10 @@ import {
   TableHead,
   Button,
   TableRow,
-  Paper
+  Paper,
+  Tooltip
 } from "@material-ui/core";
-import { ArrowBack } from "@material-ui/icons";
+import { ArrowBackIos } from "@material-ui/icons";
 import { withStyles, ThemeProvider } from "@material-ui/core/styles";
 
 // Custom Components and Themes
@@ -36,13 +37,33 @@ const API_URL = process.env.REACT_APP_API_URL;
 const styles = theme => ({
   table: {
     minWidth: 650
+    // maxWidth: 200
   },
+  container: {},
   suggestion: {
-    maxWidth: 20,
-    padding: 10,
-    margin: 10
+    // maxWidth: 20,
+    // padding: 10,
+    // margin: 10
   }
 });
+
+// Custom Table Cell
+const CustomTableCell = withStyles(theme => ({
+  head: {
+    backgroundColor: "#eee",
+    color: "#F27821",
+    fontSize: "14px !important",
+    fontWeight: "bold",
+    fontFamily: "Quicksand !important"
+  },
+  body: {
+    fontSize: 18,
+    fontWeight: "bold",
+    opacity: 0.13
+
+    // color: "#F27821"
+  }
+}))(TableCell);
 
 class AssignVolunteers extends Component {
   constructor(props) {
@@ -69,16 +90,6 @@ class AssignVolunteers extends Component {
         this.setState({ reliefCenterInfo: response.data });
       });
   };
-
-  // Get Suggestions For a Task
-  // getSuggestionsForATask = async taskID => {
-  //   const suggestions = await axios.get(
-  //     `${API_URL}/user/suggest/task/${taskID}`
-  //   );
-
-  //   this.setState({ suggestions: suggestions.data });
-  //   return suggestions.data[0];
-  // };
 
   // Get Suggestions
   getSuggestions = async number => {
@@ -192,27 +203,32 @@ class AssignVolunteers extends Component {
         {/* Back Arrow with Relief Center's Name */}
         <Typography variant="h5" align="left">
           <IconButton onClick={() => this.props.history.goBack()}>
-            <ArrowBack />
+            <ArrowBackIos />
           </IconButton>
-          {`${reliefCenterInfo.name} > Volunteer Management` ||
-            "Volunteer Management"}
+          {`${reliefCenterInfo.name}` || "Volunteer Management"}
         </Typography>
 
         {/* Table Starts */}
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
+        <TableContainer className={classes.container} component={Paper}>
+          <Table
+            stickyHeader
+            className={classes.table}
+            aria-label="relief center table"
+          >
             {/* Table Header Starts */}
             <TableHead>
               <TableRow>
-                <TableCell align="center">Job</TableCell>
-                <TableCell align="center">Short By</TableCell>
-                <TableCell align="center">Assigned</TableCell>
-                <TableCell align="center">Requests Sent</TableCell>
-                <TableCell align="center">Requests Received</TableCell>
-                <TableCell align="center">Date</TableCell>
-                <TableCell align="center">Start Time</TableCell>
-                <TableCell align="center">End Time</TableCell>
-                <TableCell align="center">Suggestions</TableCell>
+                <CustomTableCell align="center">Job</CustomTableCell>
+                <CustomTableCell align="center">Short By</CustomTableCell>
+                <CustomTableCell align="center">Assigned</CustomTableCell>
+                <CustomTableCell align="center">Requests Sent</CustomTableCell>
+                <CustomTableCell align="center">
+                  Requests Received
+                </CustomTableCell>
+                <CustomTableCell align="center">Date</CustomTableCell>
+                <CustomTableCell align="center">Start Time</CustomTableCell>
+                <CustomTableCell align="center">End Time</CustomTableCell>
+                <CustomTableCell align="center">Suggestions</CustomTableCell>
               </TableRow>
             </TableHead>
             {/* Table Header Ends */}
@@ -223,38 +239,44 @@ class AssignVolunteers extends Component {
                 // const { name } = this.state.suggestions;
                 return (
                   <TableRow key={index}>
-                    <TableCell align="center" component="th" scope="row">
+                    <TableCell align="center" scope="row">
                       {job.type}
                     </TableCell>
                     <TableCell align="center">
                       {job.total_capacity - job.assigned_total}
                     </TableCell>
                     <TableCell align="center">
-                      <Button
-                        onClick={() => {
-                          this.getAssigned(job.task_id);
-                        }}
-                      >
-                        {job.assigned_total}
-                      </Button>
+                      <Tooltip title="View all volunteers assigned">
+                        <Button
+                          onClick={() => {
+                            this.getAssigned(job.task_id);
+                          }}
+                        >
+                          {job.assigned_total}
+                        </Button>
+                      </Tooltip>
                     </TableCell>
                     <TableCell align="center">
-                      <Button
-                        onClick={() => {
-                          this.getPendingRequests(job.task_id);
-                        }}
-                      >
-                        {job.requests_sent_by_admin_total}
-                      </Button>
+                      <Tooltip title="View all volunteers you've requested">
+                        <Button
+                          onClick={() => {
+                            this.getPendingRequests(job.task_id);
+                          }}
+                        >
+                          {job.requests_sent_by_admin_total}
+                        </Button>
+                      </Tooltip>
                     </TableCell>
                     <TableCell align="center">
-                      <Button
-                        onClick={() => {
-                          this.getRequestsReceived(job.task_id);
-                        }}
-                      >
-                        {job.volunteer_requests_total}
-                      </Button>
+                      <Tooltip title="View all requests from volunteers">
+                        <Button
+                          onClick={() => {
+                            this.getRequestsReceived(job.task_id);
+                          }}
+                        >
+                          {job.volunteer_requests_total}
+                        </Button>
+                      </Tooltip>
                     </TableCell>
 
                     <TableCell align="center">
@@ -262,12 +284,12 @@ class AssignVolunteers extends Component {
                     </TableCell>
                     <TableCell align="center">
                       {job.start_time
-                        ? moment(job.start_time).format("MM:HH A")
+                        ? moment(job.start_time).format("hh:MM A")
                         : "N/A"}
                     </TableCell>
                     <TableCell align="center">
                       {job.end_time
-                        ? moment(job.end_time).format("MM:HH A")
+                        ? moment(job.end_time).format("hh:MM A")
                         : "N/A"}
                     </TableCell>
                     {/* User Suggestion Column */}
