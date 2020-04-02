@@ -46,7 +46,7 @@ export class NewReliefCenterForm extends Component {
       },
       name: reliefCenterName,
       description: reliefCenterDescription,
-      location: reliefCenterDescription,
+      location: reliefCenterLocation,
       picture_url: "" //Picture not needed.
     };
 
