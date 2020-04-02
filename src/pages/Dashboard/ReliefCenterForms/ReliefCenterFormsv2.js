@@ -25,7 +25,7 @@ import {
 // Axios
 import axios from "axios";
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import clsx from "clsx";
 
 // Icons
@@ -41,6 +41,9 @@ import AlertTitle from "@material-ui/lab/AlertTitle";
 // Custom Components
 import DateTimePicker from "../../../components/Dashboard/DateTimePicker";
 import SubmittedTasksTableComponent from "./SubmittedTasksTableComponent";
+
+// Thmee Provider
+import Theme from "../../../theme";
 
 // API URL
 const API_URL = process.env.REACT_APP_API_URL;
@@ -105,7 +108,8 @@ class ReliefCenterForms extends Component {
         message:
           "Sorry, you have to select a relief center first and add at least one task."
       },
-      tasks: []
+      tasks: [],
+      volunteeringTypes: []
     };
   }
 
@@ -387,10 +391,15 @@ class ReliefCenterForms extends Component {
             fullWidth
             onChange={e => onTypeOfJobChange(e, taskID)}
           >
-            <MenuItem value={"Driving"}>Driving</MenuItem>
+            {this.state.volunteeringTypes.map(volunteeringType => (
+              <MenuItem value={volunteeringType.name}>
+                {volunteeringType.name}
+              </MenuItem>
+            ))}
+            {/* <MenuItem value={"Driving"}>Driving</MenuItem>
             <MenuItem value={"Baby Sitting"}>Baby Sitting</MenuItem>
             <MenuItem value={"Cooking"}>Cooking</MenuItem>
-            <MenuItem value={"Other"}>Other</MenuItem>
+            <MenuItem value={"Other"}>Other</MenuItem> */}
           </Select>
         </Grid>
 
@@ -461,8 +470,13 @@ class ReliefCenterForms extends Component {
       `${process.env.REACT_APP_API_URL}/relief-center`
     );
 
+    const volunteeringTypes = await Axios.get(
+      `${process.env.REACT_APP_API_URL}/volunteering-type`
+    );
+
     this.setState({
-      reliefCenters: reliefCenters.data
+      reliefCenters: reliefCenters.data,
+      volunteeringTypes: volunteeringTypes.data
     });
   }
 
@@ -476,7 +490,7 @@ class ReliefCenterForms extends Component {
       submitError
     } = this.state;
     return (
-      <>
+      <ThemeProvider theme={Theme}>
         {/* Error Message Box */}
         {!reliefCenterName && (
           <Alert severity="info">
@@ -594,7 +608,7 @@ class ReliefCenterForms extends Component {
             </Button>
           </>
         )}
-      </>
+      </ThemeProvider>
     );
   }
 }
