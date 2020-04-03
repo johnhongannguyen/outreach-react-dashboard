@@ -8,8 +8,6 @@ import {
   Grid,
   Typography,
   Button,
-  ButtonGroup,
-  Badge,
   TextField,
   InputAdornment,
   ThemeProvider
@@ -179,6 +177,7 @@ class ReliefCenters extends Component {
                 type="search"
                 variant="outlined"
                 InputProps={{
+                  fontFamily: "Open Sans",
                   startAdornment: (
                     <InputAdornment position="start">
                       <SearchIcon color="primary" />
