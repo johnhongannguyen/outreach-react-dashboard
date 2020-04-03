@@ -84,7 +84,6 @@ export default class ReliefCenterForms extends Component {
     super(props);
 
     this.state = {
-      
       nameOfJob: "Driving",
       numberOfPeople: 0,
       typeOfJob: "",
@@ -98,8 +97,7 @@ export default class ReliefCenterForms extends Component {
   handleSelectedDate = date => {
     this.setState({ selectedDate: date });
   };
-  handleClick(event) {
-  }
+  handleClick(event) {}
   StyledRadio = props => {
     const classes = useStyles();
     return (
@@ -252,7 +250,6 @@ export default class ReliefCenterForms extends Component {
             Submit
           </Button>
         </div>
-      </>
       </ThemeProvider>
     );
   }

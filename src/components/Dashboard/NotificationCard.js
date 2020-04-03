@@ -13,10 +13,15 @@ import {
 const useStyles = makeStyles({
   root: {
     maxWidth: 1000,
-    width: "100%"
+    width: "100%",
+    // paddingLeft: 10,
+    paddingRight: 10
   },
   media: {
     height: 140
+  },
+  notificationContent: {
+    maxWidth: 300
   }
 });
 
@@ -25,18 +30,28 @@ export default function NotificationCard({ content, onNotifyClick }) {
 
   return (
     <Card className={classes.root}>
-      <CardContent>
-        <Typography variant="body2" color="textPrimary" component="p">
-          {content}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Grid container justify="flex-end">
-          <Button color="primary" variant="contained" onClick={onNotifyClick}>
-            Notify
-          </Button>
+      <Grid container alignItems="center" justify="space-between">
+        <Grid item>
+          <CardContent>
+            <Typography
+              align="left"
+              className={classes.notificationContent}
+              variant="body2"
+              color="textPrimary"
+              component="p"
+            >
+              {content}
+            </Typography>
+          </CardContent>
         </Grid>
-      </CardActions>
+        <Grid item>
+          <CardActions>
+            <Button color="primary" variant="outlined" onClick={onNotifyClick}>
+              Notify
+            </Button>
+          </CardActions>
+        </Grid>
+      </Grid>
     </Card>
   );
 }

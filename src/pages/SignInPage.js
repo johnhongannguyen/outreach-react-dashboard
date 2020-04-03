@@ -13,7 +13,8 @@ import {
   Box,
   Grid,
   Collapse,
-  Typography
+  Typography,
+  ThemeProvider
 } from "@material-ui/core";
 
 // Labs
@@ -22,6 +23,9 @@ import AlertTitle from "@material-ui/lab/AlertTitle";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
+
+// Theme
+import Theme from "../theme";
 
 // Redux
 // Getting Auth (was in Home during the example follow-up)
@@ -35,7 +39,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="outreach.nikhilwadekar.com">
+      <Link color="inherit" href="https://outreach.nikhilwadekar.com">
         Outreach
       </Link>{" "}
       {new Date().getFullYear()}
@@ -49,7 +53,7 @@ const useStyles = makeStyles(theme => ({
     height: "100vh"
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/featured/?coronavirus)",
+    backgroundImage: "url(https://source.unsplash.com/ZbuP5oXM_zA)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "dark"
@@ -102,89 +106,80 @@ export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
   };
 
   return (
-    <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in to the Outreach Dashboard
-          </Typography>
+    <ThemeProvider theme={Theme}>
+      <Grid container component="main" className={classes.root}>
+        <CssBaseline />
+        <Grid item xs={false} sm={4} md={7} className={classes.image} />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <div className={classes.paper}>
+            <img src="outreach_logo.png" width="100" />
+            <Typography component="h1" variant="h5">
+              Admin Login
+            </Typography>
 
-          {alert && (
-            <Collapse in={alert}>
-              <Alert severity={alert.alertSeverity}>
-                <AlertTitle>{alert.alertTitle}</AlertTitle>
-                {alert.alert}
-              </Alert>
-            </Collapse>
-          )}
-
-          <form
-            className={classes.form}
-            action="/api/auth/login"
-            method="POST"
-            noValidate
-          >
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={e => setEmail(e.target.value)}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={e => setPassword(e.target.value)}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={handleFormSubmit}
+            <form
+              className={classes.form}
+              action="/api/auth/login"
+              method="POST"
+              noValidate
             >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={e => setEmail(e.target.value)}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={e => setPassword(e.target.value)}
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={handleFormSubmit}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  {/* <Link href="#" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link> */}
+                </Grid>
               </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
-        </div>
+              <Box mt={5}>
+                <Copyright />
+              </Box>
+            </form>
+          </div>
+        </Grid>
       </Grid>
-    </Grid>
+    </ThemeProvider>
   );
 };
 

@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 150
+    minWidth: 100
   },
   bullet: {
     display: "inline-block",
@@ -43,12 +43,13 @@ export default function Suggestion({ user, onSendRequestClick, taskID }) {
       <CardActions className={classes.action}>
         {user.name !== "No Suggestions" && (
           <Button
+            fullWidth
             color="primary"
             variant="outlined"
             size="medium"
             onClick={() => onSendRequestClick(user.email, taskID)}
           >
-            Send Request
+            Request
           </Button>
         )}
       </CardActions>

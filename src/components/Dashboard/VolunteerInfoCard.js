@@ -40,7 +40,12 @@ export default function VolunteerInfoCard({
       </CardContent>
       <CardActions>
         <Grid container justify="space-around">
-          <Button color="primary" variant="outlined" onClick={onButtonClick}>
+          <Button
+            fullWidth
+            color="primary"
+            variant="outlined"
+            onClick={onButtonClick}
+          >
             {buttonText}
           </Button>
         </Grid>
