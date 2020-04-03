@@ -204,7 +204,7 @@ class Volunteers extends Component {
                 style={{ minHeight: 200 }}
               >
                 <Grid item>
-                  <Typography>No New notifications</Typography>
+                  <Typography>No New Requests</Typography>
                 </Grid>
               </Grid>
             )}
