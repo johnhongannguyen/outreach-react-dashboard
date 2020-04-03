@@ -199,9 +199,13 @@ class ReliefCenterForms extends Component {
 
     // If Preferred -- Set Date, Start Time and End Time
     if (preference == "preference") {
+      let start_time = new Date().setMinutes(0);
+      let end_time = new Date();
+      end_time.setHours(new Date().getHours() + 12);
+      end_time.setMinutes(0);
       tasks[foundIndex]["date"] = new Date();
-      tasks[foundIndex]["start_time"] = new Date();
-      tasks[foundIndex]["end_time"] = new Date();
+      tasks[foundIndex]["start_time"] = new Date(start_time);
+      tasks[foundIndex]["end_time"] = end_time;
     } else if (preference == "anytime") {
       tasks[foundIndex]["date"] = undefined;
       tasks[foundIndex]["start_time"] = undefined;
