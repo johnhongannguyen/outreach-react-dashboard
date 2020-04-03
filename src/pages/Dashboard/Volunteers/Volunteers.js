@@ -38,8 +38,9 @@ const styles = theme => ({
   paper: {
     // padding: theme.spacing(2),
     // textAlign: "center",
-    padding: 15,
-    color: theme.palette.text.secondary
+
+    padding: 15
+    // color: theme.palette.text.secondary
     // backgroundColor: "#111C24"
   },
   seeAllButton: {
@@ -195,7 +196,18 @@ class Volunteers extends Component {
                     </Grid>
                   );
                 })}
-            {volunteerRequests.length < 1 && <div>No New notifications</div>}
+            {volunteerRequests.length < 1 && (
+              <Grid
+                container
+                justify="center"
+                align="center"
+                style={{ minHeight: 200 }}
+              >
+                <Grid item>
+                  <Typography>No New notifications</Typography>
+                </Grid>
+              </Grid>
+            )}
             {this.isHomePage() && (
               <Grid container justify="flex-end">
                 <Link to="/dashboard/volunteers">

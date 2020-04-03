@@ -257,7 +257,9 @@ function Dashboard({ user, logOut }) {
               <MenuIcon />
             </IconButton>
 
-            <IconButton onClick={handleNotificationsClick}>
+            <IconButton
+              onClick={notifications.length ? handleNotificationsClick : null}
+            >
               <Badge badgeContent={notifications.length} color="primary">
                 <NotificationsIcon color="primary" />
               </Badge>

@@ -30,8 +30,14 @@ const theme = createMuiTheme({
       root: {
         fontFamily: "Quicksand !important"
       }
+    },
+    MuiTextField: {
+      root: {
+        fontFamily: "Open Sans !important"
+      }
     }
   },
+
   shape: {
     borderRadius: 12.5
   },

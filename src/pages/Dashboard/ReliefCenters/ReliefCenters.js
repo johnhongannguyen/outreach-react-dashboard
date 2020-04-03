@@ -256,7 +256,7 @@ class ReliefCenters extends Component {
           {this.isHomePage() && (
             <Grid container justify="flex-end">
               <Link to="/dashboard/relief-centers">
-                <Button>See All</Button>
+                <Button>See all..</Button>
               </Link>
             </Grid>
           )}

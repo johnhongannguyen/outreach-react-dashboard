@@ -49,7 +49,7 @@ export default function Suggestion({ user, onSendRequestClick, taskID }) {
             size="medium"
             onClick={() => onSendRequestClick(user.email, taskID)}
           >
-            Send Request
+            Request
           </Button>
         )}
       </CardActions>
