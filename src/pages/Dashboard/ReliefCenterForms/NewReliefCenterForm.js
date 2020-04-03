@@ -7,11 +7,15 @@ import {
   Button,
   Card,
   TextField,
-  InputAdornment
+  InputAdornment,
+  ThemeProvider
 } from "@material-ui/core";
 
 // Axios
 import axios from "axios";
+
+// Theme
+import Theme from "../../../theme";
 
 // Icons
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -65,17 +69,15 @@ export class NewReliefCenterForm extends Component {
       reliefCenterLocation
     } = this.state;
     return (
-      <>
+      <ThemeProvider theme={Theme}>
         {/* Top Header & Add New Button */}
         <Grid container justify="space-between"></Grid>
         <Grid container justify="center" spacing={4}>
           {/* Relief Center Name Input */}
           <Card style={{ padding: 25, marginBottom: 25, maxWidth: 650 }}>
             {/* Panel Title - Relief Center Form */}
-            <Typography align="left" variant="h3">
-              {reliefCenterName == null || reliefCenterName == ""
-                ? "New Relief Center Form"
-                : `${reliefCenterName} Form`}
+            <Typography align="left" variant="h4">
+              New Relief Center Form
             </Typography>
             {/* Name */}
             <TextField
@@ -101,6 +103,7 @@ export class NewReliefCenterForm extends Component {
               onChange={event =>
                 this.setState({ reliefCenterDescription: event.target.value })
               }
+              inputProps={{ style: { fontFamily: "Open Sans" } }} // font size of input text
               label="Description"
               // type="search"
               variant="standard"
@@ -130,7 +133,7 @@ export class NewReliefCenterForm extends Component {
             </Button>
           </Card>
         </Grid>
-      </>
+      </ThemeProvider>
     );
   }
 }
