@@ -53,6 +53,7 @@ import NewReliefCenterForm from "./ReliefCenterForms/NewReliefCenterForm";
 // Getting Auth (was in Home during the example follow-up)
 import { connect } from "react-redux";
 import { setAuthAndUnlockDashBoard, logOut } from "../../actions/authActions";
+import Axios from "axios";
 
 // Logo
 const outreachLogo = require("../../assets/outreach_logo.png");
@@ -162,10 +163,23 @@ function Dashboard({ user, logOut }) {
   const [anchorNotifications, setAnchorNotifications] = React.useState(null);
   const [anchorUserMenu, setAnchorUserMenu] = React.useState(null);
 
+  // Notifications from DB
+  const [notifications, setNotifications] = React.useState([]);
+
+  // Get Notifications from DB
+  const getNotifications = () => {
+    Axios.get(`${process.env.REACT_APP_API_URL}/notification/admin`)
+      .then(res => res.data)
+      .then(notifications => setNotifications(notifications))
+      .catch(err => console.log(err));
+  };
+
+  // Notifications Toggle
   const [notificationsOpen, setNotificationsOpen] = React.useState(
     Boolean(anchorNotifications)
   );
 
+  // Menu Toggle
   const [userMenuOpen, setUserMenuOpen] = React.useState(
     Boolean(anchorNotifications)
   );
@@ -211,6 +225,13 @@ function Dashboard({ user, logOut }) {
     logOut();
   };
 
+  React.useEffect(() => {
+    getNotifications();
+    return () => {
+      // cleanup
+    };
+  }, []);
+
   return (
     <Router>
       <div className={classes.root}>
@@ -236,8 +257,8 @@ function Dashboard({ user, logOut }) {
               <MenuIcon />
             </IconButton>
 
-            <IconButton onClick={handleNotificationsClick} color="inherit">
-              <Badge badgeContent={2} color="primary">
+            <IconButton onClick={handleNotificationsClick}>
+              <Badge badgeContent={notifications.length} color="primary">
                 <NotificationsIcon color="primary" />
               </Badge>
 
@@ -254,12 +275,12 @@ function Dashboard({ user, logOut }) {
                   }
                 }}
               >
-                {[2, 2, 2, 2, 2, 2].map(notification => (
+                {notifications.map(notification => (
                   <MenuItem
-                    key={notification.id}
+                    key={notification._id}
                     onClick={handleNotificationsClose}
                   >
-                    <div>{notification.title}</div>
+                    <div>{notification.action}</div>
                     {notification.content}
                   </MenuItem>
                 ))}
