@@ -49,11 +49,19 @@ export default function ReliefCenterActionCard({ list, name, onAssignClick }) {
               return (
                 <ListItem alignItems="flex-start" dense>
                   <Grid container spacing={1} justify="space-between">
-                    <Grid item>
-                      <ListItemText>• {listItem.type}</ListItemText>
+                    <Grid item xs={10}>
+                      <ListItemText>
+                        <Typography noWrap variant="body2">
+                          • {listItem.type}
+                        </Typography>
+                      </ListItemText>
                     </Grid>
-                    <Grid item>
-                      <ListItemText>{listItem.total_capacity}</ListItemText>
+                    <Grid item xs={2}>
+                      <ListItemText>
+                        <Typography align="right" noWrap variant="body2">
+                          {listItem.total_capacity}
+                        </Typography>
+                      </ListItemText>
                     </Grid>
                   </Grid>
                 </ListItem>
