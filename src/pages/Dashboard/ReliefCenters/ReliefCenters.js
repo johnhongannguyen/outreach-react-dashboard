@@ -10,7 +10,7 @@ import {
   Button,
   TextField,
   InputAdornment,
-  ThemeProvider
+  ThemeProvider,
 } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
 
@@ -21,18 +21,21 @@ import axios from "axios";
 import ReliefCenterActionCard from "../../../components/Dashboard/ReliefCenterActionCard";
 import Theme from "../../../theme";
 
+// Redux Connect function
+import { connect } from "react-redux";
+
 // ENV
 const API_URL = process.env.REACT_APP_API_URL;
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   // homeGrid: { backgroundColor: "#111C24" },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
     // backgroundColor: "#111C24"
   },
   volunteerRequests: {
@@ -44,9 +47,9 @@ const styles = theme => ({
     marginTop: "1rem",
     marginRight: "1rem",
     "&:hover": {
-      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)"
-    }
-  }
+      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)",
+    },
+  },
 });
 
 class ReliefCenters extends Component {
@@ -56,7 +59,7 @@ class ReliefCenters extends Component {
     this.state = {
       notifications: [],
       reliefCenters: [],
-      reliefCenterSearchValue: ""
+      reliefCenterSearchValue: "",
     };
   }
 
@@ -64,20 +67,22 @@ class ReliefCenters extends Component {
   isHomePage = () => this.props.location.pathname === "/dashboard/";
 
   // API Call
-  getDataFromAPI = async relativePath => {
+  getDataFromAPI = async (relativePath, token) => {
     await axios
-      .get(`${API_URL}${relativePath}`)
-      .then(response => {
+      .get(`${API_URL}${relativePath}`, {
+        headers: { Authorization: "Bearer " + token },
+      })
+      .then((response) => {
         this.setState({
-          reliefCenters: response.data
+          reliefCenters: response.data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(`Error: ${err}`);
       });
   };
 
-  assignVolunteers = reliefCenterID => {
+  assignVolunteers = (reliefCenterID) => {
     this.props.history.push(
       `/dashboard/relief-center/id/${reliefCenterID}/assign`
     );
@@ -135,12 +140,14 @@ class ReliefCenters extends Component {
   }
 
   componentDidMount() {
-    this.getDataFromAPI("/relief-center/all/requirement");
+    const { token } = this.props.auth;
+
+    this.getDataFromAPI("/relief-center/all/requirement", token);
   }
 
   render() {
-    const { classes } = this.props;
-
+    const { classes, auth } = this.props;
+    // const { token, user } = auth;
     const { notifications, reliefCenters } = this.state;
     return (
       <ThemeProvider theme={Theme}>
@@ -169,7 +176,7 @@ class ReliefCenters extends Component {
                 className={classes.searchReliefCenter}
                 margin="dense"
                 fullWidth
-                onChange={event =>
+                onChange={(event) =>
                   this.setState({ reliefCenterSearchValue: event.target.value })
                 }
                 id="outlined-search"
@@ -182,7 +189,7 @@ class ReliefCenters extends Component {
                     <InputAdornment position="start">
                       <SearchIcon color="primary" />
                     </InputAdornment>
-                  )
+                  ),
                 }}
               />
             </Grid>
@@ -232,12 +239,12 @@ class ReliefCenters extends Component {
           <Grid container spacing={2} justify="space-evenly">
             {reliefCenters.length > 0 &&
               reliefCenters
-                .filter(reliefCenter =>
+                .filter((reliefCenter) =>
                   reliefCenter.name
                     .toLowerCase()
                     .includes(this.state.reliefCenterSearchValue.toLowerCase())
                 )
-                .map(reliefCenter => (
+                .map((reliefCenter) => (
                   // Conditional Column Sizing!
                   <Grid xs={12} md={6} lg={this.isHomePage() ? 6 : 4} item>
                     <ReliefCenterActionCard
@@ -266,4 +273,24 @@ class ReliefCenters extends Component {
   }
 }
 
-export default withStyles(styles)(withRouter(ReliefCenters));
+// For reference:
+
+// // Redux - Map State to Sign In Page props
+// const mapStateToProps = (state) => ({
+//   auth: state.auth,
+// });
+
+// export default connect(mapStateToProps, {
+//   setAuthAndUnlockDashBoard,
+//   logOut,
+// })(Dashboard);
+
+// Redux - Map State to Sign In Page props
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(withStyles(styles)(withRouter(ReliefCenters)));

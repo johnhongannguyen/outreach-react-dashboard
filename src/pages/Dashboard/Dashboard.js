@@ -21,13 +21,13 @@ import {
   Menu,
   MenuItem,
   Button,
-  Avatar
+  Avatar,
 } from "@material-ui/core";
 
 // Material UI - Icons - Imports
 import {
   Menu as MenuIcon,
-  NotificationsOutlined as NotificationsIcon
+  NotificationsOutlined as NotificationsIcon,
 } from "@material-ui/icons";
 
 import { mainListItems } from "./listItems";
@@ -74,45 +74,45 @@ function Copyright() {
 
 const drawerWidth = 320;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: "flex",
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
     display: "flex",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   toolbarIcon: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     padding: "0 8px",
-    ...theme.mixins.toolbar
+    ...theme.mixins.toolbar,
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
-    marginRight: 36
+    marginRight: 36,
   },
   menuButtonHidden: {
-    display: "none"
+    display: "none",
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   drawerPaper: {
     position: "relative",
@@ -121,44 +121,44 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   drawerPaperClose: {
     overflowX: "hidden",
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
     width: theme.spacing(7),
     [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9)
-    }
+      width: theme.spacing(9),
+    },
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     height: "100vh",
-    overflow: "auto"
+    overflow: "auto",
   },
   container: {
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4)
+    paddingBottom: theme.spacing(4),
   },
   paper: {
     padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   fixedHeight: {
-    height: 240
-  }
+    height: 240,
+  },
 }));
 
-function Dashboard({ user, logOut }) {
+function Dashboard({ logOut, auth }) {
   const classes = useStyles();
-
+  const { user, token } = auth;
   const [open, setOpen] = React.useState(true);
   const [anchorNotifications, setAnchorNotifications] = React.useState(null);
   const [anchorUserMenu, setAnchorUserMenu] = React.useState(null);
@@ -168,10 +168,12 @@ function Dashboard({ user, logOut }) {
 
   // Get Notifications from DB
   const getNotifications = () => {
-    Axios.get(`${process.env.REACT_APP_API_URL}/notification/admin`)
-      .then(res => res.data)
-      .then(notifications => setNotifications(notifications))
-      .catch(err => console.log(err));
+    Axios.get(`${process.env.REACT_APP_API_URL}/notification/admin`, {
+      headers: { Authorization: "Bearer " + token },
+    })
+      .then((res) => res.data)
+      .then((notifications) => setNotifications(notifications))
+      .catch((err) => console.log(err));
   };
 
   // Notifications Toggle
@@ -185,7 +187,7 @@ function Dashboard({ user, logOut }) {
   );
 
   // UserMenuToggle Handlers
-  const handleUserMenuClick = event => {
+  const handleUserMenuClick = (event) => {
     // Get the Target to position and achor the menu!
     setAnchorUserMenu(event.currentTarget);
     // Toggle UserMenu onClick
@@ -199,7 +201,7 @@ function Dashboard({ user, logOut }) {
   // UserMenuToggle Handlers END
 
   // Notification Toggle Handlers
-  const handleNotificationsClick = event => {
+  const handleNotificationsClick = (event) => {
     // Get the Target to position and achor the menu!
     setAnchorNotifications(event.currentTarget);
     // Toggle Notifications onClick
@@ -227,6 +229,7 @@ function Dashboard({ user, logOut }) {
 
   React.useEffect(() => {
     getNotifications();
+
     return () => {
       // cleanup
     };
@@ -273,11 +276,11 @@ function Dashboard({ user, logOut }) {
                 PaperProps={{
                   style: {
                     // maxHeight: ITEM_HEIGHT * 4.5,
-                    width: 200
-                  }
+                    width: 200,
+                  },
                 }}
               >
-                {notifications.map(notification => (
+                {notifications.map((notification) => (
                   <MenuItem
                     key={notification._id}
                     onClick={handleNotificationsClose}
@@ -321,7 +324,7 @@ function Dashboard({ user, logOut }) {
         <Drawer
           variant="permanent"
           classes={{
-            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
+            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
           }}
           open={open}
         >
@@ -409,10 +412,11 @@ function Dashboard({ user, logOut }) {
 }
 
 // Redux - Map State to Sign In Page props
-const mapStateToProps = state => ({
-  auth: state.auth
+const mapStateToProps = (state) => ({
+  auth: state.auth,
 });
 
-export default connect(mapStateToProps, { setAuthAndUnlockDashBoard, logOut })(
-  Dashboard
-);
+export default connect(mapStateToProps, {
+  setAuthAndUnlockDashBoard,
+  logOut,
+})(Dashboard);

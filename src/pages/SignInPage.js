@@ -14,7 +14,7 @@ import {
   Grid,
   Collapse,
   Typography,
-  ThemeProvider
+  ThemeProvider,
 } from "@material-ui/core";
 
 // Labs
@@ -48,9 +48,9 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh"
+    height: "100vh",
   },
   image: {
     backgroundImage: "url(https://source.unsplash.com/ZbuP5oXM_zA)",
@@ -60,25 +60,25 @@ const useStyles = makeStyles(theme => ({
         ? theme.palette.grey[900]
         : theme.palette.grey[50],
     backgroundSize: "cover",
-    backgroundPosition: "center"
+    backgroundPosition: "center",
   },
   paper: {
     margin: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
 export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
@@ -89,19 +89,19 @@ export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
   // const [alert, setAlert] = useState(null);
 
   // On Form Submit
-  const handleFormSubmit = e => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
 
     axios
       .post("/api/auth/login", {
         email: email,
-        password: password
+        password: password,
       })
-      .then(response => {
+      .then((response) => {
         if (response) setAuthAndUnlockDashBoard(response.data);
       })
-      .catch(err => {
-        console.log("Error:", err);
+      .catch((err) => {
+        alert("Incorrect Combination");
       });
   };
 
@@ -133,7 +133,7 @@ export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
                 name="email"
                 autoComplete="email"
                 autoFocus
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 variant="outlined"
@@ -145,7 +145,7 @@ export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -184,8 +184,8 @@ export const SignInPage = ({ setAuthAndUnlockDashBoard }) => {
 };
 
 // Redux - Map State to Sign In Page props
-const mapStateToProps = state => ({
-  auth: state.auth
+const mapStateToProps = (state) => ({
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, { setAuthAndUnlockDashBoard })(
