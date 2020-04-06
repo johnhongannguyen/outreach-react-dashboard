@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import Axios from "axios";
 import moment from "moment";
 
 // React Router
 import { withRouter } from "react-router-dom";
+
+// Redux Connect
+import { connect } from "react-redux";
 
 // Material UI
 import {
@@ -19,11 +21,8 @@ import {
   FormControlLabel,
   FormLabel,
   Card,
-  Typography
+  Typography,
 } from "@material-ui/core";
-
-// Axios
-import axios from "axios";
 
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -33,7 +32,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 // Labs
 import Autocomplete, {
-  createFilterOptions
+  createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
@@ -45,15 +44,15 @@ import SubmittedTasksTableComponent from "./SubmittedTasksTableComponent";
 // Thmee Provider
 import Theme from "../../../theme";
 
-// API URL
-const API_URL = process.env.REACT_APP_API_URL;
+// API Call
+import { apiCall } from "../../../api";
 
 // Styles
 const useStyles = makeStyles({
   root: {
     "&:hover": {
-      backgroundColor: "transparent"
-    }
+      backgroundColor: "transparent",
+    },
   },
   icon: {
     borderRadius: "50%",
@@ -66,15 +65,15 @@ const useStyles = makeStyles({
       "linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))",
     "$root.Mui-focusVisible &": {
       outline: "2px auto rgba(19,124,189,.6)",
-      outlineOffset: 2
+      outlineOffset: 2,
     },
     "input:hover ~ &": {
-      backgroundColor: "#ebf1f5"
+      backgroundColor: "#ebf1f5",
     },
     "input:disabled ~ &": {
       boxShadow: "none",
-      background: "rgba(206,217,224,.5)"
-    }
+      background: "rgba(206,217,224,.5)",
+    },
   },
   checkedIcon: {
     backgroundColor: "#137cbd",
@@ -85,12 +84,12 @@ const useStyles = makeStyles({
       width: 16,
       height: 16,
       backgroundImage: "radial-gradient(#fff,#fff 28%,transparent 32%)",
-      content: '""'
+      content: '""',
     },
     "input:hover ~ &": {
-      backgroundColor: "#106ba3"
-    }
-  }
+      backgroundColor: "#106ba3",
+    },
+  },
 });
 
 class ReliefCenterForms extends Component {
@@ -106,10 +105,10 @@ class ReliefCenterForms extends Component {
       submitError: {
         isSet: false,
         message:
-          "Sorry, you have to select a relief center first and add at least one task."
+          "Sorry, you have to select a relief center first and add at least one task.",
       },
       tasks: [],
-      volunteeringTypes: []
+      volunteeringTypes: [],
     };
   }
 
@@ -118,15 +117,15 @@ class ReliefCenterForms extends Component {
     if (newValue && newValue.inputValue) {
       this.setState({
         reliefCenterName: {
-          title: newValue.inputValue
-        }
+          title: newValue.inputValue,
+        },
       });
 
       return;
     }
 
     this.setState({
-      reliefCenterName: newValue
+      reliefCenterName: newValue,
     });
   };
 
@@ -139,7 +138,7 @@ class ReliefCenterForms extends Component {
     if (params.inputValue !== "") {
       filtered.push({
         inputValue: params.inputValue,
-        title: `Add "${params.inputValue}"`
+        title: `Add "${params.inputValue}"`,
       });
     }
 
@@ -147,7 +146,7 @@ class ReliefCenterForms extends Component {
   };
 
   // Get Option Label
-  getOptionLabel = option => {
+  getOptionLabel = (option) => {
     // e.g value selected with enter, right from the input
     if (typeof option === "string") {
       return option;
@@ -159,7 +158,7 @@ class ReliefCenterForms extends Component {
   };
 
   // Custom Radio Component -- Don't Use it
-  StyledRadio = props => {
+  StyledRadio = (props) => {
     const classes = useStyles();
     return (
       <Radio
@@ -181,7 +180,7 @@ class ReliefCenterForms extends Component {
     const numberOfPeople = e.target.value;
     // Find the object.. in tasks.. and update the concerned value.
     const { tasks } = this.state;
-    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
+    const foundIndex = tasks.findIndex((task) => task.taskID == taskID);
 
     tasks[foundIndex]["numberOfPeople"] = numberOfPeople;
   };
@@ -193,7 +192,7 @@ class ReliefCenterForms extends Component {
 
     // Find the object.. in tasks.. and update the concerned value.
     const { tasks } = this.state;
-    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
+    const foundIndex = tasks.findIndex((task) => task.taskID == taskID);
 
     tasks[foundIndex]["preference"] = preference;
 
@@ -222,7 +221,7 @@ class ReliefCenterForms extends Component {
 
     // Find the object.. in tasks.. and update the concerned value.
     const { tasks } = this.state;
-    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
+    const foundIndex = tasks.findIndex((task) => task.taskID == taskID);
 
     tasks[foundIndex]["typeOfJob"] = typeOfJob;
     this.setState({ tasks });
@@ -237,7 +236,7 @@ class ReliefCenterForms extends Component {
       numberOfPeople: 1,
       typeOfJob: "Cooking",
       description: "The Description Goes Here",
-      preference: "anytime"
+      preference: "anytime",
     });
 
     this.setState({ tasks });
@@ -250,7 +249,7 @@ class ReliefCenterForms extends Component {
 
     // Find the object.. in tasks.. and update the concerned value.
     const { tasks } = this.state;
-    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
+    const foundIndex = tasks.findIndex((task) => task.taskID == taskID);
 
     // Conditions
     const isStartTimeBeforeEndTime =
@@ -276,10 +275,10 @@ class ReliefCenterForms extends Component {
     // If Relief Center is selected and user has added one task..
     if (this.state.reliefCenterName && this.state.tasks.length > 0) {
       this.setState({
-        submitError: { ...this.state.submitError, isSet: false }
+        submitError: { ...this.state.submitError, isSet: false },
       });
       // Map it before sending..
-      let tasksToBeSentToDB = this.state.tasks.map(task => {
+      let tasksToBeSentToDB = this.state.tasks.map((task) => {
         const {
           numberOfPeople,
           typeOfJob,
@@ -287,7 +286,7 @@ class ReliefCenterForms extends Component {
           date,
           description,
           start_time,
-          end_time
+          end_time,
         } = task;
         return {
           type: typeOfJob,
@@ -297,36 +296,38 @@ class ReliefCenterForms extends Component {
           preference,
           time: { start: start_time, end: end_time },
           requests: { sent: [], received: [] },
-          assigned: []
+          assigned: [],
         };
       });
 
       // Send the new tasks!
       const finalDBData = { volunteers: { opportunities: tasksToBeSentToDB } };
 
-      await axios.put(
-        `${API_URL}/relief-center/${this.state.reliefCenterID}/tasks/add`,
+      await apiCall(
+        this.state.token,
+        `/relief-center/${this.state.reliefCenterID}/tasks/add`,
+        "PUT",
         tasksToBeSentToDB
       );
 
       // Get the submitted Table with a Button to Reset the tasks and add new/more tasks
       this.setState({
         isSubmitTableVisible: true,
-        isReliefCenterFormVisible: false
+        isReliefCenterFormVisible: false,
       });
     } else {
       this.setState({
-        submitError: { ...this.state.submitError, isSet: true }
+        submitError: { ...this.state.submitError, isSet: true },
       });
     }
   };
 
   // Handle Relief Center Change
-  onReliefCenterChange = e => {
+  onReliefCenterChange = (e) => {
     // Find the object.. in tasks.. and update the concerned value.
     const reliefCenterName = e.target.value;
     const foundIndex = this.state.reliefCenters.findIndex(
-      reliefCenter => reliefCenter.name == reliefCenterName
+      (reliefCenter) => reliefCenter.name == reliefCenterName
     );
 
     const reliefCenterID = this.state.reliefCenters[foundIndex]["_id"];
@@ -342,7 +343,7 @@ class ReliefCenterForms extends Component {
 
     // Find the object.. in tasks.. and update the concerned value.
     const { tasks } = this.state;
-    const foundIndex = tasks.findIndex(task => task.taskID == taskID);
+    const foundIndex = tasks.findIndex((task) => task.taskID == taskID);
 
     tasks[foundIndex]["description"] = description;
     this.setState({ tasks });
@@ -359,7 +360,7 @@ class ReliefCenterForms extends Component {
       isReliefCenterFormVisible: true,
       isSubmitTableVisible: false,
       tasks: [],
-      reliefCenterName: ""
+      reliefCenterName: "",
     });
   };
 
@@ -374,7 +375,7 @@ class ReliefCenterForms extends Component {
     end_time,
     onNumberOfPeopleChange,
     onPreferenceChange,
-    onTypeOfJobChange
+    onTypeOfJobChange,
   }) => (
     <Card taskID={taskID} style={{ padding: 50, marginBottom: 25 }}>
       {numberOfPeople > 0 && typeOfJob && (
@@ -393,9 +394,9 @@ class ReliefCenterForms extends Component {
             id="demo-simple-select"
             value={typeOfJob}
             fullWidth
-            onChange={e => onTypeOfJobChange(e, taskID)}
+            onChange={(e) => onTypeOfJobChange(e, taskID)}
           >
-            {this.state.volunteeringTypes.map(volunteeringType => (
+            {this.state.volunteeringTypes.map((volunteeringType) => (
               <MenuItem value={volunteeringType.name}>
                 {volunteeringType.name}
               </MenuItem>
@@ -411,14 +412,14 @@ class ReliefCenterForms extends Component {
           {/* Number of people needed */}
           <TextField
             defaultValue={numberOfPeople || 1}
-            onChange={e => onNumberOfPeopleChange(e, taskID)}
+            onChange={(e) => onNumberOfPeopleChange(e, taskID)}
             type="number"
             fullWidth
             InputProps={{
               inputProps: {
                 max: 25,
-                min: 1
-              }
+                min: 1,
+              },
             }}
             label="People Needed"
           ></TextField>
@@ -430,7 +431,7 @@ class ReliefCenterForms extends Component {
         aria-label="preference"
         name="preference"
         value={preference}
-        onChange={e => onPreferenceChange(e, taskID)}
+        onChange={(e) => onPreferenceChange(e, taskID)}
       >
         <FormControlLabel
           value="anytime"
@@ -450,18 +451,18 @@ class ReliefCenterForms extends Component {
           selectedDate={date}
           selectedStartTime={start_time}
           selectedEndTime={end_time}
-          onDateChange={e => this.handleDateTimeChange(e, taskID, "date")}
-          onStartTimeChange={e =>
+          onDateChange={(e) => this.handleDateTimeChange(e, taskID, "date")}
+          onStartTimeChange={(e) =>
             this.handleDateTimeChange(e, taskID, "start_time")
           }
-          onEndTimeChange={e =>
+          onEndTimeChange={(e) =>
             this.handleDateTimeChange(e, taskID, "end_time")
           }
         />
       )}
 
       <TextField
-        onChange={e => this.onDescriptionChange(e, taskID)}
+        onChange={(e) => this.onDescriptionChange(e, taskID)}
         fullWidth
         label="Task Description"
       ></TextField>
@@ -470,17 +471,19 @@ class ReliefCenterForms extends Component {
 
   // Lifecycle Methods
   async componentDidMount() {
-    const reliefCenters = await Axios.get(
-      `${process.env.REACT_APP_API_URL}/relief-center`
-    );
+    // Get Token from Redux
+    const { token } = this.props.auth;
 
-    const volunteeringTypes = await Axios.get(
-      `${process.env.REACT_APP_API_URL}/volunteering-type`
-    );
+    // Set Token
+    this.setState({ token });
+
+    // Get Relief Centers & Volunteering Types
+    const reliefCenters = await apiCall(token, `/relief-center`, "GET");
+    const volunteeringTypes = await apiCall(token, `/volunteering-type`, "GET");
 
     this.setState({
       reliefCenters: reliefCenters.data,
-      volunteeringTypes: volunteeringTypes.data
+      volunteeringTypes: volunteeringTypes.data,
     });
   }
 
@@ -491,7 +494,7 @@ class ReliefCenterForms extends Component {
       isSubmitTableVisible,
       isReliefCenterFormVisible,
       isErrorVisible,
-      submitError
+      submitError,
     } = this.state;
     return (
       <ThemeProvider theme={Theme}>
@@ -557,9 +560,9 @@ class ReliefCenterForms extends Component {
                 id="demo-simple-select"
                 value={reliefCenterName}
                 fullWidth
-                onChange={e => this.onReliefCenterChange(e)}
+                onChange={(e) => this.onReliefCenterChange(e)}
               >
-                {this.state.reliefCenters.map(reliefCenter => (
+                {this.state.reliefCenters.map((reliefCenter) => (
                   <MenuItem value={reliefCenter.name}>
                     {reliefCenter.name}
                   </MenuItem>
@@ -578,7 +581,7 @@ class ReliefCenterForms extends Component {
                 date,
                 start_time,
                 end_time,
-                preference
+                preference,
               } = task;
               return (
                 <this.TaskCard
@@ -617,4 +620,9 @@ class ReliefCenterForms extends Component {
   }
 }
 
-export default withRouter(ReliefCenterForms);
+// Redux - Map (Redux) State -> props
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, {})(withRouter(ReliefCenterForms));

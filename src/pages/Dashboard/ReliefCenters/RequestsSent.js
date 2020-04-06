@@ -13,7 +13,7 @@ import {
   TableRow,
   Paper,
   Grid,
-  Link
+  Link,
 } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import { withStyles, ThemeProvider } from "@material-ui/core/styles";
@@ -23,24 +23,25 @@ import Suggestion from "../../../components/Dashboard/Suggestion";
 import Theme from "../../../theme";
 import VolunteerInfoCard from "../../../components/Dashboard/VolunteerInfoCard";
 
-// axios
-import axios from "axios";
+// Redux Connect
+import { connect } from "react-redux";
 
 // Web Sockets - Socket.io
 import { clientSocket, adminSocket } from "../../../web-sockets";
+import { apiCall } from "../../../api";
 
 // API URL
 const API_URL = process.env.REACT_APP_API_URL;
 
 // Styles
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
     // backgroundColor: "#111C24"
   },
   requestsSentList: {
@@ -51,9 +52,9 @@ const styles = theme => ({
     marginTop: "1rem",
     marginRight: "1rem",
     "&:hover": {
-      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)"
-    }
-  }
+      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)",
+    },
+  },
 });
 
 class RequestsSent extends Component {
@@ -64,24 +65,30 @@ class RequestsSent extends Component {
       // reliefCenter: [],
       // suggestions: [],
       reliefCenterInfo: {},
-      requestsSentList: []
+      requestsSentList: [],
     };
   }
 
   // Get Relief Center by ID
-  getReliefCenterByID = reliefCenterID => {
-    axios
-      .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
-      .then(response => {
-        this.setState({ reliefCenterInfo: response.data });
-      });
+  getReliefCenterByID = (reliefCenterID) => {
+    apiCall(
+      this.state.token,
+      `/relief-center/id/${reliefCenterID}`,
+      "GET"
+    ).then((response) => {
+      this.setState({ reliefCenterInfo: response.data });
+    });
   };
 
   // Handle Revoke Request
   handleRevokeRequest = (taskID, email) => {
     // const { reliefCenterID, taskID } = this.props.match.params;
     if (taskID)
-      axios.post(`${API_URL}/user/${email}/decline/${taskID}`).then(res => {
+      apiCall(
+        this.state.token,
+        `/user/${email}/decline/${taskID}`,
+        "POST"
+      ).then((res) => {
         if (res.status == 200) {
           this.getRequestsSent(taskID);
         }
@@ -89,18 +96,26 @@ class RequestsSent extends Component {
   };
 
   // Get Requests Sent for the task
-  getRequestsSent = taskID => {
-    axios
-      .get(`${API_URL}/relief-center/task/${taskID}/requests_sent`)
-      .then(res => {
-        if (res.status == 200) {
-          this.setState({ requestsSentList: res.data });
-        }
-      });
+  getRequestsSent = (taskID) => {
+    apiCall(
+      this.state.token,
+      `/relief-center/task/${taskID}/requests_sent`,
+      "GET"
+    ).then((res) => {
+      if (res.status == 200) {
+        this.setState({ requestsSentList: res.data });
+      }
+    });
   };
 
   componentDidMount() {
     const { reliefCenterID, taskID } = this.props.match.params;
+
+    // Get Token from Redux
+    const { token } = this.props.auth;
+
+    // Set Token
+    this.setState({ token });
 
     this.getReliefCenterByID(reliefCenterID);
 
@@ -142,7 +157,7 @@ class RequestsSent extends Component {
             {requestsSentList &&
               requestsSentList
                 // .slice(0, assignedVolunteersLimit)
-                .map(assignedVolunteer => {
+                .map((assignedVolunteer) => {
                   const { _id, name, email } = assignedVolunteer;
                   return (
                     <Grid item className={classes.hoverStyle}>
@@ -167,4 +182,12 @@ class RequestsSent extends Component {
   }
 }
 
-export default withStyles(styles)(withRouter(RequestsSent));
+// Redux - Map (Redux) State -> props
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(withStyles(styles)(withRouter(RequestsSent)));

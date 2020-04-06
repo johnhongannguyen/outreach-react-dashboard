@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 
 // Custom Components
@@ -27,7 +27,7 @@ export class ConnectedApp extends Component {
   componentDidUpdate() {}
   render() {
     // Redux
-    const { isAuthenticated, user } = this.props.auth;
+    const { isAuthenticated, user, token } = this.props.auth;
 
     return (
       <div className="App">
@@ -42,11 +42,7 @@ export class ConnectedApp extends Component {
             <Route
               path="/dashboard"
               render={() =>
-                isAuthenticated ? (
-                  <Dashboard user={user} />
-                ) : (
-                  <Redirect to="/login" />
-                )
+                isAuthenticated ? <Dashboard /> : <Redirect to="/login" />
               }
             />
 
@@ -79,8 +75,8 @@ export class ConnectedApp extends Component {
 }
 
 // Redux
-const mapStateToProps = state => ({
-  auth: state.auth
+const mapStateToProps = (state) => ({
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, { setAuthAndUnlockDashBoard })(

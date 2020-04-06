@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router-dom";
 
 // Axios
 import axios from "axios";
@@ -10,28 +11,27 @@ import ReliefCenters from "../ReliefCenters/ReliefCenters";
 
 // Web Sockets - Socket.io
 import { clientSocket, adminSocket } from "../../../web-sockets";
+// Redux Connect
+import { connect } from "react-redux";
 
-// ENV
-const API_URL = process.env.REACT_APP_API_URL;
-
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
-    fontFamily: "Open Sans"
+    fontFamily: "Open Sans",
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
   },
   volunteerRequests: {},
   hoverStyle: {
     transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
     marginBottom: "1rem",
     "&:hover": {
-      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)"
-    }
-  }
+      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)",
+    },
+  },
 });
 
 class Home extends Component {
@@ -40,16 +40,19 @@ class Home extends Component {
 
     this.state = {
       updates: null,
-      updatesLoading: false
+      updatesLoading: false,
     };
   }
 
   // Handle Notify Click
-  handleNotifyClick = broadcastMessage => {
+  handleNotifyClick = (broadcastMessage) => {
     clientSocket.emit("broadcastMessage", broadcastMessage);
   };
 
   async componentDidMount() {
+    // Get Token from Redux
+    const { token } = this.props.auth;
+
     // Socket.io
     clientSocket.connect();
 
@@ -98,7 +101,7 @@ class Home extends Component {
               <Grid justify="center" container>
                 {updates ? (
                   updates &&
-                  updates.articles.slice(0, 3).map(update => (
+                  updates.articles.slice(0, 3).map((update) => (
                     <Grid item className={classes.hoverStyle}>
                       <NotificationCard
                         content={update.title}
@@ -120,4 +123,12 @@ class Home extends Component {
   }
 }
 
-export default withStyles(styles)(Home);
+// Redux - Map (Redux) State -> props
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(withStyles(styles)(withRouter(Home)));
