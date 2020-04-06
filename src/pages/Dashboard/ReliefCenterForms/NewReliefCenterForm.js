@@ -9,19 +9,20 @@ import {
   Card,
   TextField,
   InputAdornment,
-  ThemeProvider
+  ThemeProvider,
 } from "@material-ui/core";
-
-// Axios
-import axios from "axios";
 
 // Theme
 import Theme from "../../../theme";
+
+// Redux Connect
+import { connect } from "react-redux";
 
 // Icons
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { Search as SearchIcon } from "@material-ui/icons";
 import Alert from "@material-ui/lab/Alert";
+import { apiCall } from "../../../api";
 
 // API URL
 const API_URL = process.env.REACT_APP_API_URL;
@@ -35,7 +36,7 @@ export class NewReliefCenterForm extends Component {
       reliefCenterDescription: "",
       reliefCenterLocation: "",
       successMessage: null,
-      errorMessage: null
+      errorMessage: null,
     };
   }
 
@@ -44,7 +45,7 @@ export class NewReliefCenterForm extends Component {
     const {
       reliefCenterName,
       reliefCenterDescription,
-      reliefCenterLocation
+      reliefCenterLocation,
     } = this.state;
 
     // Create a new one
@@ -56,16 +57,21 @@ export class NewReliefCenterForm extends Component {
       // Construct the Relief Center
       const reliefCenter = {
         volunteers: {
-          opportunities: []
+          opportunities: [],
         },
         name: reliefCenterName,
         description: reliefCenterDescription,
         location: reliefCenterLocation,
-        successMessage: null
+        successMessage: null,
       };
 
       // POST it!
-      axios.post(`${API_URL}/relief-center/create`, reliefCenter).then(res => {
+      apiCall(
+        this.state.token,
+        `/relief-center/create`,
+        "POST",
+        reliefCenter
+      ).then((res) => {
         if (res.status === 201) {
           let successMessage = `${this.state.reliefCenterName} created! `;
 
@@ -76,16 +82,24 @@ export class NewReliefCenterForm extends Component {
             reliefCenterDescription: "",
             reliefCenterLocation: "",
             successMessage,
-            errorMessage: null
+            errorMessage: null,
           });
         }
       });
     } else {
       this.setState({
         successMessage: null,
-        errorMessage: "Fields not filled."
+        errorMessage: "Fields not filled.",
       });
     }
+  };
+
+  componentDidMount = () => {
+    // Get Token from Redux
+    const { token } = this.props.auth;
+
+    // Set Token
+    this.setState({ token });
   };
 
   render() {
@@ -94,7 +108,7 @@ export class NewReliefCenterForm extends Component {
       reliefCenterDescription,
       reliefCenterLocation,
       successMessage,
-      errorMessage
+      errorMessage,
     } = this.state;
     return (
       <ThemeProvider theme={Theme}>
@@ -131,7 +145,7 @@ export class NewReliefCenterForm extends Component {
               padding: 25,
               marginBottom: 25,
               marginTop: 25,
-              maxWidth: 650
+              maxWidth: 650,
             }}
           >
             {/* Panel Title - Relief Center Form */}
@@ -147,7 +161,7 @@ export class NewReliefCenterForm extends Component {
               margin="normal"
               // helperText="Hello"
               fullWidth
-              onChange={event =>
+              onChange={(event) =>
                 this.setState({ reliefCenterName: event.target.value })
               }
               label="Title"
@@ -165,7 +179,7 @@ export class NewReliefCenterForm extends Component {
               }
               margin="normal"
               helperText="Describe the relief center in short, it shall be displayed along with the opportunities presented to volunteers."
-              onChange={event =>
+              onChange={(event) =>
                 this.setState({ reliefCenterDescription: event.target.value })
               }
               inputProps={{ style: { fontFamily: "Open Sans" } }} // font size of input text
@@ -184,7 +198,7 @@ export class NewReliefCenterForm extends Component {
               }
               margin="normal"
               helperText="Can be the exact address or a landmark."
-              onChange={event =>
+              onChange={(event) =>
                 this.setState({ reliefCenterLocation: event.target.value })
               }
               label="Location"
@@ -207,4 +221,10 @@ export class NewReliefCenterForm extends Component {
   }
 }
 
-export default withRouter(NewReliefCenterForm);
+// Redux - Map (Redux) State -> props
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, {})(withRouter(NewReliefCenterForm));
+// export default withRouter(NewReliefCenterForm);

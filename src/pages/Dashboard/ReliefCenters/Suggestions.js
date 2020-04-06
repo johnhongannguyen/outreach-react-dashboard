@@ -13,7 +13,7 @@ import {
   TableRow,
   Paper,
   Grid,
-  Link
+  Link,
 } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import { withStyles, ThemeProvider } from "@material-ui/core/styles";
@@ -23,24 +23,22 @@ import Suggestion from "../../../components/Dashboard/Suggestion";
 import Theme from "../../../theme";
 import VolunteerInfoCard from "../../../components/Dashboard/VolunteerInfoCard";
 
-// axios
-import axios from "axios";
-
 // Web Sockets - Socket.io
 import { clientSocket, adminSocket } from "../../../web-sockets";
 
-// API URL
-const API_URL = process.env.REACT_APP_API_URL;
+// Redux Connect
+import { connect } from "react-redux";
+import { apiCall } from "../../../api";
 
 // Styles
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
     // backgroundColor: "#111C24"
   },
   suggestions: {
@@ -51,9 +49,9 @@ const styles = theme => ({
     marginTop: "1rem",
     marginRight: "1rem",
     "&:hover": {
-      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)"
-    }
-  }
+      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)",
+    },
+  },
 });
 
 class Suggestions extends Component {
@@ -64,25 +62,31 @@ class Suggestions extends Component {
       // reliefCenter: [],
       // suggestions: [],
       reliefCenterInfo: {},
-      suggestions: []
+      suggestions: [],
     };
   }
 
   // Get Relief Center by ID
-  getReliefCenterByID = reliefCenterID => {
-    axios
-      .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
-      .then(response => {
-        this.setState({ reliefCenterInfo: response.data });
-      });
+  getReliefCenterByID = (reliefCenterID) => {
+    apiCall(
+      this.props.auth.token,
+      `/relief-center/id/${reliefCenterID}`,
+      "GET"
+    ).then((response) => {
+      this.setState({ reliefCenterInfo: response.data });
+    });
   };
 
   // Send Request to Volunteer
   sendRequestToVolunteer = (volunteerEmail, taskID) => {
     // Send Request with POST Request
-    axios
-      .post(`${API_URL}/user/admin/request/${volunteerEmail}/${taskID}`)
-      .then(res => {
+
+    apiCall(
+      this.props.auth.token,
+      `/user/admin/request/${volunteerEmail}/${taskID}`,
+      "POST"
+    )
+      .then((res) => {
         if (res.status == 200) {
           // Change Button to Sent!; Suggest more if there's room.
 
@@ -91,21 +95,30 @@ class Suggestions extends Component {
           this.getSuggestions();
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
   // Get Suggestions for the Task
   getSuggestions = () => {
     const { taskID } = this.props.match.params;
-    axios.get(`${API_URL}/user/suggest/task/${taskID}`).then(res => {
-      if (res.status == 200) {
-        this.setState({ suggestions: res.data });
+
+    apiCall(this.props.auth.token, `/user/suggest/task/${taskID}`, "GET").then(
+      (res) => {
+        if (res.status == 200) {
+          this.setState({ suggestions: res.data });
+        }
       }
-    });
+    );
   };
 
   componentDidMount() {
     const { reliefCenterID, taskID } = this.props.match.params;
+
+    // Get Token from Redux
+    const { token } = this.props.auth;
+
+    // Set Token
+    this.setState({ token });
 
     this.getReliefCenterByID(reliefCenterID);
 
@@ -148,7 +161,7 @@ class Suggestions extends Component {
             {suggestions &&
               suggestions
                 // .slice(0, assignedVolunteersLimit)
-                .map(suggestedVolunteer => {
+                .map((suggestedVolunteer) => {
                   const { _id, name, email } = suggestedVolunteer;
                   return (
                     <Grid item className={classes.hoverStyle}>
@@ -170,4 +183,14 @@ class Suggestions extends Component {
   }
 }
 
-export default withStyles(styles)(withRouter(Suggestions));
+// Redux - Map (Redux) State -> props
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(withStyles(styles)(withRouter(Suggestions)));
+
+// export default withStyles(styles)(withRouter(Suggestions));

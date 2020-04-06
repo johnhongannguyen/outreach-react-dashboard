@@ -14,15 +14,13 @@ import {
 } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
 
-// Axios
-import axios from "axios";
-
 // Custom Components and Themes
 import ReliefCenterActionCard from "../../../components/Dashboard/ReliefCenterActionCard";
 import Theme from "../../../theme";
 
 // Redux Connect function
 import { connect } from "react-redux";
+import { apiCall } from "../../../api";
 
 // ENV
 const API_URL = process.env.REACT_APP_API_URL;
@@ -68,10 +66,7 @@ class ReliefCenters extends Component {
 
   // API Call
   getDataFromAPI = async (relativePath, token) => {
-    await axios
-      .get(`${API_URL}${relativePath}`, {
-        headers: { Authorization: "Bearer " + token },
-      })
+    apiCall(token, relativePath, "GET")
       .then((response) => {
         this.setState({
           reliefCenters: response.data,
@@ -147,7 +142,6 @@ class ReliefCenters extends Component {
 
   render() {
     const { classes, auth } = this.props;
-    // const { token, user } = auth;
     const { notifications, reliefCenters } = this.state;
     return (
       <ThemeProvider theme={Theme}>
@@ -272,18 +266,6 @@ class ReliefCenters extends Component {
     );
   }
 }
-
-// For reference:
-
-// // Redux - Map State to Sign In Page props
-// const mapStateToProps = (state) => ({
-//   auth: state.auth,
-// });
-
-// export default connect(mapStateToProps, {
-//   setAuthAndUnlockDashBoard,
-//   logOut,
-// })(Dashboard);
 
 // Redux - Map State to Sign In Page props
 const mapStateToProps = (state) => ({

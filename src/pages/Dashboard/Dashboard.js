@@ -53,8 +53,7 @@ import NewReliefCenterForm from "./ReliefCenterForms/NewReliefCenterForm";
 // Getting Auth (was in Home during the example follow-up)
 import { connect } from "react-redux";
 import { setAuthAndUnlockDashBoard, logOut } from "../../actions/authActions";
-import Axios from "axios";
-
+import { apiCall } from "../../api";
 // Logo
 const outreachLogo = require("../../assets/outreach_logo.png");
 
@@ -168,9 +167,7 @@ function Dashboard({ logOut, auth }) {
 
   // Get Notifications from DB
   const getNotifications = () => {
-    Axios.get(`${process.env.REACT_APP_API_URL}/notification/admin`, {
-      headers: { Authorization: "Bearer " + token },
-    })
+    apiCall(token, `/notification/admin`, "GET")
       .then((res) => res.data)
       .then((notifications) => setNotifications(notifications))
       .catch((err) => console.log(err));

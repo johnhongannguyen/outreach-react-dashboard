@@ -13,7 +13,7 @@ import {
   Button,
   TableRow,
   Paper,
-  Tooltip
+  Tooltip,
 } from "@material-ui/core";
 import { ArrowBackIos } from "@material-ui/icons";
 import { withStyles, ThemeProvider } from "@material-ui/core/styles";
@@ -22,21 +22,22 @@ import { withStyles, ThemeProvider } from "@material-ui/core/styles";
 import Suggestion from "../../../components/Dashboard/Suggestion";
 import Theme from "../../../theme";
 
-// axios
-import axios from "axios";
-
 // Moment!
 import moment from "moment";
 
 // Web Sockets - Socket.io
 import { clientSocket, adminSocket } from "../../../web-sockets";
 
-// API URL
-const API_URL = process.env.REACT_APP_API_URL;
+// Redux Connect
+import { connect } from "react-redux";
+import { apiCall } from "../../../api";
 
-const styles = theme => ({
+// API URL
+// const API_URL = process.env.REACT_APP_API_URL;
+
+const styles = (theme) => ({
   table: {
-    minWidth: 650
+    minWidth: 650,
     // maxWidth: 200
   },
   container: {},
@@ -44,25 +45,25 @@ const styles = theme => ({
     // maxWidth: 20,
     // padding: 10,
     // margin: 10
-  }
+  },
 });
 
 // Custom Table Cell
-const CustomTableCell = withStyles(theme => ({
+const CustomTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: "#eee",
     color: "#F27821",
     fontSize: "14px !important",
     fontWeight: "bold",
-    fontFamily: "Quicksand !important"
+    fontFamily: "Quicksand !important",
   },
   body: {
     fontSize: 18,
     fontWeight: "bold",
-    opacity: 0.13
+    opacity: 0.13,
 
     // color: "#F27821"
-  }
+  },
 }))(TableCell);
 
 class AssignVolunteers extends Component {
@@ -72,37 +73,49 @@ class AssignVolunteers extends Component {
     this.state = {
       reliefCenter: [],
       suggestions: [],
-      reliefCenterInfo: {}
+      reliefCenterInfo: {},
     };
   }
 
   // Get Relief Center by ID
-  getReliefCenterByID = reliefCenterID => {
-    axios
-      .get(`${API_URL}/relief-center/id/${reliefCenterID}/requirement/assign`)
-      .then(response => {
-        this.setState({ reliefCenter: response.data });
-      });
+  getReliefCenterByID = (reliefCenterID) => {
+    apiCall(
+      this.props.auth.token,
+      `/relief-center/id/${reliefCenterID}/requirement/assign`,
+      "GET"
+    ).then((response) => {
+      this.setState({ reliefCenter: response.data });
+    });
 
-    axios
-      .get(`${API_URL}/relief-center/id/${reliefCenterID}`)
-      .then(response => {
-        this.setState({ reliefCenterInfo: response.data });
-      });
+    apiCall(
+      this.props.auth.token,
+      `/relief-center/id/${reliefCenterID}`,
+      "GET"
+    ).then((response) => {
+      this.setState({ reliefCenterInfo: response.data });
+    });
   };
 
   // Get Suggestions
-  getSuggestions = async number => {
-    const suggestions = await axios.get(`${API_URL}/user/suggest/`);
+  getSuggestions = async (number) => {
+    const suggestions = await apiCall(
+      this.props.auth.token,
+      `/user/suggest/`,
+      "GET"
+    );
     this.setState({ suggestions: suggestions.data });
   };
 
   // Send Request to Volunteer
   sendRequestToVolunteer = (volunteerEmail, taskID) => {
     // Send Request with POST Request
-    axios
-      .post(`${API_URL}/user/admin/request/${volunteerEmail}/${taskID}`)
-      .then(res => {
+
+    apiCall(
+      this.props.auth.token,
+      `/user/admin/request/${volunteerEmail}/${taskID}`,
+      "POST"
+    )
+      .then((res) => {
         if (res.status == 200) {
           // Change Button to Sent!; Suggest more if there's room.
 
@@ -111,7 +124,7 @@ class AssignVolunteers extends Component {
           this.getReliefCenterByID(reliefCenterID);
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
   // Suggest ONE user from suggestions
@@ -119,7 +132,7 @@ class AssignVolunteers extends Component {
     let { suggestions } = this.state;
 
     // Filter Suggestions (We don't need users that are/have assigned, requests, requested etc.)
-    const filteredSuggestions = suggestions.filter(suggestion => {
+    const filteredSuggestions = suggestions.filter((suggestion) => {
       const { email } = suggestion;
 
       // Suggestion should not exist in any of: Assigned, Request Received, Request Sent
@@ -140,7 +153,7 @@ class AssignVolunteers extends Component {
   }
 
   // Get Assigned Volunteers
-  getAssigned = taskID => {
+  getAssigned = (taskID) => {
     const { reliefCenterID } = this.props.match.params;
     this.props.history.push(
       `/dashboard/relief-center/id/${reliefCenterID}/task/${taskID}/assigned`
@@ -148,7 +161,7 @@ class AssignVolunteers extends Component {
   };
 
   // Get Pending Requests to be accepted by Volunteers
-  getPendingRequests = taskID => {
+  getPendingRequests = (taskID) => {
     const { reliefCenterID } = this.props.match.params;
 
     this.props.history.push(
@@ -157,7 +170,7 @@ class AssignVolunteers extends Component {
   };
 
   // Get Requests Received from Volunteers
-  getRequestsReceived = taskID => {
+  getRequestsReceived = (taskID) => {
     const { reliefCenterID } = this.props.match.params;
 
     this.props.history.push(
@@ -166,7 +179,7 @@ class AssignVolunteers extends Component {
   };
 
   // Get All Suggestions
-  getAllSuggestions = taskID => {
+  getAllSuggestions = (taskID) => {
     const { reliefCenterID } = this.props.match.params;
 
     this.props.history.push(
@@ -176,6 +189,12 @@ class AssignVolunteers extends Component {
 
   componentDidMount() {
     const { reliefCenterID } = this.props.match.params;
+
+    // Get Token from Redux
+    const { token } = this.props.auth;
+
+    // Set Token
+    this.setState({ token });
 
     // Get Info about the Relief Center into consideration
     this.getReliefCenterByID(reliefCenterID);
@@ -332,4 +351,14 @@ class AssignVolunteers extends Component {
   }
 }
 
-export default withStyles(styles)(withRouter(AssignVolunteers));
+// Redux - Map (Redux) State -> props
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(withStyles(styles)(withRouter(AssignVolunteers)));
+
+// export default withStyles(styles)(withRouter(AssignVolunteers));
