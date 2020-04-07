@@ -68,7 +68,7 @@ class RequestsSent extends Component {
   // Get Relief Center by ID
   getReliefCenterByID = (reliefCenterID) => {
     apiCall(
-      this.state.token,
+      this.props.auth.token,
       `/relief-center/id/${reliefCenterID}`,
       "GET"
     ).then((response) => {
@@ -79,7 +79,7 @@ class RequestsSent extends Component {
   // Approve Volunteer's Request
   approveVolunteerRequest = (taskID, emailID) => {
     apiCall(
-      this.state.token,
+      this.props.auth.token,
       `/relief-center/id/${taskID}/${emailID}`,
       "POST"
     ).then((response) => {
@@ -92,7 +92,7 @@ class RequestsSent extends Component {
   // Decline Volunteer's Request
   declineVolunteerRequest = (taskID, emailID) => {
     apiCall(
-      this.state.token,
+      this.props.auth.token,
       `/relief-center/id/${taskID}/${emailID}/decline`,
       "POST"
     ).then((response) => {
@@ -105,7 +105,7 @@ class RequestsSent extends Component {
   // Get Received Requests for the Task
   getRequestsReceived = (taskID) => {
     apiCall(
-      this.state.token,
+      this.props.auth.token,
       `/relief-center/task/${taskID}/requests_received`,
       "GET"
     ).then((res) => {
