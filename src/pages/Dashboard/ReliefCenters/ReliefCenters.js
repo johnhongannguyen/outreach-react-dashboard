@@ -230,7 +230,7 @@ class ReliefCenters extends Component {
 
         {/* Relief Center Container */}
         <Paper square={false} className={classes.paper}>
-          <Grid container spacing={2} justify="center">
+          <Grid container spacing={2} justify="space-evenly">
             {reliefCenters.length > 0 &&
               reliefCenters
                 .filter((reliefCenter) =>

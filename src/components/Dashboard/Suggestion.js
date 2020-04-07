@@ -9,6 +9,8 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles({
   root: {
     minWidth: 100,
+    width: 200,
+    height: 150,
   },
   bullet: {
     display: "inline-block",
@@ -33,10 +35,10 @@ export default function Suggestion({ user, onSendRequestClick, taskID }) {
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
-        <Typography variant="body1" component="h4">
+        <Typography noWrap variant="body1" component="h4">
           {user.name}
         </Typography>
-        <Typography variant="body2" component="h4">
+        <Typography noWrap variant="body2" component="h4">
           {user.email}
         </Typography>
       </CardContent>
