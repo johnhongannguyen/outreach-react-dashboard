@@ -11,20 +11,20 @@ import {
   List,
   ListItem,
   ListItemText,
-  Tooltip
+  Tooltip,
 } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 300,
+    // maxWidth: 300,
     // width: 250,
     // height: 250
     height: 250,
-    padding: 10
+    padding: 10,
   },
   media: {
-    height: 140
-  }
+    height: 140,
+  },
 });
 
 export default function ReliefCenterActionCard({ list, name, onAssignClick }) {
@@ -32,7 +32,7 @@ export default function ReliefCenterActionCard({ list, name, onAssignClick }) {
   const classes = useStyles();
 
   //   Handle Radio Change
-  const handleChange = event => {
+  const handleChange = (event) => {
     setValue(event.target.value);
   };
 

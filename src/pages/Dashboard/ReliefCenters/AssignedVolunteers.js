@@ -72,7 +72,7 @@ class AssignedVolunteers extends Component {
 
     if (taskID)
       apiCall(
-        this.state.token,
+        this.props.auth.token,
         `/relief-center/task/${taskID}/assigned`,
         "GET"
       ).then((res) => {
@@ -85,7 +85,7 @@ class AssignedVolunteers extends Component {
   // Get Relief Center by ID
   getReliefCenterByID = (reliefCenterID) => {
     apiCall(
-      this.state.token,
+      this.props.auth.token,
       `/relief-center/id/${reliefCenterID}`,
       "GET"
     ).then((response) => {
@@ -95,14 +95,16 @@ class AssignedVolunteers extends Component {
 
   // Handle Opt Out (Unassign)
   handleOptOut = async (taskID, email) => {
-    apiCall(this.state.token, `/user/${email}/optout/${taskID}`, "POST").then(
-      (res) => {
-        // If successfully opted out from DB..
-        if (res.status == 200) {
-          this.getAssignedVolunteers();
-        }
+    apiCall(
+      this.props.auth.token,
+      `/user/${email}/optout/${taskID}`,
+      "POST"
+    ).then((res) => {
+      // If successfully opted out from DB..
+      if (res.status == 200) {
+        this.getAssignedVolunteers();
       }
-    );
+    });
   };
 
   componentDidMount() {
@@ -178,4 +180,12 @@ class AssignedVolunteers extends Component {
   }
 }
 
-export default withStyles(styles)(withRouter(AssignedVolunteers));
+// Redux - Map (Redux) State -> props
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(withStyles(styles)(withRouter(AssignedVolunteers)));

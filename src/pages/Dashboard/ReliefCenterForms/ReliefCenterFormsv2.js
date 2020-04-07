@@ -379,14 +379,21 @@ class ReliefCenterForms extends Component {
   }) => (
     <Card taskID={taskID} style={{ padding: 50, marginBottom: 25 }}>
       {numberOfPeople > 0 && typeOfJob && (
-        <Typography align="left" variant="h4">
+        <Typography align="left" variant="h4" style={{ marginBottom: 30 }}>
           Requesting {numberOfPeople} volunteer(s) for {typeOfJob}
         </Typography>
       )}
 
-      <Grid container justify="center" spacing={2}>
+      <Grid
+        container
+        justify="flex-start"
+        spacing={5}
+        style={{ marginBottom: 15 }}
+      >
         <Grid xs={4} item>
-          <InputLabel id="volunteerDetail">Type of Job</InputLabel>
+          <InputLabel id="volunteerDetail" align="left" shrink>
+            Type of Job
+          </InputLabel>
 
           {/* Type of Task (Job)! */}
           <Select
@@ -462,6 +469,7 @@ class ReliefCenterForms extends Component {
       )}
 
       <TextField
+        style={{ marginTop: 15 }}
         onChange={(e) => this.onDescriptionChange(e, taskID)}
         fullWidth
         label="Task Description"
@@ -531,31 +539,44 @@ class ReliefCenterForms extends Component {
         {isReliefCenterFormVisible && (
           <>
             {/* Top Header & Add New Button */}
-            <Grid container justify="space-between">
-              {/* Panel Title - Relief Center Form */}
-              <Typography align="left" variant="h3">
-                {reliefCenterName == null || reliefCenterName == ""
-                  ? "Relief Center Form"
-                  : `${reliefCenterName} Form`}
-              </Typography>
-              {!reliefCenterName && (
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              style={{ marginTop: 20, marginBottom: 20 }}
+            >
+              <Grid item>
+                {/* Panel Title - Relief Center Form */}
+                <Typography align="left" variant="h3">
+                  {reliefCenterName == null || reliefCenterName == ""
+                    ? "Relief Center Form"
+                    : `${reliefCenterName} Form`}
+                </Typography>
+              </Grid>
+              <Grid item align>
                 <Button
                   variant="contained"
                   color="primary"
+                  size="small"
                   onClick={this.addNewReliefCenter}
                 >
-                  <AddCircleOutlineIcon /> ADD NEW
+                  <AddCircleOutlineIcon />
+                  &nbsp;Add New
                 </Button>
-              )}
+              </Grid>
             </Grid>
 
             {/* Relief Center Name Input */}
             <Card style={{ padding: 25, marginBottom: 25 }}>
-              <InputLabel id="demo-simple-select-label">
-                Relief Center Name
+              <InputLabel
+                id="demo-simple-select-label"
+                style={{ marginBottom: 15 }}
+              >
+                Select Relief Center Name
               </InputLabel>
               {/* Relief Center Selection! */}
               <Select
+                placeholder="Select Relief Center Name"
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={reliefCenterName}
@@ -601,18 +622,28 @@ class ReliefCenterForms extends Component {
               );
             })}
 
-            {/* Button to Add More Task Cards */}
-            <Button onClick={this.addForm}>
-              ADD TASK <AddCircleOutlineIcon />
-            </Button>
-
-            {/* Submit Button */}
-            <Button
-              variant="contained"
-              onClick={this.handleSubmitReliefCenterForm}
+            <Grid
+              container
+              direction="column"
+              spacing={5}
+              justify="space-evenly"
             >
-              Submit
-            </Button>
+              <Grid item>
+                {/* Button to Add More Task Cards */}
+                <Button onClick={this.addForm}>
+                  ADD TASK <AddCircleOutlineIcon />
+                </Button>
+              </Grid>
+              <Grid item>
+                {/* Submit Button */}
+                <Button
+                  variant="contained"
+                  onClick={this.handleSubmitReliefCenterForm}
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
           </>
         )}
       </ThemeProvider>

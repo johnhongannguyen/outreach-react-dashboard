@@ -8,23 +8,25 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 100
+    minWidth: 100,
+    width: 200,
+    height: 150,
   },
   bullet: {
     display: "inline-block",
     margin: "0 2px",
-    transform: "scale(0.8)"
+    transform: "scale(0.8)",
   },
   title: {
-    fontSize: 12
+    fontSize: 12,
   },
   pos: {
-    marginBottom: 12
+    marginBottom: 12,
   },
   action: {
     display: "flex",
-    justifyContent: "space-around"
-  }
+    justifyContent: "space-around",
+  },
 });
 
 export default function Suggestion({ user, onSendRequestClick, taskID }) {
@@ -33,17 +35,16 @@ export default function Suggestion({ user, onSendRequestClick, taskID }) {
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
-        <Typography variant="body1" component="h4">
+        <Typography noWrap variant="body1" component="h4">
           {user.name}
         </Typography>
-        <Typography variant="body2" component="h4">
+        <Typography noWrap variant="body2" component="h4">
           {user.email}
         </Typography>
       </CardContent>
       <CardActions className={classes.action}>
         {user.name !== "No Suggestions" && (
           <Button
-            fullWidth
             color="primary"
             variant="outlined"
             size="medium"

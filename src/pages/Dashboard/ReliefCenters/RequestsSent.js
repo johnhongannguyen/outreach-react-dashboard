@@ -72,7 +72,7 @@ class RequestsSent extends Component {
   // Get Relief Center by ID
   getReliefCenterByID = (reliefCenterID) => {
     apiCall(
-      this.state.token,
+      this.props.auth.token,
       `/relief-center/id/${reliefCenterID}`,
       "GET"
     ).then((response) => {
@@ -85,7 +85,7 @@ class RequestsSent extends Component {
     // const { reliefCenterID, taskID } = this.props.match.params;
     if (taskID)
       apiCall(
-        this.state.token,
+        this.props.auth.token,
         `/user/${email}/decline/${taskID}`,
         "POST"
       ).then((res) => {
@@ -98,7 +98,7 @@ class RequestsSent extends Component {
   // Get Requests Sent for the task
   getRequestsSent = (taskID) => {
     apiCall(
-      this.state.token,
+      this.props.auth.token,
       `/relief-center/task/${taskID}/requests_sent`,
       "GET"
     ).then((res) => {
