@@ -248,7 +248,7 @@ class ReliefCenterForms extends Component {
   // Handle Date and Time change for Preference
   handleDateTimeChange = (momentObject, taskID, ID) => {
     // Get the Preference
-    const date = momentObject._d;
+    const date = momentObject && momentObject._d;
 
     // Find the object.. in tasks.. and update the concerned value.
     const { tasks } = this.state;
@@ -408,6 +408,7 @@ class ReliefCenterForms extends Component {
 
           {/* Type of Task (Job)! */}
           <Select
+            variant="outlined"
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={typeOfJob}
@@ -427,9 +428,17 @@ class ReliefCenterForms extends Component {
         </Grid>
 
         <Grid xs={3} item>
+          <InputLabel
+            id="volunteerDetail"
+            align="left"
+            shrink
+            style={{ color: "black", marginBottom: 10 }}>
+            People Needed
+          </InputLabel>
           {/* Number of people needed */}
           <TextField
-            InputLabelProps={{ style: { color: "black", marginBottom: 10 } }}
+            variant="outlined"
+            InputLabelProps={{ style: { color: "black" } }}
             defaultValue={numberOfPeople || 1}
             onChange={(e) => onNumberOfPeopleChange(e, taskID)}
             type="number"
@@ -439,9 +448,8 @@ class ReliefCenterForms extends Component {
                 max: 25,
                 min: 1,
               },
-              style: { backgroundColor: "white", marginTop: 20 },
-            }}
-            label="People Needed"></TextField>
+              style: { backgroundColor: "white" },
+            }}></TextField>
         </Grid>
       </Grid>
 
@@ -480,6 +488,7 @@ class ReliefCenterForms extends Component {
       )}
 
       <TextField
+        variant="outlined"
         style={{ marginTop: 15 }}
         onChange={(e) => this.onDescriptionChange(e, taskID)}
         fullWidth
@@ -580,17 +589,18 @@ class ReliefCenterForms extends Component {
               {/* Relief Center Name Input */}
               <Card
                 style={{
-                  padding: 25,
+                  padding: 50,
                   marginBottom: 25,
                   backgroundColor: "#eee",
                 }}>
                 <InputLabel
-                  id="demo-simple-select-label"
+                  align="left"
                   style={{ marginBottom: 15, color: "black" }}>
                   Select Relief Center Name
                 </InputLabel>
                 {/* Relief Center Selection! */}
                 <Select
+                  variant="outlined"
                   placeholder="Select Relief Center Name"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
