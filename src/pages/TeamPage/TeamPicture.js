@@ -1,5 +1,7 @@
 import React from "react";
 import "./Team.css";
+import Header from "../../components/LandingPage/Header/Header";
+import Footer from "../../components/LandingPage/Footer/Footer";
 
 class TeamPage extends React.Component {
   //Array to create Team members
@@ -169,24 +171,28 @@ class TeamPage extends React.Component {
 
   render() {
     return (
-      <div className="teamPage">
-        <div className="tp-header">
-          <h1>Meet Our Team</h1>
-          <p>
-            Our team consists of 10 members with varied expertise in design,
-            visual graphics, content management and software development. We are
-            always striving to solve problems in our community, through elegant
-            development and design decisions.
-          </p>
-          <p>
-            With <span>Outreach</span> we have tried to come up with a solution
-            for managing people like us, who are willing to volunteer, post a
-            disaster.
-          </p>
-        </div>
+      <>
+        <Header />
+        <div className="teamPage">
+          <div className="tp-header">
+            <h1>Meet Our Team</h1>
+            <p>
+              Our team consists of 10 members with varied expertise in design,
+              visual graphics, content management and software development. We
+              are always striving to solve problems in our community, through
+              elegant development and design decisions.
+            </p>
+            <p>
+              With <span>Outreach</span> we have tried to come up with a
+              solution for managing people like us, who are willing to
+              volunteer, post a disaster.
+            </p>
+          </div>
 
-        <div className="team-members">{this.createMember()}</div>
-      </div>
+          <div className="team-members">{this.createMember()}</div>
+        </div>
+        <Footer />
+      </>
     );
   }
 }

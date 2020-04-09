@@ -148,11 +148,14 @@ class Volunteers extends Component {
 
     return (
       <ThemeProvider theme={Theme}>
-        <Typography align="left" variant="h6" component="h3">
+        <Typography
+          align="left"
+          variant="h4"
+          component="h3"
+          style={{ marginBottom: "0.5rem", marginTop: "1rem" }}>
           <Badge
             badgeContent={volunteerRequests && volunteerRequests.length}
-            color="primary"
-          >
+            color="primary">
             Volunteer Requests
           </Badge>
         </Typography>
@@ -162,8 +165,7 @@ class Volunteers extends Component {
             spacing={2}
             container
             justify="space-evenly"
-            className={classes.volunteerRequests}
-          >
+            className={classes.volunteerRequests}>
             {volunteerRequests &&
               volunteerRequests
                 .slice(0, volunteerRequestsLimit)
@@ -210,8 +212,7 @@ class Volunteers extends Component {
                 container
                 justify="center"
                 align="center"
-                style={{ minHeight: 200 }}
-              >
+                style={{ minHeight: 200 }}>
                 <Grid item>
                   <Typography>No New Requests</Typography>
                 </Grid>

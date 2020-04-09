@@ -99,45 +99,39 @@ function Header() {
         position="absolute"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
-        })}
-      >
-        <div class="logo">
+
+        })}>
+        <Link href="/" class="logo">
+
           <img
             src={outreachlogo}
             alt="Logo"
             className="header-outreach-logo"
             style={{ width: "6rem" }}
           />
-        </div>
+        </Link>
         <Toolbar style={{ flex: "30% 1", justifyContent: "flex-end" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="end"
             onClick={handleDrawerOpen}
-            className={clsx(open && classes.hide)}
-          >
+            className={clsx(open && classes.hide)}>
             <MenuIcon style={{ fontSize: "3rem" }} />
           </IconButton>
         </Toolbar>
         <div className="header-menu">
           <Typography>
-            <Link href="#" onClick={preventDefault}>
-              Donate
-            </Link>
-            <Link href="#" onClick={preventDefault}>
-              Team
-            </Link>
-            <Link href="#" onClick={preventDefault}>
-              Contact
-            </Link>
+            <Link href="#">Donate</Link>
+            <Link href="/team">Team</Link>
+            <Link href="/contact">Contact</Link>
             <Button
+              href="/login"
               size="lg"
               style={{ backgroundColor: "#F27821", color: "#fff" }}
               variant=""
-              className="nl-btn"
-            >
-              DOWNLOAD
+              className="nl-btn">
+              Sign In
             </Button>
           </Typography>
         </div>
@@ -149,8 +143,8 @@ function Header() {
         open={open}
         classes={{
           paper: classes.drawerPaper,
-        }}
-      >
+        }}>
+
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (

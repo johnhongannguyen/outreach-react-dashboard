@@ -88,7 +88,11 @@ class Home extends Component {
 
           {/* Notifications (Alerts) */}
           <Grid item xs={12} lg={6}>
-            <Typography variant="h6" align="center" component="h3">
+            <Typography
+              variant="h4"
+              align="center"
+              component="h3"
+              style={{ marginBottom: "0.5rem", marginTop: "1rem" }}>
               Updates
             </Typography>
             {/* <Paper className={classes.paper}> */}
