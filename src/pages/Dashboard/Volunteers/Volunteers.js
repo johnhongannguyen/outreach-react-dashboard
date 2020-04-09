@@ -2,39 +2,63 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter, Link } from "react-router-dom";
 
-// Axios
-import axios from "axios";
-
 // Material UI - Core - Imports
-import { Typography, Grid, Paper, Button, Badge } from "@material-ui/core";
+import {
+  Typography,
+  Grid,
+  Paper,
+  Button,
+  Badge,
+  ThemeProvider,
+} from "@material-ui/core";
 
 // Custom Outreach Components
 import VolunteerRequestCard from "../../../components/Dashboard/VolunteerRequestCard";
 
-// ENV
-const API_URL = process.env.REACT_APP_API_URL;
+// Web Sockets - Socket.io
+import { clientSocket, adminSocket } from "../../../web-sockets";
+
+// Custom Components and Themes
+import Theme from "../../../theme";
+
+// Moment!
+import moment from "moment";
+
+// Redux Connect
+import { connect } from "react-redux";
+
+// API Call
+import { apiCall } from "../../../api";
+
 // Styles
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary
+    // padding: theme.spacing(2),
+    // textAlign: "center",
+
+    padding: 15,
+    // color: theme.palette.text.secondary
     // backgroundColor: "#111C24"
   },
+  seeAllButton: {
+    textTransform: "none",
+    textDecoration: "none",
+  },
+
   volunteerRequests: {
     // backgroundColor: "white"
   },
   hoverStyle: {
     transition: "1s cubic-bezier(.47,1.64,.41,.8)",
     marginTop: "1rem",
-    marginRight: "1rem",
+    // marginRight: "1rem",
     "&:hover": {
-      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)"
-    }
-  }
+      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)",
+    },
+  },
 });
 
 class Volunteers extends Component {
@@ -43,20 +67,19 @@ class Volunteers extends Component {
 
     this.state = {
       notifications: [],
-      volunteerRequests: []
+      volunteerRequests: [],
     };
   }
 
   // API Call
-  getDataFromAPI = async relativePath => {
-    await axios
-      .get(`${API_URL}${relativePath}`)
-      .then(response => {
+  getDataFromAPI = async () => {
+    await apiCall(this.props.auth.token, `/user/admin/requests/received`, "GET")
+      .then((response) => {
         this.setState({
-          volunteerRequests: response.data
+          volunteerRequests: response.data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(`Error: ${err}`);
       });
   };
@@ -66,23 +89,52 @@ class Volunteers extends Component {
 
   // When component
   componentDidMount() {
-    this.getDataFromAPI("/user/admin/requests/received");
+    // Get Token from Redux
+    const { token } = this.props.auth;
+
+    // Set Token
+    this.setState({ token });
+
+    this.getDataFromAPI();
+
+    clientSocket.on("reliefCenterDataChange", () => {
+      // Get the latest changes
+      this.getDataFromAPI();
+    });
 
     // Set Limits based on where the user is
-    if (this.isHomePage()) this.setState({ volunteerRequestsLimit: 4 });
+    if (this.isHomePage()) this.setState({ volunteerRequestsLimit: 3 });
     else this.setState({ volunteerRequestsLimit: 20 });
   }
 
   approveVolunteerRequest = (taskID, emailID) => {
-    axios.post(`${API_URL}/relief-center/id/${taskID}/${emailID}`).then(res => {
-      if (res.status === 200) {
-        // If Approved in DB.. filter locally from the state
-        const updatedVolunteerRequests = this.state.volunteerRequests.filter(
-          volunteerRequest => volunteerRequest.task_id != taskID
-        );
+    apiCall(
+      this.state.token,
+      `/relief-center/id/${taskID}/${emailID}`,
+      "POST"
+    ).then((response) => {
+      const updatedVolunteerRequests = this.state.volunteerRequests.filter(
+        (volunteerRequest) => volunteerRequest.volunteer_email !== emailID
+      );
 
+      if (response.status === 200)
         this.setState({ volunteerRequests: updatedVolunteerRequests });
-      }
+    });
+  };
+
+  // Decline Volunteer's Request
+  declineVolunteerRequest = (taskID, emailID) => {
+    apiCall(
+      this.state.token,
+      `/relief-center/id/${taskID}/${emailID}/decline`,
+      "POST"
+    ).then((response) => {
+      const updatedVolunteerRequests = this.state.volunteerRequests.filter(
+        (volunteerRequest) => volunteerRequest.volunteer_email !== emailID
+      );
+
+      if (response.status === 200)
+        this.setState({ volunteerRequests: updatedVolunteerRequests });
     });
   };
 
@@ -91,30 +143,29 @@ class Volunteers extends Component {
     const {
       volunteerRequests,
       notifications,
-      volunteerRequestsLimit
+      volunteerRequestsLimit,
     } = this.state;
 
     return (
-      <>
-        <Typography align="left" variant="h5" component="h3">
+      <ThemeProvider theme={Theme}>
+        <Typography align="left" variant="h6" component="h3">
           <Badge
             badgeContent={volunteerRequests && volunteerRequests.length}
-            color="secondary"
-          >
+            color="primary">
             Volunteer Requests
           </Badge>
         </Typography>
 
         <Paper className={classes.paper}>
           <Grid
+            spacing={2}
             container
-            justify="center"
-            className={classes.volunteerRequests}
-          >
+            justify="space-evenly"
+            className={classes.volunteerRequests}>
             {volunteerRequests &&
               volunteerRequests
                 .slice(0, volunteerRequestsLimit)
-                .map(volunteerRequest => {
+                .map((volunteerRequest) => {
                   const {
                     name,
                     location,
@@ -125,39 +176,64 @@ class Volunteers extends Component {
                     start_time,
                     end_time,
                     volunteer_email,
-                    volunteer_name
+                    volunteer_name,
                   } = volunteerRequest;
                   return (
-                    <Grid item className={classes.hoverStyle}>
+                    <Grid item xs={12} md={6} lg={4}>
                       <VolunteerRequestCard
+                        className={classes.hoverStyle}
                         title={volunteer_name}
-                        content={`wants to help with ${type}`}
-                        contentExtra={`at ${name} on ${date} from ${start_time} to ${end_time}`}
+                        // content={`wants to help with ${type}`}
+                        content={`${type} - ${name}`}
+                        contentExtra={`${moment(date).format(
+                          "MM-DD-YYYY"
+                        )} | ${moment(start_time).format("hh:MM A")} - ${moment(
+                          end_time
+                        ).format("hh:MM A")}`}
                         onAccept={() => {
-                          console.log("Accept was pressed!");
                           this.approveVolunteerRequest(
                             task_id,
                             volunteer_email
                           );
                         }}
-                        onDecline={"test"}
+                        onDecline={() =>
+                          this.declineVolunteerRequest(task_id, volunteer_email)
+                        }
                       />
                     </Grid>
                   );
                 })}
-            {volunteerRequests.length < 1 && <div>No New notifications</div>}
+            {volunteerRequests.length < 1 && (
+              <Grid
+                container
+                justify="center"
+                align="center"
+                style={{ minHeight: 200 }}>
+                <Grid item>
+                  <Typography>No New Requests</Typography>
+                </Grid>
+              </Grid>
+            )}
             {this.isHomePage() && (
               <Grid container justify="flex-end">
                 <Link to="/dashboard/volunteers">
-                  <Button>See All..</Button>
+                  <Button className={classes.seeAllButton}>See all..</Button>
                 </Link>
               </Grid>
             )}
           </Grid>
         </Paper>
-      </>
+      </ThemeProvider>
     );
   }
 }
 
-export default withStyles(styles)(withRouter(Volunteers));
+// Redux - Map (Redux) State -> props
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(withStyles(styles)(withRouter(Volunteers)));

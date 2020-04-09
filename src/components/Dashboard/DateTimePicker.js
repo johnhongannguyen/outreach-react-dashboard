@@ -23,6 +23,7 @@ export default function DateTimePicker({
       <Grid container justify="space-around">
         <Grid xs={12} sm={4} item>
           <KeyboardDatePicker
+            disablePast
             disableToolbar
             variant="inline"
             format="MM/DD/YYYY"

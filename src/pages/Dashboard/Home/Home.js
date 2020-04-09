@@ -1,44 +1,37 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router-dom";
 
 // Axios
 import axios from "axios";
-import { Paper, Grid, Typography, Button, Badge } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Grid, Typography, CircularProgress } from "@material-ui/core";
 import NotificationCard from "../../../components/Dashboard/NotificationCard";
 import Volunteers from "../Volunteers/Volunteers";
 import ReliefCenters from "../ReliefCenters/ReliefCenters";
 
 // Web Sockets - Socket.io
 import { clientSocket, adminSocket } from "../../../web-sockets";
+// Redux Connect
+import { connect } from "react-redux";
 
-// ENV
-const API_URL = process.env.REACT_APP_API_URL;
-
-//     await fetchDataFromAPI("/relief-center");
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
-    fontFamily: "Open Sans"
+    fontFamily: "Open Sans",
   },
-  // homeGrid: { backgroundColor: "#111C24" },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
-    color: theme.palette.text.secondary
-    // backgroundColor: "#111C24"
+    color: theme.palette.text.secondary,
   },
-  volunteerRequests: {
-    // backgroundColor: "white"
-  },
+  volunteerRequests: {},
   hoverStyle: {
     transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
-    marginTop: "1rem",
-    marginRight: "1rem",
+    marginBottom: "1rem",
     "&:hover": {
-      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)"
-    }
-  }
+      boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)",
+    },
+  },
 });
 
 class Home extends Component {
@@ -46,46 +39,43 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      notifications: [],
-      updates: null
+      updates: null,
+      updatesLoading: false,
     };
   }
 
   // Handle Notify Click
-  handleNotifyClick = broadcastMessage => {
-    console.log("Trying to broadcast:", broadcastMessage);
-
+  handleNotifyClick = (broadcastMessage) => {
     clientSocket.emit("broadcastMessage", broadcastMessage);
   };
+
   async componentDidMount() {
-    // React Redux
-    // this.props.getItems();
+    // Get Token from Redux
+    const { token } = this.props.auth;
 
     // Socket.io
     clientSocket.connect();
+
     clientSocket.on("reliefCenterDataChange", () => {
       // Get the latest changes
-      console.log("Data was changed..");
     });
 
     // News API
+
+    this.setState({ updatesLoading: true });
     const news = await axios.get(
       "https://newsapi.org/v2/top-headlines?country=ca&category=health&apiKey=bfac22be31a14e678bc1e744de315c5d"
     );
-    this.setState({ updates: news.data });
+
+    this.setState({ updates: news.data, updatesLoading: false });
   }
 
   render() {
     const { classes } = this.props;
-    const { updates } = this.state;
-    // Redux
-    // const { items } = this.props.item;
+    const { updates, updatesLoading } = this.state;
     return (
       <>
         <Grid container className={classes.root} spacing={2}>
-          {/* Redux Test */}
-          {/* <div>{JSON.stringify(items)}</div> */}
-
           {/* Volunteer Requests */}
           <Grid item xs={12} className={classes.homeGrid}>
             <Volunteers />
@@ -98,14 +88,20 @@ class Home extends Component {
 
           {/* Notifications (Alerts) */}
           <Grid item xs={12} lg={6}>
-            <Typography variant="h5" align="left" component="h3">
+            <Typography variant="h6" align="center" component="h3">
               Updates
             </Typography>
-            <Paper className={classes.paper}>
+            {/* <Paper className={classes.paper}> */}
+
+            {updatesLoading ? (
+              <Grid justify="center" container>
+                <CircularProgress color="primary" />
+              </Grid>
+            ) : (
               <Grid justify="center" container>
                 {updates ? (
                   updates &&
-                  updates.articles.slice(0, 3).map(update => (
+                  updates.articles.slice(0, 3).map((update) => (
                     <Grid item className={classes.hoverStyle}>
                       <NotificationCard
                         content={update.title}
@@ -119,13 +115,7 @@ class Home extends Component {
                   <Grid item>No New Notifications</Grid>
                 )}
               </Grid>
-
-              <Grid container justify="flex-end">
-                <Link to="/dashboard/volunteers">
-                  <Button>See All..</Button>
-                </Link>
-              </Grid>
-            </Paper>
+            )}
           </Grid>
         </Grid>
       </>
@@ -133,4 +123,12 @@ class Home extends Component {
   }
 }
 
-export default withStyles(styles)(Home);
+// Redux - Map (Redux) State -> props
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(
+  mapStateToProps,
+  {}
+)(withStyles(styles)(withRouter(Home)));

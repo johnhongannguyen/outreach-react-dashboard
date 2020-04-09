@@ -8,6 +8,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
+// Moment!
+import moment from "moment";
+
 const useStyles = makeStyles({
   table: {
     minWidth: 650
@@ -49,19 +52,19 @@ export default function SubmittedTasksTableComponent({ tasks }) {
               </TableCell>
               <TableCell align="right">{task.numberOfPeople}</TableCell>
               <TableCell align="right">
-                {task.preference == "preference"
-                  ? Date(task.date).toString()
+                {task.preference === "preference"
+                  ? moment(task.date).format("MM-DD-YYYY")
                   : "N/A"}
               </TableCell>
 
               <TableCell align="right">
-                {task.preference == "preference"
-                  ? Date(task.start_time).toString()
+                {task.preference === "preference"
+                  ? moment(task.start_time).format("hh:MM A")
                   : "N/A"}
               </TableCell>
               <TableCell align="right">
-                {task.preference == "preference"
-                  ? Date(task.end_time).toString()
+                {task.preference === "preference"
+                  ? moment(task.end_time).format("hh:MM A")
                   : "N/A"}
               </TableCell>
             </TableRow>

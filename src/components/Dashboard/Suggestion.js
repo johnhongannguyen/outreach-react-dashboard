@@ -5,53 +5,54 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Axios from "axios";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 150
+    minWidth: 100,
+    width: 200,
+    height: 150,
   },
   bullet: {
     display: "inline-block",
     margin: "0 2px",
-    transform: "scale(0.8)"
+    transform: "scale(0.8)",
   },
   title: {
-    fontSize: 12
+    fontSize: 12,
   },
   pos: {
-    marginBottom: 12
+    marginBottom: 12,
   },
   action: {
     display: "flex",
-    justifyContent: "space-around"
-  }
+    justifyContent: "space-around",
+  },
 });
 
-// Send Request to Volunteer
-const sendRequestToVolunteer = volunteerID => {
-  Axios.post();
-};
-
-export default function Suggestion({ user }) {
+export default function Suggestion({ user, onSendRequestClick, taskID }) {
   const classes = useStyles();
 
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
-        <Typography variant="body1" component="h4">
+        <Typography noWrap variant="body1" component="h4">
           {user.name}
+        </Typography>
+        <Typography noWrap variant="body2" component="h4">
+          {user.email}
         </Typography>
       </CardContent>
       <CardActions className={classes.action}>
-        <Button
-          color="primary"
-          variant="outlined"
-          size="medium"
-          onClick={() => sendRequestToVolunteer(user._id)}
-        >
-          Send Request
-        </Button>
+        {user.name !== "No Suggestions" && (
+          <Button
+            color="primary"
+            variant="outlined"
+            size="medium"
+            onClick={() => onSendRequestClick(user.email, taskID)}
+          >
+            Request
+          </Button>
+        )}
       </CardActions>
     </Card>
   );
