@@ -17,29 +17,30 @@ class Donation extends Component {
         <div className="donation-gradientDiv">
           <div className="donation-section">
             {/* Image Carousel Part of section */}
-            <div class="donation-image-slider">
+            <div className="donation-image-slider">
               {/* Calling ImageCarousel Components */}
               <ImgCarousel />
             </div>
-            <div class="donation-info">
+            <div className="donation-info">
               {/* Heading of Donation Section */}
               <div className="donation-heading">
-                Small Actions x Lots of People
+                Small Actions <span className="donation-x"> x </span>
+                Lots of People
               </div>
-              <div class="donation-change">
-                = <span class="donation-big-change">Big Change </span>
+              <div className="donation-change">
+                = <span className="donation-big-change">Big Change</span>
               </div>
 
-              <div class="donation-paragraph">
+              <div className="donation-paragraph">
                 Donations are used for providing essentials like food, water and
-                medical acre and will be assisting in rebuilding efforts. Help
+                medical care and will be assisting in rebuilding efforts. Help
                 today!
               </div>
-              <div class="donation-button-container">
+              <div className="donation-button-container">
                 <input
                   type="button"
                   value="DONATE"
-                  class="donation-btn"
+                  className="donation-btn"
                   disabled
                 />
               </div>

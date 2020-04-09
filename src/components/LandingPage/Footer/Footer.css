@@ -70,11 +70,13 @@
   font-weight: 300;
   font-size: 13px;
 }
+
 .logo-nav-container {
   display: flex;
   flex-wrap: wrap;
   flex: row;
 }
+
 /* Style for NewsLetter Section --------------------------------------------------- */
 .news-letter-container {
   position: relative;
@@ -84,11 +86,13 @@
 .news-letter-container span {
   font-size: 1rem;
 }
+
 .NewsLTitle {
   font-family: quicksand;
   color: #f16f22;
   font-weight: bold;
 }
+
 .nl-subcontainer {
   text-align: center;
 }
@@ -104,6 +108,7 @@ input {
 .nl-subcontainer input::placeholder {
   font-size: 15px;
 }
+
 .nl-subcontainer input {
   padding-top: 4px;
   font-size: 15px;
@@ -117,9 +122,11 @@ input {
   width: 45vw;
   line-height: 0;
 }
+
 .MuiButton-root {
   padding: 3px 16px !important;
 }
+
 @media screen and (min-width: 1060px) {
   .nl-subcontainer input {
     width: 30vw;

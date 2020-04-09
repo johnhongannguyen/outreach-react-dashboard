@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -15,7 +15,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import outreachlogo from "../images/outreach_logo.png";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
-import { Button } from "@material-ui/core";
+import { Button, Box } from "@material-ui/core";
 import "./Header.css";
 
 const drawerWidth = 240;
@@ -77,11 +77,45 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const getWidth = () =>
+  window.innerWidth ||
+  document.documentElement.clientWidth ||
+  document.body.clientWidth;
+
+function useCurrentWitdh() {
+  // save current window width in the state object
+  let [width, setWidth] = useState(getWidth());
+
+  // in this case useEffect will execute only once because
+  // it does not have any dependencies.
+  useEffect(() => {
+    // timeoutId for debounce mechanism
+    let timeoutId = null;
+    const resizeListener = () => {
+      // prevent execution of previous setTimeout
+      clearTimeout(timeoutId);
+      // change width from the state object after 150 milliseconds
+      timeoutId = setTimeout(() => setWidth(getWidth()), 150);
+    };
+    // set resize listener
+    window.addEventListener("resize", resizeListener);
+
+    // clean up function
+    return () => {
+      // remove resize listener
+      window.removeEventListener("resize", resizeListener);
+    };
+  }, []);
+
+  return width;
+}
+
 function Header() {
+  let width = useCurrentWitdh();
+
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
   const preventDefault = (event) => event.preventDefault();
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -91,18 +125,25 @@ function Header() {
     setOpen(false);
   };
 
+  const [links] = useState([
+    { title: "Donate", to: "#" },
+    { title: "Team", to: "/team" },
+    { title: "Contact", to: "/contact" },
+  ]);
+
   return (
-    <div className={classes.root}>
+    <div className={([classes.root], "header-main")}>
       <CssBaseline />
+
       <AppBar
         style={{ flexDirection: "row", alignItems: "center" }}
         position="absolute"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
-
         })}>
-        <Link href="/" class="logo">
+        {/* Logo */}
 
+        <Link href="/" class="logo">
           <img
             src={outreachlogo}
             alt="Logo"
@@ -110,31 +151,41 @@ function Header() {
             style={{ width: "6rem" }}
           />
         </Link>
-        <Toolbar style={{ flex: "30% 1", justifyContent: "flex-end" }}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerOpen}
-            className={clsx(open && classes.hide)}>
-            <MenuIcon style={{ fontSize: "3rem" }} />
-          </IconButton>
-        </Toolbar>
-        <div className="header-menu">
-          <Typography>
-            <Link href="#">Donate</Link>
-            <Link href="/team">Team</Link>
-            <Link href="/contact">Contact</Link>
-            <Button
-              href="/login"
-              size="lg"
-              style={{ backgroundColor: "#F27821", color: "#fff" }}
-              variant=""
-              className="nl-btn">
-              Sign In
-            </Button>
-          </Typography>
-        </div>
+
+        {width <= 767 && (
+          <Toolbar style={{ flex: "30% 1", justifyContent: "flex-end" }}>
+            {/* Hamburger - only on views less than 700px */}
+
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="end"
+              onClick={handleDrawerOpen}
+              className={clsx(open && classes.hide)}>
+              <MenuIcon style={{ fontSize: "3rem" }} />
+            </IconButton>
+          </Toolbar>
+        )}
+
+        {/* Menu Links for Desktop View - beyond 700px */}
+        {width > 767 && (
+          <div className="header-menu">
+            <Typography>
+              {links.map((link) => (
+                <Link href={link.to}>{link.title}</Link>
+              ))}
+
+              <Button
+                href="/login"
+                size="lg"
+                style={{ backgroundColor: "#F27821", color: "#fff" }}
+                variant=""
+                className="nl-btn">
+                Sign In
+              </Button>
+            </Typography>
+          </div>
+        )}
       </AppBar>
       <Drawer
         className={classes.drawer}
@@ -144,7 +195,6 @@ function Header() {
         classes={{
           paper: classes.drawerPaper,
         }}>
-
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
@@ -155,13 +205,17 @@ function Header() {
           </IconButton>
         </div>
         <List>
-          {["Donate", "Team", "Contact"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
+          {links.map((link, index) => (
+            <ListItem component="a" href={link.to} button key={link.title}>
+              <ListItemText primary={link.title} />
             </ListItem>
           ))}
-          <ListItem button key={"Download"} class="button-download">
-            <ListItemText primary={"DOWNLOAD"} />
+          <ListItem
+            key={"Sign In"}
+            component="a"
+            variant="outlined"
+            href="/login">
+            <ListItemText primary={"Sign In"} />
           </ListItem>
         </List>
       </Drawer>

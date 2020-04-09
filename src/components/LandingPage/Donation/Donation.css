@@ -1,7 +1,8 @@
 @font-face {
   font-family: "Edo Sz";
-  src: local("Edo Sz"), url(../../../fonts/edosz.ttf) format("ttf");
+  src: local("Edo Sz"), url("../../../fonts/edosz.ttf") format("ttf");
 }
+
 .donation {
   margin: 4rem auto 1rem auto;
 }
@@ -10,12 +11,15 @@
   padding: 2em;
   align-items: center;
 }
+
 .donation-info {
   padding: 2em;
 }
+
 .donation-image-slider img {
   width: 100%;
 }
+
 .donation-heading {
   color: #f87606;
   font-weight: bold;
@@ -23,16 +27,23 @@
   line-height: 1.6em;
   font-family: "Quicksand";
 }
+
 .donation-change {
   color: #f87606;
   font-weight: bold;
   font-size: 1.4em;
   padding-bottom: 1.2em;
 }
+
 .donation-big-change {
   color: green;
   font-weight: bold;
-  font-family: "Edo Sz";
+  font-size: 2rem;
+  font-family: 'Dancing Script', cursive;
+}
+
+.donation-x {
+  font-family: "Open Sans";
 }
 
 .donation-paragraph {
@@ -42,9 +53,11 @@
   color: gray;
   font-family: "Quicksand";
 }
+
 .donation-button-container {
   padding-top: 1.5em;
 }
+
 .donation-btn {
   background-color: #f87606;
   color: white;
@@ -53,24 +66,30 @@
   border-radius: 10px;
   background: linear-gradient(#f27821, #ef3830);
 }
+
 /* Image Carousel CsS */
 .thumbs {
   display: none;
 }
+
 .carousel-status {
   display: none;
 }
+
 .donation-image-slider {
   display: none;
 }
+
 .donation-btn {
   font-family: "Quicksand";
   font-weight: 400;
 }
+
 .donation-section {
   margin-left: auto;
   margin-right: auto;
 }
+
 .donation-gradientDiv {
   margin-left: auto;
   margin-right: auto;
@@ -81,6 +100,7 @@
     display: inline;
     /* width: 80%; */
   }
+
   /* Rotated background */
   .donation-gradientDiv {
     background-image: linear-gradient(#f27821, #ef3830);
@@ -108,11 +128,11 @@
   /* ============================IMAGE CAROUSEL=================================== */
 
   .carousel .slide {
-    background: none !important ;
+    background: none !important;
   }
 
   .carousel .slider .selected {
-    background: none !important ;
+    background: none !important;
     min-width: 80% !important;
     z-index: 1 !important;
     opacity: 1 !important;
@@ -120,16 +140,19 @@
     margin-right: -5em;
     transition: 1s;
   }
+
   .slider:nth-child(2) .slide {
-    background: none !important ;
+    background: none !important;
     min-width: 70% !important;
     margin-left: -4em !important;
     margin-right: -2em !important;
     z-index: -1 !important;
   }
+
   .slide {
     opacity: 0.8 !important;
   }
+
   .slide img {
     border-radius: 20px !important;
   }
@@ -137,6 +160,7 @@
   .control-dots {
     display: none;
   }
+
   .carousel .selected img {
     border-radius: 20px;
   }
@@ -149,15 +173,16 @@
 /* =========================== */
 @media screen and (max-width: 750px) {
   .carousel .slide {
-    background: none !important ;
+    background: none !important;
   }
+
   .donation-image-slider {
     height: 6em;
     align-items: center;
   }
 
   .carousel .slider .selected {
-    background: none !important ;
+    background: none !important;
     min-width: 75% !important;
     z-index: 1 !important;
     opacity: 1 !important;
@@ -165,16 +190,19 @@
     margin-right: -2em;
     transition: 1s;
   }
+
   .slider:nth-child(2) .slide {
-    background: none !important ;
+    background: none !important;
     min-width: 70% !important;
     margin-left: -2em !important;
     margin-right: -2em !important;
     z-index: -1 !important;
   }
+
   .slide {
     opacity: 0.8 !important;
   }
+
   .slide img {
     border-radius: 20px !important;
   }
@@ -182,6 +210,7 @@
   .control-dots {
     display: none;
   }
+
   .carousel .selected img {
     border-radius: 20px;
   }
@@ -190,6 +219,7 @@
     content: "\00a0 ";
   }
 }
+
 @media screen and (min-width: 830px) {
   .donation {
     margin: 4rem auto 1rem auto;
@@ -200,11 +230,13 @@
     height: 65vh;
   }
 }
+
 @media screen and (min-width: 850px) {
   .donation-section {
     height: 60vh;
   }
 }
+
 @media screen and (min-width: 1500px) {
   .donation-section {
     height: 40vh;

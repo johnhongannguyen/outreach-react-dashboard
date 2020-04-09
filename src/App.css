@@ -1,5 +1,6 @@
 /* Load in your font */
 @import url("https://fonts.googleapis.com/css?family=Open+Sans|Quicksand:200,400,600,700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
 .App {
   text-align: center;

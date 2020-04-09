@@ -10,14 +10,14 @@ import Video from "../components/LandingPage/VideoSection/Video.js";
 import Donation from "../components/LandingPage/Donation/Donation";
 import Header from "../components/LandingPage/Header/Header.js";
 import Footer from "../components/LandingPage/Footer/Footer.js";
-import Mockup from "../components/LandingPage/MobileMockups/Mockup.js"
+import Mockup from "../components/LandingPage/MobileMockups/Mockup.js";
 
 // Landing Page
 export default function LandingPage() {
   const classes = useStyles();
 
   return (
-    <Container classes={classes} maxWidth="lg">
+    <Container maxWidth="lg">
       {/* Section - HEADER */}
       <Header />
       {/* Section - HERO */}
@@ -43,14 +43,14 @@ export default function LandingPage() {
   );
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  title: {
-    flexGrow: 1
-  }
+const useStyles = makeStyles((theme) => ({
+  // root: {
+  //   flexGrow: 1,
+  // },
+  // menuButton: {
+  //   marginRight: theme.spacing(2),
+  // },
+  // title: {
+  //   flexGrow: 1,
+  // },
 }));
