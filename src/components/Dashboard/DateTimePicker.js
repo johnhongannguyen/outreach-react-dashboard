@@ -6,7 +6,7 @@ import MomentUtils from "@date-io/moment";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
-  KeyboardDatePicker
+  KeyboardDatePicker,
 } from "@material-ui/pickers";
 
 export default function DateTimePicker({
@@ -16,13 +16,14 @@ export default function DateTimePicker({
   selectedEndTime,
   onDateChange,
   onStartTimeChange,
-  onEndTimeChange
+  onEndTimeChange,
 }) {
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <Grid container justify="space-around">
         <Grid xs={12} sm={4} item>
           <KeyboardDatePicker
+            inputVariant="outlined"
             disablePast
             disableToolbar
             variant="inline"
@@ -30,31 +31,34 @@ export default function DateTimePicker({
             margin="normal"
             label="Date"
             value={selectedDate}
-            onChange={e => onDateChange(e, taskID)}
+            onChange={(e) => onDateChange(e, taskID)}
             KeyboardButtonProps={{
-              "aria-label": "change date"
+              "aria-label": "change date",
             }}
           />
         </Grid>
         <Grid xs={12} sm={4} item>
           <KeyboardTimePicker
+            inputVariant="outlined"
             margin="normal"
             label="Start Time"
             value={selectedStartTime}
             onChange={onStartTimeChange}
             KeyboardButtonProps={{
-              "aria-label": "start time"
+              "aria-label": "start time",
             }}
           />
         </Grid>
         <Grid xs={12} sm={4} item>
           <KeyboardTimePicker
+            inputVariant="outlined"
+            color="white"
             margin="normal"
             label="End Time"
             value={selectedEndTime}
             onChange={onEndTimeChange}
             KeyboardButtonProps={{
-              "aria-label": "end time"
+              "aria-label": "end time",
             }}
           />
         </Grid>
