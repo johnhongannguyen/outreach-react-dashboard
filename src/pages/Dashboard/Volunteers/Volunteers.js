@@ -148,7 +148,11 @@ class Volunteers extends Component {
 
     return (
       <ThemeProvider theme={Theme}>
-        <Typography align="left" variant="h6" component="h3">
+        <Typography
+          align="left"
+          variant="h4"
+          component="h3"
+          style={{ marginBottom: "0.5rem", marginTop: "1rem" }}>
           <Badge
             badgeContent={volunteerRequests && volunteerRequests.length}
             color="primary">

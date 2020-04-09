@@ -147,7 +147,11 @@ class ReliefCenters extends Component {
       <ThemeProvider theme={Theme}>
         {/* Title */}
         {this.isHomePage() ? (
-          <Typography align="left" variant="h6" component="h3">
+          <Typography
+            align="left"
+            variant="h4"
+            component="h3"
+            style={{ marginBottom: "0.5rem", marginTop: "1rem" }}>
             Relief Centers{" "}
             <Typography variant="body2" component="span">
               - Action Needed
@@ -193,22 +197,19 @@ class ReliefCenters extends Component {
               <Button
                 onClick={() => this.handleButtonPress("All")}
                 variant="outlined"
-                color="primary"
-              >
+                color="primary">
                 All
               </Button>
               <Button
                 onClick={() => this.handleButtonPress("Oldest")}
                 variant="outlined"
-                color="primary"
-              >
+                color="primary">
                 Oldest
               </Button>
               <Button
                 onClick={() => this.handleButtonPress("Recent")}
                 variant="outlined"
-                color="primary"
-              >
+                color="primary">
                 Recent
               </Button>
             </Grid>
@@ -220,8 +221,7 @@ class ReliefCenters extends Component {
                 color="primary"
                 onClick={() => {
                   this.props.history.push("/dashboard/relief-center-forms");
-                }}
-              >
+                }}>
                 Request Form
               </Button>
             </Grid>

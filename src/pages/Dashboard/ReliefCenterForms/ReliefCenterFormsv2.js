@@ -90,6 +90,9 @@ const useStyles = makeStyles({
       backgroundColor: "#106ba3",
     },
   },
+  cardWrapper: {
+    padding: 20,
+  },
 });
 
 class ReliefCenterForms extends Component {
@@ -377,9 +380,14 @@ class ReliefCenterForms extends Component {
     onPreferenceChange,
     onTypeOfJobChange,
   }) => (
-    <Card taskID={taskID} style={{ padding: 50, marginBottom: 25 }}>
+    <Card
+      taskID={taskID}
+      style={{ padding: 50, marginBottom: 25, backgroundColor: "#eee" }}>
       {numberOfPeople > 0 && typeOfJob && (
-        <Typography align="left" variant="h4" style={{ marginBottom: 30 }}>
+        <Typography
+          align="left"
+          variant="h4"
+          style={{ marginBottom: 30, fontWeight: 200 }}>
           Requesting {numberOfPeople} volunteer(s) for {typeOfJob}
         </Typography>
       )}
@@ -388,10 +396,13 @@ class ReliefCenterForms extends Component {
         container
         justify="flex-start"
         spacing={5}
-        style={{ marginBottom: 15 }}
-      >
+        style={{ marginBottom: 15 }}>
         <Grid xs={4} item>
-          <InputLabel id="volunteerDetail" align="left" shrink>
+          <InputLabel
+            id="volunteerDetail"
+            align="left"
+            shrink
+            style={{ color: "black", marginBottom: 10 }}>
             Type of Job
           </InputLabel>
 
@@ -400,9 +411,9 @@ class ReliefCenterForms extends Component {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={typeOfJob}
+            style={{ backgroundColor: "white" }}
             fullWidth
-            onChange={(e) => onTypeOfJobChange(e, taskID)}
-          >
+            onChange={(e) => onTypeOfJobChange(e, taskID)}>
             {this.state.volunteeringTypes.map((volunteeringType) => (
               <MenuItem value={volunteeringType.name}>
                 {volunteeringType.name}
@@ -418,6 +429,7 @@ class ReliefCenterForms extends Component {
         <Grid xs={3} item>
           {/* Number of people needed */}
           <TextField
+            InputLabelProps={{ style: { color: "black", marginBottom: 10 } }}
             defaultValue={numberOfPeople || 1}
             onChange={(e) => onNumberOfPeopleChange(e, taskID)}
             type="number"
@@ -427,9 +439,9 @@ class ReliefCenterForms extends Component {
                 max: 25,
                 min: 1,
               },
+              style: { backgroundColor: "white", marginTop: 20 },
             }}
-            label="People Needed"
-          ></TextField>
+            label="People Needed"></TextField>
         </Grid>
       </Grid>
 
@@ -438,8 +450,7 @@ class ReliefCenterForms extends Component {
         aria-label="preference"
         name="preference"
         value={preference}
-        onChange={(e) => onPreferenceChange(e, taskID)}
-      >
+        onChange={(e) => onPreferenceChange(e, taskID)}>
         <FormControlLabel
           value="anytime"
           control={<Radio />}
@@ -472,8 +483,10 @@ class ReliefCenterForms extends Component {
         style={{ marginTop: 15 }}
         onChange={(e) => this.onDescriptionChange(e, taskID)}
         fullWidth
-        label="Task Description"
-      ></TextField>
+        InputProps={{
+          style: { backgroundColor: "white" },
+        }}
+        label="Task Description"></TextField>
     </Card>
   );
 
@@ -543,8 +556,7 @@ class ReliefCenterForms extends Component {
               container
               justify="space-between"
               alignItems="center"
-              style={{ marginTop: 20, marginBottom: 20 }}
-            >
+              style={{ marginTop: 20, marginBottom: 20 }}>
               <Grid item>
                 {/* Panel Title - Relief Center Form */}
                 <Typography align="left" variant="h3">
@@ -558,92 +570,92 @@ class ReliefCenterForms extends Component {
                   variant="contained"
                   color="primary"
                   size="small"
-                  onClick={this.addNewReliefCenter}
-                >
+                  onClick={this.addNewReliefCenter}>
                   <AddCircleOutlineIcon />
                   &nbsp;Add New
                 </Button>
               </Grid>
             </Grid>
-
-            {/* Relief Center Name Input */}
-            <Card style={{ padding: 25, marginBottom: 25 }}>
-              <InputLabel
-                id="demo-simple-select-label"
-                style={{ marginBottom: 15 }}
-              >
-                Select Relief Center Name
-              </InputLabel>
-              {/* Relief Center Selection! */}
-              <Select
-                placeholder="Select Relief Center Name"
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={reliefCenterName}
-                fullWidth
-                onChange={(e) => this.onReliefCenterChange(e)}
-              >
-                {this.state.reliefCenters.map((reliefCenter) => (
-                  <MenuItem value={reliefCenter.name}>
-                    {reliefCenter.name}
-                  </MenuItem>
-                ))}
-              </Select>
+            <Card style={{ padding: 50 }}>
+              {/* Relief Center Name Input */}
+              <Card
+                style={{
+                  padding: 25,
+                  marginBottom: 25,
+                  backgroundColor: "#eee",
+                }}>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  style={{ marginBottom: 15, color: "black" }}>
+                  Select Relief Center Name
+                </InputLabel>
+                {/* Relief Center Selection! */}
+                <Select
+                  placeholder="Select Relief Center Name"
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={reliefCenterName}
+                  fullWidth
+                  style={{ backgroundColor: "white" }}
+                  onChange={(e) => this.onReliefCenterChange(e)}>
+                  {this.state.reliefCenters.map((reliefCenter) => (
+                    <MenuItem value={reliefCenter.name}>
+                      {reliefCenter.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Card>
+              {/* Task Cards */}
+              {tasks.map((task, index) => {
+                const {
+                  taskID,
+                  numberOfPeople,
+                  nameOfJob,
+                  description,
+                  typeOfJob,
+                  date,
+                  start_time,
+                  end_time,
+                  preference,
+                } = task;
+                return (
+                  <this.TaskCard
+                    key={index}
+                    taskID={taskID}
+                    numberOfPeople={numberOfPeople}
+                    nameOfJob={nameOfJob}
+                    typeOfJob={typeOfJob}
+                    preference={preference}
+                    date={date}
+                    start_time={start_time}
+                    end_time={end_time}
+                    onNumberOfPeopleChange={this.handleNumberOfPeopleChange}
+                    onPreferenceChange={this.handlePreferenceChange}
+                    onTypeOfJobChange={this.handleTypeOfJobChange}
+                  />
+                );
+              })}
+              <Grid
+                container
+                direction="column"
+                spacing={5}
+                justify="space-evenly">
+                <Grid item>
+                  {/* Button to Add More Task Cards */}
+                  <Button onClick={this.addForm}>
+                    ADD TASK <AddCircleOutlineIcon />
+                  </Button>
+                </Grid>
+                <Grid item>
+                  {/* Submit Button */}
+                  <Button
+                    variant="contained"
+                    onClick={this.handleSubmitReliefCenterForm}>
+                    Submit
+                  </Button>
+                </Grid>
+              </Grid>{" "}
             </Card>
-
-            {/* Task Cards */}
-            {tasks.map((task, index) => {
-              const {
-                taskID,
-                numberOfPeople,
-                nameOfJob,
-                description,
-                typeOfJob,
-                date,
-                start_time,
-                end_time,
-                preference,
-              } = task;
-              return (
-                <this.TaskCard
-                  key={index}
-                  taskID={taskID}
-                  numberOfPeople={numberOfPeople}
-                  nameOfJob={nameOfJob}
-                  typeOfJob={typeOfJob}
-                  preference={preference}
-                  date={date}
-                  start_time={start_time}
-                  end_time={end_time}
-                  onNumberOfPeopleChange={this.handleNumberOfPeopleChange}
-                  onPreferenceChange={this.handlePreferenceChange}
-                  onTypeOfJobChange={this.handleTypeOfJobChange}
-                />
-              );
-            })}
-
-            <Grid
-              container
-              direction="column"
-              spacing={5}
-              justify="space-evenly"
-            >
-              <Grid item>
-                {/* Button to Add More Task Cards */}
-                <Button onClick={this.addForm}>
-                  ADD TASK <AddCircleOutlineIcon />
-                </Button>
-              </Grid>
-              <Grid item>
-                {/* Submit Button */}
-                <Button
-                  variant="contained"
-                  onClick={this.handleSubmitReliefCenterForm}
-                >
-                  Submit
-                </Button>
-              </Grid>
-            </Grid>
           </>
         )}
       </ThemeProvider>
