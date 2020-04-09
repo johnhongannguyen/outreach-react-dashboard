@@ -1,6 +1,13 @@
 import React from "react";
 import axios from "axios";
 import "./Contact.css";
+import Header from "../../components/LandingPage/Header/Header";
+import Footer from "../../components/LandingPage/Footer/Footer";
+
+// Theme Provider
+import Theme from "../../theme";
+// Material UI
+import { TextField, Button, Grid, ThemeProvider } from "@material-ui/core";
 
 // Refference for contact page https://reactjs.org/docs/forms.html
 
@@ -10,7 +17,7 @@ class Contact extends React.Component {
     this.state = {
       name: "",
       email: "",
-      message: ""
+      message: "",
     };
     // binding handleChange function with this.
     this.handleChange = this.handleChange.bind(this);
@@ -36,83 +43,102 @@ class Contact extends React.Component {
         params: {
           name: this.state.name,
           message: this.state.message,
-          email: this.state.email
-        }
+          email: this.state.email,
+        },
       })
-      .then(response => {
+      .then((response) => {
         this.setState({
           ...this.state,
-          formSubmitMessage: response.data
+          formSubmitMessage: response.data,
         });
       });
   }
 
   render() {
     return (
-      <div className="Contactmain">
-        <div className="contact-image-form">
-          <div className="gradientDiv">
-            <div className="contact-section">
-              <div className="ContactPage">
-                <h1>Contact Us</h1>
-                <p className="welcome-message">
-                  Thank you for visiting our website. Feel free to send us a
-                  message.
-                </p>
+      <>
+        <Header />
+        <div className="Contactmain">
+          <div className="contact-image-form">
+            <div className="gradientDiv">
+              <div className="contact-section">
+                <div className="ContactPage">
+                  <h1>Contact Us</h1>
+                  <p className="welcome-message">
+                    Thank you for visiting our website. Feel free to send us a
+                    message.
+                  </p>
 
-                {Array.isArray(this.state.formSubmitMessage) ? (
-                  <ul className="Contact-error">
-                    {this.state.formSubmitMessage.map(errorMessage => (
-                      <li>{errorMessage}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  this.state.formSubmitMessage
-                )}
+                  {Array.isArray(this.state.formSubmitMessage) ? (
+                    <ul className="Contact-error">
+                      {this.state.formSubmitMessage.map((errorMessage) => (
+                        <li>{errorMessage}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    this.state.formSubmitMessage
+                  )}
 
-                <form>
-                  <p>Name</p>
-                  <input
-                    type="text"
-                    name="name"
-                    value={this.state.name}
-                    onChange={this.handleChange}
-                  />
-                  <p>Email</p>
-                  <input
-                    type="email"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                  />
-                  <p>Message</p>
-
-                  <textarea
-                    rows="4"
-                    cols="50"
-                    type="text"
-                    name="message"
-                    value={this.state.message}
-                    onChange={this.handleChange}
-                  ></textarea>
-
-                  <br />
-                  <br />
-
-                  <input
-                    className="submitButton"
-                    type="button"
-                    name="Submit"
-                    value="Submit"
-                    onClick={this.handleFormSubmit.bind(this)}
-                  />
-                </form>
+                  <form>
+                    <ThemeProvider theme={Theme}>
+                      <Grid spacing={4} container>
+                        <Grid item xs={12}>
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            label="Name"
+                            placeholder="John Doe"
+                            value={this.state.name}
+                            onChange={this.handleChange}
+                            name="email"
+                          />
+                        </Grid>{" "}
+                        <Grid item xs={12}>
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            label="Email"
+                            placeholder="email@test.com"
+                            value={this.state.email}
+                            onChange={this.handleChange}
+                            name="email"
+                          />
+                        </Grid>{" "}
+                        <Grid item xs={12}>
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            rows="6"
+                            label="Message"
+                            placeholder="Your message goes here"
+                            value={this.state.message}
+                            onChange={this.handleChange}
+                            name="message"
+                          />
+                        </Grid>{" "}
+                        <Grid item xs={12}>
+                          <br></br>
+                          <Button
+                            size="large"
+                            variant="contained"
+                            onClick={(e) => e.preventDefault()}
+                            color="primary"
+                            type="submit">
+                            Submit
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </ThemeProvider>
+                  </form>
+                </div>
+                <div className="contact-image"></div>
               </div>
-              <div className="contact-image"></div>
             </div>
           </div>
         </div>
-      </div>
+        <Footer />
+      </>
     );
   }
 }
