@@ -189,11 +189,15 @@ class Volunteers extends Component {
                         title={volunteer_name}
                         // content={`wants to help with ${type}`}
                         content={`${type} - ${name}`}
-                        contentExtra={`${moment(date).format(
-                          "MM-DD-YYYY"
-                        )} | ${moment(start_time).format("hh:MM A")} - ${moment(
-                          end_time
-                        ).format("hh:MM A")}`}
+                        contentExtra={
+                          date
+                            ? `${moment(date).format("MM-DD-YYYY")} | ${moment(
+                                start_time
+                              ).format("hh:MM A")} - ${moment(end_time).format(
+                                "hh:MM A"
+                              )}`
+                            : "Needed at: Any time"
+                        }
                         onAccept={() => {
                           this.approveVolunteerRequest(
                             task_id,

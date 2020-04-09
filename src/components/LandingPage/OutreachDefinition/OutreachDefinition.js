@@ -36,7 +36,7 @@ export default function OutreachDefinition() {
 
         {/* Description  */}
         <div className="outreach-description">
-          Outreach is a post disaster volunteer management application which
+          Outreach is a post-disaster volunteer management application which
           connects volunteers to relief centers. You can volunteer and hence
           help people those who are affected by calamities.
         </div>

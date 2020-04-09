@@ -22,10 +22,13 @@ import {
   MenuItem,
   Button,
   Avatar,
+  Grid,
+  Divider,
 } from "@material-ui/core";
 
 // Material UI - Icons - Imports
 import {
+  ChevronLeft as ChevronLeftIcon,
   Menu as MenuIcon,
   NotificationsOutlined as NotificationsIcon,
 } from "@material-ui/icons";
@@ -239,8 +242,7 @@ function Dashboard({ logOut, auth }) {
         <AppBar
           style={{ background: "transparent", boxShadow: "none" }}
           position="absolute"
-          className={clsx(classes.appBar, open && classes.appBarShift)}
-        >
+          className={clsx(classes.appBar, open && classes.appBarShift)}>
           {/* Dashboard Toolbar */}
           <Toolbar className={classes.toolbar}>
             {/* Menu Icon on Left */}
@@ -252,14 +254,12 @@ function Dashboard({ logOut, auth }) {
               className={clsx(
                 classes.menuButton,
                 open && classes.menuButtonHidden
-              )}
-            >
+              )}>
               <MenuIcon />
             </IconButton>
 
             <IconButton
-              onClick={notifications.length ? handleNotificationsClick : null}
-            >
+              onClick={notifications.length ? handleNotificationsClick : null}>
               <Badge badgeContent={notifications.length} color="primary">
                 <NotificationsIcon color="primary" />
               </Badge>
@@ -273,17 +273,31 @@ function Dashboard({ logOut, auth }) {
                 PaperProps={{
                   style: {
                     // maxHeight: ITEM_HEIGHT * 4.5,
-                    width: 200,
+                    // width: 200,
                   },
-                }}
-              >
+                }}>
                 {notifications.map((notification) => (
                   <MenuItem
                     key={notification._id}
-                    onClick={handleNotificationsClose}
-                  >
-                    <div>{notification.action}</div>
-                    {notification.content}
+                    onClick={handleNotificationsClose}>
+                    <Grid container>
+                      <Grid item xs={12}>
+                        <Typography variant="body1">
+                          {notification.status}: {notification.email}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Typography variant="body2">
+                          Task: {notification.task_name}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Typography variant="body2">
+                          Relief Center: {notification.location}
+                          <Divider variant="fullWidth" />
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </MenuItem>
                 ))}
               </Menu>
@@ -293,13 +307,11 @@ function Dashboard({ logOut, auth }) {
             <Button
               aria-controls="user-menu"
               aria-haspopup="true"
-              onClick={handleUserMenuClick}
-            >
+              onClick={handleUserMenuClick}>
               <Avatar
                 alt="User Photo"
                 src="https://source.unsplash.com/JN0SUcTOig0/240x180"
-                className={classes.orange}
-              >
+                className={classes.orange}>
                 {/* Fallback: Initials of the person who's logged in */}
                 BC
               </Avatar>
@@ -311,8 +323,7 @@ function Dashboard({ logOut, auth }) {
               anchorEl={anchorUserMenu}
               keepMounted
               open={Boolean(anchorUserMenu)}
-              onClose={handleUserMenuClose}
-            >
+              onClose={handleUserMenuClose}>
               <MenuItem onClick={handleUserMenuClose}>Profile</MenuItem>
               <MenuItem onClick={handleLogout}>Log Out</MenuItem>
             </Menu>
@@ -323,8 +334,7 @@ function Dashboard({ logOut, auth }) {
           classes={{
             paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
           }}
-          open={open}
-        >
+          open={open}>
           <div className={classes.toolbarIcon}>
             {/* App Name */}
             <img src={outreachLogo} width={75} />

@@ -2,10 +2,12 @@
   margin-left: 2rem;
 }
 
+
 .MuiAppBar-colorPrimary {
   background-color: white !important;
   color: #f27821 !important;
 }
+
 /* Menu's links */
 .MuiTypography-body1 {
   color: #f27821;
@@ -24,22 +26,26 @@
   height: 2rem;
   margin: auto;
 }
+
 .button-download .MuiTypography-body1 {
   color: #fff !important;
   vertical-align: text-top;
   font-size: 1.1rem;
 }
+
 /* Menu full-view hidden */
 .header-menu {
   display: none;
   flex: 30% 1;
   justify-content: flex-end;
-  margin-right: 2rem;
+  /* margin-right: 2rem; */
 }
+
 .MuiPaper-root .nl-btn {
   background-image: linear-gradient(#f27821, #f16908, #e7281f);
   border-radius: 10px !important;
 }
+
 .header-menu a {
   color: #f27821;
   font-family: quicksand !important;
@@ -47,6 +53,7 @@
   margin-right: 2rem;
   text-decoration: none;
 }
+
 .header-menu a:hover {
   text-decoration: none;
 }
@@ -56,6 +63,7 @@
   .MuiToolbar-regular {
     /* display: none !important; */
   }
+
   .header-menu {
     display: flex !important;
   }

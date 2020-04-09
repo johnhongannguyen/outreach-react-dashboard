@@ -15,11 +15,10 @@ function Footer() {
             style={{
               backgroundColor: "#F27821",
               color: "#fff",
-              verticalAlign: "middle"
+              verticalAlign: "middle",
             }}
             variant=""
-            className="nl-btn"
-          >
+            className="nl-btn">
             SUBSCRIBE
           </Button>
         </div>
