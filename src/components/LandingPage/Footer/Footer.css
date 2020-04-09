@@ -114,11 +114,11 @@ input {
   height: 2rem;
   border: 1px solid gainsboro;
   display: inline;
-  width: 40vw;
+  width: 45vw;
   line-height: 0;
 }
 .MuiButton-root {
-  padding: 6px 16px !important;
+  padding: 3px 16px !important;
 }
 @media screen and (min-width: 1060px) {
   .nl-subcontainer input {

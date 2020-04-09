@@ -13,7 +13,7 @@ class TeamPage extends React.Component {
         github: "/images/github-logo.png",
         gitlink: "https://github.com/AngelAugustine",
         linkdin: "/images/linkdin-logo.png",
-        link: "https://www.linkedin.com/in/angel-augustine-131219121/"
+        link: "https://www.linkedin.com/in/angel-augustine-131219121/",
       },
       {
         name: "Jasmine Kaur",
@@ -23,7 +23,7 @@ class TeamPage extends React.Component {
         github: "/images/github-logo.png",
         gitlink: "https://github.com/jasminekaur95",
         linkdin: "/images/linkdin-logo.png",
-        link: "https://www.linkedin.com/in/jasmine-kaur-914656195/"
+        link: "https://www.linkedin.com/in/jasmine-kaur-914656195/",
       },
 
       {
@@ -34,7 +34,7 @@ class TeamPage extends React.Component {
         github: "/images/github-logo.png",
         gitlink: "https://github.com/nikhilrwadekar",
         linkdin: "/images/linkdin-logo.png",
-        link: "https://www.linkedin.com/in/nwadekar/"
+        link: "https://www.linkedin.com/in/nwadekar/",
       },
       {
         name: "Davinder Dhindsa",
@@ -43,7 +43,7 @@ class TeamPage extends React.Component {
         // github/Linkdin icons resources: https://fontawesome.com/
         github: "",
         linkdin: "/images/linkdin-logo.png",
-        link: "https://www.linkedin.com/in/davinder-singh-00b8ab197/"
+        link: "https://www.linkedin.com/in/davinder-singh-00b8ab197/",
       },
       {
         name: "Blandy Castro",
@@ -53,7 +53,7 @@ class TeamPage extends React.Component {
         github: "/images/github-logo.png",
         gitlink: "https://github.com/BlandyC",
         linkdin: "/images/linkdin-logo.png",
-        link: "https://www.linkedin.com/in/blandy-castro-a43010199/"
+        link: "https://www.linkedin.com/in/blandy-castro-a43010199/",
       },
       {
         name: "Satnam Thandi",
@@ -63,17 +63,17 @@ class TeamPage extends React.Component {
         github: "/images/github-logo.png",
         gitlink: "https://github.com/ssingh124",
         linkdin: "/images/linkdin-logo.png",
-        link: "https://www.linkedin.com/in/satnam-singh-50b3ba194/"
+        link: "https://www.linkedin.com/in/satnam-singh-50b3ba194/",
       },
       {
         name: "John Nguyen",
         Description: "Front-end Developer",
-        img: "/images/Sam.jpg",
+        img: "/images/john.png",
         // github/Linkdin icons resources: https://fontawesome.com/
         github: "/images/github-logo.png",
         gitlink: "https://github.com/johnhongannguyen",
         linkdin: "/images/linkdin-logo.png",
-        link: "https://www.linkedin.com/in/john-nguyen-743832183"
+        link: "https://www.linkedin.com/in/john-nguyen-743832183",
       },
       {
         name: "Darshpreet Kaur",
@@ -82,27 +82,27 @@ class TeamPage extends React.Component {
         // github/Linkdin icons resources: https://fontawesome.com/
         github: "",
         linkdin: "/images/linkdin-logo.png",
-        link: "https://www.linkedin.com/in/darshpreet-kaur-025664125"
+        link: "https://www.linkedin.com/in/darshpreet-kaur-025664125",
       },
       {
         name: "Manpreet Kaur",
         Description: "UI Designer",
-        img: "/images/Darshpreet.jpg",
+        img: "/images/manpreet.png",
         // github/Linkdin icons resources: https://fontawesome.com/
         github: "",
         linkdin: "/images/linkdin-logo.png",
-        link: "https://www.linkedin.com/in/manpreet-kaur-8b1520181"
+        link: "https://www.linkedin.com/in/manpreet-kaur-8b1520181",
       },
       {
         name: "Sandeep Singh",
         Description: "QA | UI Designer",
-        img: "/images/Angel.jpg",
+        img: "/images/sandeep.png",
         // github/Linkdin icons resources: https://fontawesome.com/
         github: "",
         linkdin: "/images/linkdin-logo.png",
-        link: "https://www.linkedin.com/in/sandeep-singh-288176132"
-      }
-    ]
+        link: "https://www.linkedin.com/in/sandeep-singh-288176132",
+      },
+    ],
   };
   // Resource from: https://flaviocopes.com/react-how-to-loop/.
   //Function to loop trough the first four elements of the array
