@@ -99,8 +99,10 @@ function Header() {
         position="absolute"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
+
         })}>
         <Link href="/" class="logo">
+
           <img
             src={outreachlogo}
             alt="Logo"
@@ -142,6 +144,7 @@ function Header() {
         classes={{
           paper: classes.drawerPaper,
         }}>
+
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (

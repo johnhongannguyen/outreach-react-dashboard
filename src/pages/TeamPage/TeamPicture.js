@@ -70,7 +70,7 @@ class TeamPage extends React.Component {
       {
         name: "John Nguyen",
         Description: "Front-end Developer",
-        img: "/images/Sam.jpg",
+        img: "/images/john.png",
         // github/Linkdin icons resources: https://fontawesome.com/
         github: "/images/github-logo.png",
         gitlink: "https://github.com/johnhongannguyen",
@@ -89,7 +89,7 @@ class TeamPage extends React.Component {
       {
         name: "Manpreet Kaur",
         Description: "UI Designer",
-        img: "/images/Darshpreet.jpg",
+        img: "/images/manpreet.png",
         // github/Linkdin icons resources: https://fontawesome.com/
         github: "",
         linkdin: "/images/linkdin-logo.png",
@@ -98,7 +98,7 @@ class TeamPage extends React.Component {
       {
         name: "Sandeep Singh",
         Description: "QA | UI Designer",
-        img: "/images/Angel.jpg",
+        img: "/images/sandeep.png",
         // github/Linkdin icons resources: https://fontawesome.com/
         github: "",
         linkdin: "/images/linkdin-logo.png",

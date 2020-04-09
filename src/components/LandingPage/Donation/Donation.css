@@ -205,3 +205,8 @@
     height: 60vh;
   }
 }
+@media screen and (min-width: 1500px) {
+  .donation-section {
+    height: 40vh;
+  }
+}

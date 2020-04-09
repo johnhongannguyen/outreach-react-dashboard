@@ -51,6 +51,7 @@ img[src=""] {
 
 .img-holder img {
   transform: rotate(-15deg);
+  border-radius: 1.5rem;
 }
 
 .img_teamPage {
