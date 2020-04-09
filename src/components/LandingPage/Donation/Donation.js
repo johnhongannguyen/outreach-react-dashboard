@@ -36,7 +36,12 @@ class Donation extends Component {
                 today!
               </div>
               <div class="donation-button-container">
-                <input type="button" value="DONATE" class="donation-btn" />
+                <input
+                  type="button"
+                  value="DONATE"
+                  class="donation-btn"
+                  disabled
+                />
               </div>
             </div>
           </div>
